@@ -1,0 +1,43 @@
+version: "3.9"
+
+services:
+  web:
+    image: "charescape/web:5.3.0"
+
+    # Specify a custom container name, rather than a generated default name.
+    #
+    # Warning: Because Docker container names must be unique, you cannot scale a service
+    # beyond 1 container if you have specified a custom name. Attempting to do so results
+    # in an error.
+    container_name: "web530jar"
+
+    volumes:
+      - "./repos:/var/www/repos"
+      - "./nginxconf:/var/www/nginxconf"
+      - "./nginxlogs:/usr/local/openresty/nginx/logs"
+      - "./wwwlogs:/var/www/runlogs"
+      - "./phplogs:/usr/local/php/var/log"
+      - "./oslogs:/var/log"
+
+    ports:
+      - "80:80"
+      - "443:443"
+      - "3306:3306"
+
+    networks:
+      - web530net
+
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "500k"
+        max-file: "20"
+
+    dns:
+      - 223.5.5.5
+      - 223.6.6.6
+      - 119.29.29.29
+
+networks:
+  web530net:
+    driver: bridge

@@ -1,0 +1,44 @@
+
+[mysqld]
+user                                 = www-data
+basedir                              = /usr/local/mariadb/
+bind-address                         = 0.0.0.0
+character-set-server                 = utf8mb4
+collation-server                     = utf8mb4_unicode_ci
+datadir                              = /var/www/mariadb_data/
+general-log                          = 1
+general-log-file                     = /var/www/runlogs/mariadb_general.log
+pid-file                             = /var/www/mariadb.pid
+port                                 = 3307
+slow-query-log-file                  = /var/www/runlogs/mariadb_slow.log
+socket                               = /var/www/mariadb.sock
+tmpdir                               = /var/www/mariadb_temp/
+tls_version                          = TLSv1.2,TLSv1.3
+default-time-zone                    = '+08:00'
+
+[mysql]
+bind-address                         = 0.0.0.0
+default-character-set                = utf8mb4
+local-infile                         = 1
+port                                 = 3307
+socket                               = /var/www/mariadb.sock
+safe-updates                         = 1
+max-allowed-packet                   = 16M
+
+[mysqld_safe]
+open-files-limit                     = 65535
+
+[mysqldump]
+bind-address                         = 0.0.0.0
+comments                             = 1
+default-character-set                = utf8mb4
+max-allowed-packet                   = 64M
+port                                 = 3307
+quick                                = 1
+socket                               = /var/www/mariadb.sock
+
+[mysqlimport]
+bind-address                         = 0.0.0.0
+default-character-set                = utf8mb4
+port                                 = 3307
+socket                               = /var/www/mariadb.sock
