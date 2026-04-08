@@ -6,7 +6,7 @@ on:
 jobs:
   build:
     name: Build on ubuntu-24.04
-    if: "contains(github.event.head_commit.message, 'release ubuntu24-hello.rv1')"
+    if: "contains(github.event.head_commit.message, 'release ubuntu24-php84-mysql84.rv7')"
 
     runs-on: ubuntu-24.04
 
@@ -18,26 +18,23 @@ jobs:
       packages: write
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - name: Check os env
+      - name: Check OS Env
         run: |
           localectl status
           cat /proc/cpuinfo
           free -m
 
-      - name: Login to GitHub Container Registry
+      - name: Login to ghcr
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
       - name: Build Image
         run: |
-          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/web:ubuntu24-hello.rv1
-
-          # 镜像名字建议全小写
+          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/web:ubuntu24-php84-mysql84.rv7
+          # 镜像名字全小写
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-
-          docker build -f dockerfiles/charescape__hello/Dockerfile -t $IMAGE_ID .
-
+          docker build -f src/ubuntu24-php84-mysql84/Dockerfile -t $IMAGE_ID .
           echo "IMAGE_ID=$IMAGE_ID" >> $GITHUB_ENV
 
       - run: docker image ls
