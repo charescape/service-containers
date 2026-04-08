@@ -20,11 +20,17 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.x"
+
       - name: Check OS Env
         run: |
           localectl status
           cat /proc/cpuinfo
           free -m
+
+      - run: php src/ubuntu24-php84-mysql84/lite.php
 
       - name: Login to ghcr
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
