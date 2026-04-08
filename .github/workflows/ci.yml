@@ -6,7 +6,7 @@ on:
 jobs:
   build:
     name: Build on ubuntu-24.04
-    if: "contains(github.event.head_commit.message, 'release ubuntu24-php84-mysql84.rv7')"
+    if: "contains(github.event.head_commit.message, 'release ubuntu24-php84-mysql84.rv8')"
 
     runs-on: ubuntu-24.04
 
@@ -31,7 +31,7 @@ jobs:
 
       - name: Build Image
         run: |
-          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/web:ubuntu24-php84-mysql84.rv7
+          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/web:ubuntu24-php84-mysql84.rv8
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
           docker build -f src/ubuntu24-php84-mysql84/Dockerfile -t $IMAGE_ID .
           echo "IMAGE_ID=$IMAGE_ID" >> $GITHUB_ENV
