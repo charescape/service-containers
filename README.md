@@ -44,4 +44,3 @@ Note
 | --- | --- | ---
 | session.cookie_httponly | - | 1
 | session.cookie_samesite | - | Lax
-
