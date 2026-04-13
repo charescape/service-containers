@@ -71,9 +71,21 @@ sudo                            \
 cmake                           \
 make                            \
 gcc                             \
+g++                             \
 autoconf                        \
 pkg-config                      \
+ca-certificates                 \
 wget                            \
+dpkg-dev                        \
+libc6-dev                       \
+python3                         \
+python3-pip                     \
+python3-venv                    \
+python3-dev                     \
+unzip                           \
+rsync                           \
+clang                           \
+automake                        \
 perl                            \
 git                             \
 git-lfs                         \
@@ -127,7 +139,6 @@ libfmt-dev                      \
 libaio-dev                      \
 libjudy-dev                     \
 libexpat1-dev                   \
-python3-dev                     \
 pipx                            \
 \
 fontconfig                      \
