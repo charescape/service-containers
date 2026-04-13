@@ -16,6 +16,9 @@ ENV MARIADB_VERSION     "12.2.2"
 ENV PHP_VERSION         "8.4.19"
 ENV PHP_HASH            9e862435ffb533dc5b0eb486170a74e5f7c8095e8eb8819a2ff5aad430292a18
 
+ENV REDIS_VERSION       "8.6.2"
+ENV REDIS_HASH          cea46526594fe05f05b9ff733179eb1263deccf4269059cf081fdef222634c88
+
 ENV COMPOSER_VERSION    "2.9.5"
 ENV COMPOSER_HASH       c86ce603fe836bf0861a38c93ac566c8f1e69ac44b2445d9b7a6a17ea2e9972a
 
@@ -198,6 +201,11 @@ libvips-dev                     \
 && rm cacert.pem.sha256 \
 \
 && cd /usr/local/src \
+\
+&& wget --no-verbose https://download.redis.io/releases/redis-${REDIS_VERSION}.tar.gz \
+&& echo "${REDIS_HASH} *redis-${REDIS_VERSION}.tar.gz" | shasum -a 256 --check \
+&& REDIS_HASH_CHECK=$? \
+&& if [ "$REDIS_HASH_CHECK" -ne "0" ]; then echo "redis-${REDIS_VERSION}.tar.gz hash mismatch." && exit 1; fi \
 \
 && wget --no-verbose https://www.php.net/distributions/php-${PHP_VERSION}.tar.gz \
 && echo "${PHP_HASH} *php-${PHP_VERSION}.tar.gz" | shasum -a 256 --check \
