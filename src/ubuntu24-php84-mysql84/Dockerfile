@@ -252,10 +252,23 @@ libvips-dev                     \
 \
 \
 && tar -zxf percona-server-${MYSQL_VERSION}.tar.gz \
+&& tar -zxf redis-${REDIS_VERSION}.tar.gz \
 && tar -zxf php-${PHP_VERSION}.tar.gz \
 && tar -zxf openresty-${OPENRESTY_VERSION}.tar.gz \
 && tar -zxf lua-${LUA_VERSION}.tar.gz \
 && tar -zxf luarocks-${LUAROCKS_VERSION}.tar.gz \
+\
+\
+&& cd /usr/local/src/redis-${REDIS_VERSION} \
+&& BUILD_TLS=yes BUILD_WITH_MODULES=yes INSTALL_RUST_TOOLCHAIN=yes make all \
+&& make install PREFIX=/usr/local/redis \
+\
+&& /usr/local/redis/bin/redis-server --version \
+&& /usr/local/redis/bin/redis-cli --version \
+&& /usr/local/redis/bin/redis-cli INFO \
+\
+&& exit 1 \
+\
 \
 \
 && cd /usr/local/src/lua-${LUA_VERSION} \
