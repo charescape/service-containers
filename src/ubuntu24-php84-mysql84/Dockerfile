@@ -260,7 +260,7 @@ libvips-dev                     \
 \
 \
 && cd /usr/local/src/redis-${REDIS_VERSION} \
-&& BUILD_TLS=yes BUILD_WITH_MODULES=yes INSTALL_RUST_TOOLCHAIN=yes make all \
+&& BUILD_TLS=yes BUILD_WITH_MODULES=no INSTALL_RUST_TOOLCHAIN=yes make all \
 && make install PREFIX=/usr/local/redis \
 \
 && /usr/local/redis/bin/redis-server --version \
