@@ -157,9 +157,12 @@ libboost-all-dev \
 && rm -f       /etc/mysql/my.cnf \
 && rm -f       /root/.my.cnf \
 && rm -f       /usr/local/mysql/mysysconfdir/my.cnf \
-&& cp ./my.cnf /etc/my.cnf \
+\
+\
+&& cp       ./my.cnf          /etc/my.cnf \
+&& chown -R www-data:www-data /etc/my.cnf \
 && chown -R www-data:www-data /usr/local/mysql \
-&& /usr/local/mysql/bin/mysqld --defaults-file=/etc/my.cnf --initialize-insecure --user=www-data \
+&& /usr/local/mysql/scripts/mysql_install_db --defaults-file=/etc/my.cnf --user=www-data --basedir=/usr/local/mysql --datadir=/usr/local/mysql/data \
 \
 && chown -R www-data:www-data /usr/local/mysql \
 && /usr/local/mysql/support-files/mysql.server start \
