@@ -79,7 +79,6 @@ libboost-all-dev \
 \
 && chmod +x /etc/my_init.d/runapps.sh \
 \
-&& cd /usr/local/src \
 && cd /usr/local \
 && wget --no-verbose https://curl.se/ca/cacert.pem \
 && wget --no-verbose https://curl.se/ca/cacert.pem.sha256 \
@@ -87,6 +86,8 @@ libboost-all-dev \
 && CACERT_HASH_CHECK=$? \
 && if [ "$CACERT_HASH_CHECK" -ne "0" ]; then echo "cacert.pem hash mismatch." && exit 1; fi \
 && rm cacert.pem.sha256 \
+\
+&& cd /usr/local/src \
 \
 && wget --no-verbose https://fs-1300425912.cos.ap-shanghai.myqcloud.com/localupload/202606/mariadb-${MARIADB_VERSION}.tar.gz \
 && wget --no-verbose https://fs-1300425912.cos.ap-shanghai.myqcloud.com/localupload/202606/mariadb-${MARIADB_VERSION}.sha256sums.txt \
