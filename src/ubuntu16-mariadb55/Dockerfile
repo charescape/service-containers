@@ -150,6 +150,7 @@ libboost-all-dev \
 \
 && mkdir -p /usr/local/mysql/mysysconfdir \
 && mkdir -p /usr/local/mysql/mytmpdir \
+&& mkdir -p /usr/local/mysql/myrundir \
 \
 \
 && cd /usr/local/src \
