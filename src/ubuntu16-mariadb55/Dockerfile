@@ -77,6 +77,16 @@ libssl-dev                 \
 libncurses5-dev                 \
 libjemalloc-dev                 \
 libboost-dev \
+libreadline-dev \
+libwrap0-dev \
+libxml2-dev \
+libsnappy-dev \
+liblz4-dev \
+libbz2-dev \
+libedit-dev \
+libncurses-dev \
+libgnutls-dev \
+libpcre3-dev \
 \
 \
 && lsb_release -rs \
@@ -119,8 +129,23 @@ libboost-dev \
 \
 && mkdir /usr/local/src/percona-server-${MYSQL_VERSION}/build_tmp_dir \
 && cd /usr/local/src/percona-server-${MYSQL_VERSION}/build_tmp_dir \
-&& cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local/mysql \
--DCMAKE_BUILD_TYPE=RelWithDebInfo \
+&& cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+-DCMAKE_INSTALL_PREFIX=/usr/local/mysql \
+-DMYSQL_DATADIR=/usr/local/mysql/data \
+-DWITH_INNOBASE_STORAGE_ENGINE=1 \
+-DWITH_ARCHIVE_STORAGE_ENGINE=1 \
+-DWITH_BLACKHOLE_STORAGE_ENGINE=1 \
+-DWITH_FEDERATEDX_STORAGE_ENGINE=1 \
+-DWITH_PARTITION_STORAGE_ENGINE=1 \
+-DWITH_PERFSCHEMA_STORAGE_ENGINE=1 \
+-DWITH_TOKUDB_STORAGE_ENGINE=0 \
+-DDEFAULT_CHARSET=utf8 \
+-DDEFAULT_COLLATION=utf8_general_ci \
+-DWITH_JEMALLOC=yes \
+-DWITH_DEBUG=OFF \
+-DWITH_UNIT_TESTS=OFF \
+-DWITH_SSL=system \
+
 -DMYSQL_DATADIR=/var/www/mysql_server/datadir \
 -DSYSCONFDIR=/var/www/mysql_server/sysconfdir \
 -DTMPDIR=/var/www/mysql_server/tmpdir \
