@@ -12,14 +12,7 @@ ENV MARIADB_VERSION     "5.5.68"
 
 
 COPY src/ubuntu24-php84-mysql84/runapps.sh  /etc/my_init.d/
-COPY src/ubuntu24-php84-mysql84/php.ini  /usr/local/src/
 COPY src/ubuntu24-php84-mysql84/my.cnf  /usr/local/src/
-COPY src/ubuntu24-php84-mysql84/php-fpm.conf  /usr/local/src/
-COPY src/ubuntu24-php84-mysql84/www.conf  /usr/local/src/
-COPY src/ubuntu24-php84-mysql84/openresty.conf  /usr/local/src/
-COPY src/ubuntu24-php84-mysql84/install.php  /usr/local/src/
-COPY src/php-crud-api.php  /usr/local/src/
-
 
 # see http://www.ruanyifeng.com/blog/2017/11/bash-set.html
 RUN set -eux \
@@ -202,8 +195,6 @@ libboost-all-dev \
 \
 && rm -rf /usr/local/mysql/mysql-test/* \
 && du -h --max-depth=2 /usr/local/mysql \
-&& du -h --max-depth=2 /usr/local/php \
-&& du -h --max-depth=2 /usr/local/openresty \
 && rm -rf /usr/local/src/*
 
 EXPOSE 80 443 3306
