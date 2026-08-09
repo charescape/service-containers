@@ -50,3 +50,32 @@ jobs:
         env:
           IMAGE_ID: ${{ env.IMAGE_ID }}
 
+  buildmariadb55:
+    name: Build mariadb55
+    if: "contains(github.event.head_commit.message, 'release mariadb55')"
+
+    runs-on: ubuntu-24.04
+
+    env:
+      GIT_MSG: ${{ github.event.head_commit.message }}
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Check OS Env
+        run: |
+          localectl status
+          cat /proc/cpuinfo
+          free -m
+
+      - name: Build Image
+        run: |
+          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/web:mariadb55
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          docker build -f src/ubuntu16-mariadb55/Dockerfile -t $IMAGE_ID .
+
+      - run: docker image ls
