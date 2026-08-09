@@ -116,20 +116,6 @@ libboost-all-dev \
 && tar -zxf mariadb-${REDIS_VERSION}.tar.gz \
 \
 \
-&& mkdir /var/www/mysql_server \
-&& mkdir /var/www/mysql_server/datadir \
-&& mkdir /var/www/mysql_server/sysconfdir \
-&& mkdir /var/www/mysql_server/tmpdir \
-\
-&& mkdir -p /repos/ip_site \
-&& chown -R www-data:www-data /var/www \
-\
-&& apt -y install libkrb5-dev \
-&& apt -y install libsasl2-dev libsasl2-modules-gssapi-mit \
-&& apt -y install libudev-dev \
-&& apt -y install libldap2-dev \
-&& apt -y install libfido2-dev \
-\
 && mkdir /usr/local/src/percona-server-${MYSQL_VERSION}/build_tmp_dir \
 && cd /usr/local/src/percona-server-${MYSQL_VERSION}/build_tmp_dir \
 && cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo \
@@ -160,6 +146,11 @@ libboost-all-dev \
 && make -j$(nproc --all) \
 && sleep 3s \
 && make install \
+\
+\
+&& mkdir -p /usr/local/mysql/mysysconfdir \
+&& mkdir -p /usr/local/mysql/mytmpdir \
+\
 \
 && cd /usr/local/src \
 && rm -f       /etc/my.cnf \
