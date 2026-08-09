@@ -156,7 +156,7 @@ libboost-all-dev \
 && rm -f       /etc/my.cnf \
 && rm -f       /etc/mysql/my.cnf \
 && rm -f       /root/.my.cnf \
-&& rm -f       /var/www/mysql_server/sysconfdir/my.cnf \
+&& rm -f       /usr/local/mysql/mysysconfdir/my.cnf \
 && cp ./my.cnf /etc/my.cnf \
 && chown -R www-data:www-data /var/www \
 && chown -R www-data:www-data /usr/local/mysql \
