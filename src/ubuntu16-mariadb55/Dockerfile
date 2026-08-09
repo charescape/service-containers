@@ -15,7 +15,7 @@ RUN set -eux \
 && free -m            \
 \
 && apt -y update            \
-&& apt -yq upgrade          \
+&& apt -yq  -o Dpkg::Options::="--force-confnew"  upgrade          \
 && apt -y autoremove        \
 \
 && echo '' >> ~/.bashrc         \
