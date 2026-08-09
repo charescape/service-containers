@@ -1,3 +1,5 @@
+# cmake .. -LH
+
 // For backwards compatibility, what version of CMake commands and syntax should this version of CMake try to support.
 CMAKE_BACKWARDS_COMPATIBILITY:STRING=2.4
 
