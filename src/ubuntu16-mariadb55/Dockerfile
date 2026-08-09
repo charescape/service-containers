@@ -89,13 +89,13 @@ libboost-all-dev \
 && if [ "$CACERT_HASH_CHECK" -ne "0" ]; then echo "cacert.pem hash mismatch." && exit 1; fi \
 && rm cacert.pem.sha256 \
 \
-&& wget --no-verbose https://fs-1300425912.cos.ap-shanghai.myqcloud.com/localupload/202606/mariadb-${REDIS_VERSION}.tar.gz \
-&& wget --no-verbose https://fs-1300425912.cos.ap-shanghai.myqcloud.com/localupload/202606/mariadb-${REDIS_VERSION}.sha256sums.txt \
-&& cat mariadb-${REDIS_VERSION}.sha256sums.txt | shasum -a 256 --check \
+&& wget --no-verbose https://fs-1300425912.cos.ap-shanghai.myqcloud.com/localupload/202606/mariadb-${MARIADB_VERSION}.tar.gz \
+&& wget --no-verbose https://fs-1300425912.cos.ap-shanghai.myqcloud.com/localupload/202606/mariadb-${MARIADB_VERSION}.sha256sums.txt \
+&& cat mariadb-${MARIADB_VERSION}.sha256sums.txt | shasum -a 256 --check \
 && MARIADB_HASH_CHECK=$? \
 && if [ "$MARIADB_HASH_CHECK" -ne "0" ]; then echo "mariadb-${MARIADB_VERSION}.tar.gz hash mismatch." && exit 1; fi \
 \
-&& tar -zxf mariadb-${REDIS_VERSION}.tar.gz \
+&& tar -zxf mariadb-${MARIADB_VERSION}.tar.gz \
 \
 \
 && mkdir /usr/local/src/percona-server-${MYSQL_VERSION}/build_tmp_dir \
