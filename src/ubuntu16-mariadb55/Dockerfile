@@ -166,9 +166,6 @@ libboost-all-dev \
 && sleep 3s \
 && /usr/local/mysql/support-files/mysql.server stop \
 \
-&& echo 'export PATH="$PATH:/usr/local/mysql/bin"' >> ~/.bashrc \
-&& echo '' >> ~/.bashrc \
-\
 && apt -y autoremove \
 && apt -y clean \
 && rm -rf /var/lib/apt/lists/* \
