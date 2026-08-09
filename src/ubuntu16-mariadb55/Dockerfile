@@ -2,9 +2,8 @@ FROM phusion/baseimage:0.10.2
 
 LABEL maintainer="charescape@outlook.com"
 
-ENV TZ                 "Asia/Shanghai"
-
-ENV MARIADB_VERSION     "5.5.68"
+ENV TZ="Asia/Shanghai"
+ENV MARIADB_VERSION="5.5.68"
 
 COPY src/ubuntu16-mariadb55/runapps.sh  /etc/my_init.d/
 COPY src/ubuntu16-mariadb55/my.cnf  /usr/local/src/
