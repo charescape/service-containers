@@ -169,7 +169,7 @@ libboost-all-dev \
 && /usr/local/mysql/support-files/mysql.server start \
 && chown -R www-data:www-data /usr/local/mysql \
 && sleep 3s \
-&& /usr/local/mysql/bin/mysql -u root --skip-password -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'root12345';" \
+&& /usr/local/mysql/bin/mysql -u root -e "UPDATE mysql.user SET Password = PASSWORD('root12345') WHERE user = 'root';" \
 && sleep 3s \
 && /usr/local/mysql/support-files/mysql.server restart \
 && sleep 3s \
