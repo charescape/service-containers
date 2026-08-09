@@ -87,6 +87,7 @@ libedit-dev \
 libncurses-dev \
 libgnutls-dev \
 libpcre3-dev \
+zlib1g-dev \
 \
 \
 && lsb_release -rs \
