@@ -88,6 +88,8 @@ libncurses-dev \
 libgnutls-dev \
 libpcre3-dev \
 zlib1g-dev \
+binutils-dev \
+libboost-all-dev \
 \
 \
 && lsb_release -rs \
