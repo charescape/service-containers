@@ -70,13 +70,13 @@ tree                            \
 supervisor                      \
 dpkg-dev                        \
 libc6-dev                       \
-libncurses5-dev                 \
-libjemalloc-dev                 \
 libaio-dev                 \
 libpam0g-dev                 \
 libevent-dev                 \
-libjemalloc-dev                 \
 libssl-dev                 \
+libncurses5-dev                 \
+libjemalloc-dev                 \
+libboost-dev \
 \
 \
 && lsb_release -rs \
