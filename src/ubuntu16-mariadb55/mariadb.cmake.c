@@ -1,26 +1,8 @@
 # cmake .. -LAH
 -- Running cmake version 3.5.1
--- MariaDB 5.5.68
--- Packaging as: mariadb-5.5.68-Linux-x86_64
--- Performing Test NEW_READLINE_INTERFACE
--- Performing Test NEW_READLINE_INTERFACE - Success
--- Performing Test READLINE_V5
--- Performing Test READLINE_V5 - Failed
--- Performing Test LIBEDIT_INTERFACE
--- Performing Test LIBEDIT_INTERFACE - Success
-CMake Warning at storage/tokudb/CMakeLists.txt:17 (MESSAGE):
-  TokuDB is enabled, but jemalloc is not.  This configuration is not
-  supported
+-- The C compiler identification is GNU 5.4.0
+-- The CXX compiler identification is GNU 5.4.0
 
-
--- Found ZLIB: zlib
--- Boost version: 1.58.0
--- Performing Test BOOST_OK
--- Performing Test BOOST_OK - Failed
--- Configuring done
--- Generating done
--- Build files have been written to: /usr/local/src/mariadb-5.5.68/build_tmp_dir
--- Cache values
 // path to the executable
 ACLOCAL_EXECUTABLE:FILEPATH=/usr/bin/aclocal
 
@@ -62,9 +44,6 @@ CHECKMODULE:FILEPATH=CHECKMODULE-NOTFOUND
 
 // Path to a program.
 CMAKE_AR:FILEPATH=/usr/bin/ar
-
-// For backwards compatibility, what version of CMake commands and syntax should this version of CMake try to support.
-CMAKE_BACKWARDS_COMPATIBILITY:STRING=2.4
 
 // Choose the type of build, options are: None(CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release RelWithDebInfo MinSizeRel
 CMAKE_BUILD_TYPE:STRING=RelWithDebInfo
@@ -243,9 +222,6 @@ ENABLE_GCOV:BOOL=OFF
 // Path to a library.
 EVENT_LIBRARY:FILEPATH=/usr/lib/x86_64-linux-gnu/libevent.so
 
-// Single output directory for building all executables.
-EXECUTABLE_OUTPUT_PATH:PATH=
-
 // path to the executable
 GIT_EXECUTABLE:FILEPATH=/usr/bin/git
 
@@ -323,9 +299,6 @@ LIBEDIT_INCLUDE_DIR:PATH=/usr/include/editline
 
 // Path to a library.
 LIBEDIT_LIBRARY:FILEPATH=/usr/lib/x86_64-linux-gnu/libedit.so
-
-// Single output directory for building all libraries.
-LIBRARY_OUTPUT_PATH:PATH=
 
 // Name of libtokufractaltree.so
 LIBTOKUDB:STRING=tokufractaltree
@@ -468,20 +441,20 @@ WITH_VALGRIND:BOOL=OFF
 // Link XTRADB statically to the server
 WITH_XTRADB_STORAGE_ENGINE:BOOL=ON
 
-// Use bundled zlib
-WITH_ZLIB:STRING=bundled
+// Which zlib to use (possible values are 'bundled' or 'system')
+WITH_ZLIB:STRING=system
 
 // Where to find sources for xz (lzma).
 XZ_SOURCE_DIR:FILEPATH=/usr/local/src/mariadb-5.5.68/storage/tokudb/ft-index/third_party/xz-4.999.9beta
 
 // Path to a file.
-ZLIB_INCLUDE_DIR:PATH=ZLIB_INCLUDE_DIR-NOTFOUND
+ZLIB_INCLUDE_DIR:PATH=/usr/include
 
 // Path to a library.
 ZLIB_LIBRARY_DEBUG:FILEPATH=ZLIB_LIBRARY_DEBUG-NOTFOUND
 
 // Path to a library.
-ZLIB_LIBRARY_RELEASE:FILEPATH=ZLIB_LIBRARY_RELEASE-NOTFOUND
+ZLIB_LIBRARY_RELEASE:FILEPATH=/usr/lib/x86_64-linux-gnu/libz.so
 
 // Path to a program.
 gcc_ar:FILEPATH=/usr/bin/gcc-ar
