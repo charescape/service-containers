@@ -4,15 +4,10 @@ LABEL maintainer="charescape@outlook.com"
 
 ENV TZ                 "Asia/Shanghai"
 
-ENV CMAKE_DEB_ID           "Ubuntu"
-ENV CMAKE_DEB_RELEASE      "16.04"
-ENV CMAKE_DEB_CODENAME     "xenial"
-
 ENV MARIADB_VERSION     "5.5.68"
 
-
-COPY src/ubuntu24-php84-mysql84/runapps.sh  /etc/my_init.d/
-COPY src/ubuntu24-php84-mysql84/my.cnf  /usr/local/src/
+COPY src/ubuntu16-mariadb55/runapps.sh  /etc/my_init.d/
+COPY src/ubuntu16-mariadb55/my.cnf  /usr/local/src/
 
 # see http://www.ruanyifeng.com/blog/2017/11/bash-set.html
 RUN set -eux \
@@ -23,11 +18,6 @@ RUN set -eux \
 && apt -y update            \
 && apt -yq upgrade          \
 && apt -y autoremove        \
-\
-&& echo '' >> ~/.bashrc         \
-&& echo '' >> ~/.bashrc         \
-\
-&& apt -y install curl \
 \
 && echo '' >> ~/.bashrc         \
 && echo '' >> ~/.bashrc         \
