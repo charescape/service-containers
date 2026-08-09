@@ -98,8 +98,8 @@ libboost-all-dev \
 && tar -zxf mariadb-${MARIADB_VERSION}.tar.gz \
 \
 \
-&& mkdir /usr/local/src/percona-server-${MYSQL_VERSION}/build_tmp_dir \
-&& cd /usr/local/src/percona-server-${MYSQL_VERSION}/build_tmp_dir \
+&& mkdir /usr/local/src/mariadb-${MYSQL_VERSION}/build_tmp_dir \
+&& cd /usr/local/src/mariadb-${MYSQL_VERSION}/build_tmp_dir \
 && cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo \
 -DCMAKE_INSTALL_PREFIX=/usr/local/mysql \
 -DMYSQL_DATADIR=/usr/local/mysql/data \
