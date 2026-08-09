@@ -39,7 +39,6 @@ RUN set -eux \
 && echo '' >> ~/.bashrc         \
 && echo '' >> ~/.bashrc         \
 \
-&& mkdir -p /var/www              \
 && mkdir -p /repos              \
 && chown -R www-data:www-data /repos \
 \
@@ -159,12 +158,10 @@ libboost-all-dev \
 && rm -f       /root/.my.cnf \
 && rm -f       /usr/local/mysql/mysysconfdir/my.cnf \
 && cp ./my.cnf /etc/my.cnf \
-&& chown -R www-data:www-data /var/www \
 && chown -R www-data:www-data /usr/local/mysql \
 && /usr/local/mysql/bin/mysqld --defaults-file=/etc/my.cnf --initialize-insecure --user=www-data \
 \
 && chown -R www-data:www-data /usr/local/mysql \
-&& chown -R www-data:www-data /var/www \
 && /usr/local/mysql/support-files/mysql.server start \
 && sleep 3s \
 && /usr/local/mysql/bin/mysql -u root --skip-password -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'root12345';" \
@@ -202,7 +199,6 @@ libboost-all-dev \
 && du -h --max-depth=2 /usr/local/mysql \
 && du -h --max-depth=2 /usr/local/php \
 && du -h --max-depth=2 /usr/local/openresty \
-&& du -h --max-depth=3 /var/www \
 && rm -rf /usr/local/src/*
 
 EXPOSE 80 443 3306
