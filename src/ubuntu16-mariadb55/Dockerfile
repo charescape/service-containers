@@ -150,6 +150,7 @@ libboost-all-dev \
 && mkdir -p /usr/local/mysql/mysysconfdir \
 && mkdir -p /usr/local/mysql/mytmpdir \
 && mkdir -p /usr/local/mysql/myrundir \
+&& mkdir -p /etc/my.cnf.d \
 \
 \
 && cd /usr/local/src \
@@ -166,6 +167,7 @@ libboost-all-dev \
 \
 && chown -R www-data:www-data /usr/local/mysql \
 && /usr/local/mysql/support-files/mysql.server start \
+&& chown -R www-data:www-data /usr/local/mysql \
 && sleep 3s \
 && /usr/local/mysql/bin/mysql -u root --skip-password -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'root12345';" \
 && sleep 3s \
