@@ -135,7 +135,7 @@ libboost-all-dev \
 && cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo \
 -DCMAKE_INSTALL_PREFIX=/usr/local/mysql \
 -DMYSQL_DATADIR=/usr/local/mysql/data \
--DSYSCONFDIR=/usr/local/mysql/mysysconfdir \
+-DINSTALL_SYSCONFDIR=/usr/local/mysql/mysysconfdir \
 -DTMPDIR=/usr/local/mysql/mytmpdir \
 -DMYSQL_TCP_PORT=3306 \
 -DMYSQL_UNIX_ADDR=/tmp/mysql.sock \
