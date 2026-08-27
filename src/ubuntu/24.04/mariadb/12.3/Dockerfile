@@ -24,9 +24,7 @@ RUN set -eux \
 && echo '' >> ~/.bashrc         \
 && echo '' >> ~/.bashrc         \
 \
-&& mkdir -p /repos              \
 && mkdir -p /data/mysql         \
-&& chown -R www-data:www-data /repos \
 && chown -R www-data:www-data /data/mysql \
 \
 && apt -yq --no-install-recommends install tzdata \
@@ -61,14 +59,6 @@ zlib1g-dev                      \
 \
 && chmod +x /etc/my_init.d/runapps.sh \
 && chmod +x /etc/service/mariadb/run \
-\
-&& cd /usr/local \
-&& wget --no-verbose https://curl.se/ca/cacert.pem \
-&& wget --no-verbose https://curl.se/ca/cacert.pem.sha256 \
-&& cat cacert.pem.sha256 | shasum -a 256 --check \
-&& CACERT_HASH_CHECK=$? \
-&& if [ "$CACERT_HASH_CHECK" -ne "0" ]; then echo "cacert.pem hash mismatch." && exit 1; fi \
-&& rm cacert.pem.sha256 \
 \
 && cd /usr/local/src \
 \
