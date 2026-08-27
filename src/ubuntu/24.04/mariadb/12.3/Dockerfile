@@ -38,6 +38,7 @@ bison                           \
 flex                            \
 libaio-dev                      \
 liburing-dev                    \
+libnuma-dev                     \
 libpam0g-dev                    \
 libssl-dev                      \
 libkrb5-dev                     \
@@ -76,28 +77,20 @@ zlib1g-dev                      \
 && cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo \
 -DCMAKE_INSTALL_PREFIX=/usr/local/mysql \
 -DMYSQL_DATADIR=/data/mysql \
--DSYSCONFDIR=/etc \
 -DTMPDIR=/tmp \
--DINSTALL_RUNDATADIR=/data/mysql \
--DDEFAULT_CHARSET=utf8mb4 \
--DDEFAULT_COLLATION=utf8mb4_0900_ai_ci \
+-DINSTALL_RUNDIR=/tmp \
 -DWITH_EXTRA_CHARSETS=all \
--DPLUGIN_ARCHIVE=YES \
--DPLUGIN_BLACKHOLE=YES \
--DPLUGIN_FEDERATED=YES \
--DPLUGIN_FEDERATEDX=YES \
--DPLUGIN_S3=YES \
--DPLUGIN_OQGRAPH=YES \
--DPLUGIN_ROCKSDB=YES \
 -DPLUGIN_COLUMNSTORE=NO \
 -DENABLED_LOCAL_INFILE=1 \
--DMYSQL_TCP_PORT=3306 \
--DMYSQL_UNIX_ADDR=/tmp/mysql.sock \
--DWITH_LIBAIO=1 \
+-DWITH_URING=ON \
+-DWITH_LIBAIO=OFF \
+-DWITH_NUMA=AUTO \
 -DWITH_ROCKSDB_ZSTD=ON \
+-DWITH_INNODB_AHI=ON \
+-DWITH_MARIABACKUP=ON \
 -DWITH_SYSTEMD=no \
 -DWITH_SSL=system \
--DWITH_LIBFMT=system \
+-DWITH_LIBFMT=auto \
 -DWITH_ZLIB=system \
 -DWITH_UNIT_TESTS=0 \
 \
