@@ -1,3 +1,5 @@
+# cmake .. -LAH  >  /misc/mariadb12.3-cmake-LAH.txt  2>&1
+
 -- The C compiler identification is GNU 13.3.0
 -- The CXX compiler identification is GNU 13.3.0
 -- Detecting C compiler ABI info
@@ -11,7 +13,7 @@
 -- Detecting CXX compile features
 -- Detecting CXX compile features - done
 -- Running cmake version 3.28.3
--- Could NOT find Git (missing: GIT_EXECUTABLE) 
+-- Could NOT find Git (missing: GIT_EXECUTABLE)
 -- MariaDB 12.3.3
 -- Looking for sys/types.h
 -- Looking for sys/types.h - found
@@ -77,7 +79,7 @@
 -- Looking for backtrace_symbols_fd - found
 -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
 -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
--- Found Threads: TRUE  
+-- Found Threads: TRUE
 -- Looking for 4 include files stdlib.h, ..., float.h
 -- Looking for 4 include files stdlib.h, ..., float.h - found
 -- Looking for include file alloca.h
@@ -572,14 +574,14 @@
 -- Performing Test HAVE_FALLOC_PUNCH_HOLE_AND_KEEP_SIZE - Success
 -- Performing Test HAVE_VFORK
 -- Performing Test HAVE_VFORK - Success
--- Found ZLIB: /usr/lib/x86_64-linux-gnu/libz.so (found version "1.3")  
+-- Found ZLIB: /usr/lib/x86_64-linux-gnu/libz.so (found version "1.3")
 -- Looking for crc32
 -- Looking for crc32 - found
 -- Looking for compressBound
 -- Looking for compressBound - found
 -- Looking for deflateBound
 -- Looking for deflateBound - found
--- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.13")  
+-- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.13")
 -- OPENSSL_INCLUDE_DIR = /usr/include
 -- OPENSSL_SSL_LIBRARY = /usr/lib/x86_64-linux-gnu/libssl.so
 -- OPENSSL_CRYPTO_LIBRARY = /usr/lib/x86_64-linux-gnu/libcrypto.so
@@ -623,7 +625,7 @@
 -- Check size of wctype_t - done
 -- Check size of wint_t
 -- Check size of wint_t - done
--- Found Curses: /usr/lib/x86_64-linux-gnu/libcurses.so  
+-- Found Curses: /usr/lib/x86_64-linux-gnu/libcurses.so
 -- Looking for tputs in /usr/lib/x86_64-linux-gnu/libcurses.so
 -- Looking for tputs in /usr/lib/x86_64-linux-gnu/libcurses.so - found
 -- Looking for setupterm in /usr/lib/x86_64-linux-gnu/libcurses.so
@@ -643,7 +645,7 @@
 -- Performing Test HAVE_SYSTEM_LIBFMT - Success
 -- Looking for io_uring_mlock_size
 -- Looking for io_uring_mlock_size - found
--- Found PkgConfig: /usr/bin/pkg-config (found version "1.8.1") 
+-- Found PkgConfig: /usr/bin/pkg-config (found version "1.8.1")
 -- Checking for one of the modules 'libsystemd;libsystemd-daemon'
 -- Looking for sd_listen_fds in systemd
 -- Looking for sd_listen_fds in systemd - not found
@@ -747,7 +749,7 @@
 -- Performing Test have_CXX__Wsuggest_override
 -- Performing Test have_CXX__Wsuggest_override - Success
 == Configuring MariaDB Connector/C
--- Found CURL: /usr/lib/x86_64-linux-gnu/libcurl.so (found version "8.5.0")  
+-- Found CURL: /usr/lib/x86_64-linux-gnu/libcurl.so (found version "8.5.0")
 -- Performing Test HAS_-Wunused_FLAG
 -- Performing Test HAS_-Wunused_FLAG - Success
 -- Performing Test HAS_-Wlogical-op_FLAG
@@ -782,7 +784,7 @@
 -- MariaDB Connector C: INSTALL_PLUGINDIR=lib/plugin
 -- MariaDB Connector C: INSTALL_MANDIR=man
 -- MariaDB Connector C: LIBMARIADB_STATIC_NAME mariadbclient
--- Found ZSTD: /usr/lib/x86_64-linux-gnu/libzstd.so  
+-- Found ZSTD: /usr/lib/x86_64-linux-gnu/libzstd.so
 -- Looking for include file linux/limits.h
 -- Looking for include file linux/limits.h - found
 -- Looking for include file signal.h
@@ -809,7 +811,7 @@
 -- Performing Test have__Wl___as_needed
 -- Performing Test have__Wl___as_needed - Success
 -- SYSTEM_LIBS: /usr/lib/x86_64-linux-gnu/libz.so;dl;m;dl;m;/usr/lib/x86_64-linux-gnu/libssl.so;/usr/lib/x86_64-linux-gnu/libcrypto.so;/usr/lib/x86_64-linux-gnu/libz.so
--- Found Python3: /usr/bin/python3 (found version "3.12.3") found components: Interpreter 
+-- Found Python3: /usr/bin/python3 (found version "3.12.3") found components: Interpreter
 /usr/bin/python3: No module named pip
 -- SYSTEM processor: x86_64
 -- MariaDB Connector/c configuration:
@@ -821,7 +823,7 @@
 -- Zlib support: ON
 -- ZStd support: TRUE
 -- ASAN support: OFF
--- ASAN scope support: 
+-- ASAN scope support:
 -- UBSAN support: OFF
 -- MSAN support: OFF
 -- Installation layout: DEFAULT
@@ -866,14 +868,14 @@
 -- Performing Test have_C__fno_lto - Success
 -- Performing Test have_CXX__fno_lto
 -- Performing Test have_CXX__fno_lto - Success
--- Found BISON: /usr/bin/bison (found version "3.8.2") 
--- Found LibXml2: /usr/lib/x86_64-linux-gnu/libxml2.so (found version "2.9.14") 
--- Found Snappy: /usr/lib/x86_64-linux-gnu/libsnappy.so  
--- Found LZ4: /usr/lib/x86_64-linux-gnu/liblz4.so (found version "1.9.4") 
+-- Found BISON: /usr/bin/bison (found version "3.8.2")
+-- Found LibXml2: /usr/lib/x86_64-linux-gnu/libxml2.so (found version "2.9.14")
+-- Found Snappy: /usr/lib/x86_64-linux-gnu/libsnappy.so
+-- Found LZ4: /usr/lib/x86_64-linux-gnu/liblz4.so (found version "1.9.4")
 -- Building with LZ4
 -- Could NOT find Boost: Found unsuitable version "1.83.0", but required is at least "1.88.0" (found /usr/include, found components: chrono filesystem program_options regex thread atomic)
 gcc will be used for Boost compilation with compiler GNU
--- SERVER_BUILD_INCLUDE_DIR = 
+-- SERVER_BUILD_INCLUDE_DIR =
 -- SERVER_SOURCE_ROOT_DIR = /usr/local/src/mariadb-12.3.3
 == MariaDB-Columnstore 25.10.6
 -- Looking for C++ include ncurses.h
@@ -1143,7 +1145,7 @@ Adding plugin via MariaDB plugin API
 -- Performing Test have_CXX__Werror_deprecated_declarations
 -- Performing Test have_CXX__Werror_deprecated_declarations - Success
 -- Could NOT find Java (missing: Java_JAVA_EXECUTABLE Java_JAR_EXECUTABLE Java_JAVAC_EXECUTABLE Java_JAVAH_EXECUTABLE Java_JAVADOC_EXECUTABLE) (Required is at least version "1.6")
--- Could NOT find JNI (missing: JAVA_INCLUDE_PATH JAVA_INCLUDE_PATH2 AWT JVM) 
+-- Could NOT find JNI (missing: JAVA_INCLUDE_PATH JAVA_INCLUDE_PATH2 AWT JVM)
 -- Performing Test have_CXX__std_c__17
 -- Performing Test have_CXX__std_c__17 - Success
 -- === Building DuckDB from submodule (/usr/local/src/mariadb-12.3.3/storage/duckdb/third_parties/duckdb) ===
@@ -1267,7 +1269,7 @@ Adding plugin via MariaDB plugin API
 -- Looking for msgpack_version in msgpack
 -- Looking for msgpack_version in msgpack - not found
 -- Configuring OQGraph
--- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.83.0/BoostConfig.cmake (found suitable version "1.83.0", minimum required is "1.40.0")  
+-- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.83.0/BoostConfig.cmake (found suitable version "1.83.0", minimum required is "1.40.0")
 -- Found libjudy: /usr/lib/x86_64-linux-gnu/libJudy.so
 -- Performing Test HAVE_PTHREAD_THREADID_NP
 -- Performing Test HAVE_PTHREAD_THREADID_NP - Failed
@@ -1348,16 +1350,16 @@ Adding plugin via MariaDB plugin API
 -- Looking for getmntinfo - not found
 -- Looking for include file sys/mntent.h
 -- Looking for include file sys/mntent.h - not found
--- Found BZip2: /usr/lib/x86_64-linux-gnu/libbz2.so (found version "1.0.8") 
--- Found LZ4: /usr/lib/x86_64-linux-gnu/liblz4.so (found suitable version "1.9.4", minimum required is "1.6") 
+-- Found BZip2: /usr/lib/x86_64-linux-gnu/libbz2.so (found version "1.0.8")
+-- Found LZ4: /usr/lib/x86_64-linux-gnu/liblz4.so (found suitable version "1.9.4", minimum required is "1.6")
 -- Looking for lzma_auto_decoder in /usr/lib/x86_64-linux-gnu/liblzma.so
 -- Looking for lzma_auto_decoder in /usr/lib/x86_64-linux-gnu/liblzma.so - found
 -- Looking for lzma_easy_encoder in /usr/lib/x86_64-linux-gnu/liblzma.so
 -- Looking for lzma_easy_encoder in /usr/lib/x86_64-linux-gnu/liblzma.so - found
 -- Looking for lzma_lzma_preset in /usr/lib/x86_64-linux-gnu/liblzma.so
 -- Looking for lzma_lzma_preset in /usr/lib/x86_64-linux-gnu/liblzma.so - found
--- Found LibLZMA: /usr/lib/x86_64-linux-gnu/liblzma.so (found version "5.4.5") 
--- Found LZO: /usr/lib/x86_64-linux-gnu/liblzo2.so  
+-- Found LibLZMA: /usr/lib/x86_64-linux-gnu/liblzma.so (found version "5.4.5")
+-- Found LZO: /usr/lib/x86_64-linux-gnu/liblzo2.so
 -- Looking for event.h
 -- Looking for event.h - found
 -- Performing Test have_CXX__Wno_unused_but_set_variable
@@ -1490,7 +1492,7 @@ The following features have been enabled:
 
  * LIBWRAP, Support for tcp wrappers
  * SYSTEMD, Systemd scripts and notification support
- * COLUMNSTORE, Storage Engine 
+ * COLUMNSTORE, Storage Engine
  * CONNECT_ODBC, Support for ODBC in the CONNECT storage engine
  * CONNECT_JDBC, Support for JDBC in the CONNECT storage engine
  * CONNECT_MONGODB, Support for MongoDB in the CONNECT storage engine
@@ -1884,7 +1886,7 @@ ENABLE_GCOV:BOOL=OFF
 // Path to a library.
 EVENT_LIBRARY:FILEPATH=/usr/lib/x86_64-linux-gnu/libevent.so
 
-// 
+//
 FEATURE_SUMMARY:BOOL=OFF
 
 // Path to a program.
@@ -1980,16 +1982,16 @@ GROFF:FILEPATH=GROFF-NOTFOUND
 // Build as a static library to embed into an application
 GROONGA_NORMALIZER_MYSQL_EMBED:BOOL=ON
 
-// 
+//
 GSSAPI_FLAVOR:STRING=MIT
 
-// 
+//
 GSSAPI_FOUND:STRING=TRUE
 
-// 
+//
 GSSAPI_INCS:STRING=-isystem /usr/include/mit-krb5
 
-// 
+//
 GSSAPI_LIBS:STRING=-L/usr/lib/x86_64-linux-gnu/mit-krb5 -Wl,-Bsymbolic-functions -flto=auto -ffat-lto-objects -Wl,-z,relro -lgssapi_krb5 -lkrb5 -lk5crypto -lcom_err
 
 // path to the executable
@@ -2151,7 +2153,7 @@ LZ4_INCLUDE_DIRS:PATH=/usr/include
 // Path to a library.
 LZ4_LIBRARIES:FILEPATH=/usr/lib/x86_64-linux-gnu/liblz4.so
 
-// 
+//
 LZ4_LIBS:STRING=
 
 // Path to a file.
