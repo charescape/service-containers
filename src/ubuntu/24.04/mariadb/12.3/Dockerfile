@@ -29,46 +29,21 @@ RUN set -eux \
 && chown -R www-data:www-data /repos \
 && chown -R www-data:www-data /data/mysql \
 \
-&& apt -yq --no-install-recommends install tzdata build-essential \
-sudo                            \
+&& apt -yq --no-install-recommends install tzdata \
+build-essential                 \
 cmake                           \
-make                            \
-gcc                             \
-g++                             \
-autoconf                        \
 pkg-config                      \
 ca-certificates                 \
 wget                            \
-unzip                           \
-clang                           \
-automake                        \
 perl                            \
-python3                         \
-git                             \
-curl                            \
-re2c                            \
 bison                           \
-zip                             \
-p7zip-full                      \
-socat                           \
-libtool                         \
-dnsutils                        \
-tree                            \
-lsb-release                     \
-dpkg-dev                        \
-libc6-dev                       \
 libaio-dev                      \
 libpam0g-dev                    \
-libevent-dev                    \
 libssl-dev                      \
 libcurl4-openssl-dev            \
 libncurses-dev                  \
-libjemalloc-dev                 \
-libboost-dev                    \
 libboost-all-dev                \
 libjudy-dev                     \
-libreadline-dev                 \
-libwrap0-dev                    \
 libxml2-dev                     \
 libsnappy-dev                   \
 liblzo2-dev                     \
@@ -77,16 +52,9 @@ liblzma-dev                     \
 libbz2-dev                      \
 libzstd-dev                     \
 libfmt-dev                      \
-libedit-dev                     \
-libpcre3-dev                    \
 libpcre2-dev                    \
 zlib1g-dev                      \
-binutils-dev                    \
 \
-\
-&& lsb_release -rs \
-&& lsb_release -cs \
-&& lsb_release -is \
 \
 && chmod +x /etc/my_init.d/runapps.sh \
 && chmod +x /etc/service/mariadb/run \
