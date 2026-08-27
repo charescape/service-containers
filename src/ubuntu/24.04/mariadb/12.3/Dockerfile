@@ -4,9 +4,12 @@ LABEL maintainer="charescape@outlook.com"
 
 ENV TZ="Asia/Shanghai"
 ENV MARIADB_VERSION="12.3.3"
+ENV KILL_PROCESS_TIMEOUT=60
+ENV KILL_ALL_PROCESSES_TIMEOUT=60
 
 COPY src/ubuntu/24.04/mariadb/12.3/runapps.sh  /etc/my_init.d/
 COPY src/ubuntu/24.04/mariadb/12.3/my.cnf  /usr/local/src/
+COPY src/ubuntu/24.04/mariadb/12.3/mariadb.run  /etc/service/mariadb/run
 
 # see http://www.ruanyifeng.com/blog/2017/11/bash-set.html
 RUN set -eux \
@@ -15,7 +18,7 @@ RUN set -eux \
 && free -m            \
 \
 && apt -y update            \
-&& apt -yq upgrade          \
+&& apt -yq -o Dpkg::Options::="--force-confold" upgrade \
 && apt -y autoremove        \
 \
 && echo '' >> ~/.bashrc         \
@@ -26,7 +29,7 @@ RUN set -eux \
 && chown -R www-data:www-data /repos \
 && chown -R www-data:www-data /data/mysql \
 \
-&& apt -yq install tzdata build-essential \
+&& apt -yq --no-install-recommends install tzdata build-essential \
 sudo                            \
 cmake                           \
 make                            \
@@ -51,7 +54,7 @@ socat                           \
 libtool                         \
 dnsutils                        \
 tree                            \
-supervisor                      \
+lsb-release                     \
 dpkg-dev                        \
 libc6-dev                       \
 libaio-dev                      \
@@ -86,6 +89,7 @@ binutils-dev                    \
 && lsb_release -is \
 \
 && chmod +x /etc/my_init.d/runapps.sh \
+&& chmod +x /etc/service/mariadb/run \
 \
 && cd /usr/local \
 && wget --no-verbose https://curl.se/ca/cacert.pem \
@@ -171,6 +175,8 @@ binutils-dev                    \
 && sleep 3s \
 && /usr/local/mysql/support-files/mysql.server stop \
 \
+&& echo '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/mysql/bin' > /etc/container_environment/PATH \
+&& echo 'export PATH="$PATH:/usr/local/mysql/bin"' > /etc/profile.d/mariadb.sh \
 && echo 'export PATH="$PATH:/usr/local/mysql/bin"' >> ~/.bashrc \
 && echo '' >> ~/.bashrc \
 \

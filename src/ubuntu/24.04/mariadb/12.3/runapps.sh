@@ -1,13 +1,7 @@
-#!/bin/bash
+#!/bin/sh
 
 set -eux
 
+# One-shot boot prepare. The daemon is started by runit: /etc/service/mariadb/run
 chown -R www-data:www-data /usr/local/mysql/
 chown -R www-data:www-data /data/mysql/
-
-/usr/local/mysql/support-files/mysql.server start
-
-chown -R www-data:www-data /usr/local/mysql/
-chown -R www-data:www-data /data/mysql/
-
-pgrep -a mariadbd
