@@ -37,9 +37,12 @@ ca-certificates                 \
 wget                            \
 perl                            \
 bison                           \
+flex                            \
 libaio-dev                      \
+liburing-dev                    \
 libpam0g-dev                    \
 libssl-dev                      \
+libkrb5-dev                     \
 libcurl4-openssl-dev            \
 libncurses-dev                  \
 libboost-all-dev                \
