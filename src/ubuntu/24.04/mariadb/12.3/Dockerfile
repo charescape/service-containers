@@ -36,6 +36,7 @@ wget                            \
 perl                            \
 bison                           \
 flex                            \
+git                             \
 libaio-dev                      \
 liburing-dev                    \
 libnuma-dev                     \
