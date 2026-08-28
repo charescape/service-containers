@@ -60,6 +60,9 @@ zlib1g-dev                      \
 libstemmer-dev                  \
 libmsgpack-dev                  \
 libzmq3-dev                     \
+unixodbc-dev                    \
+libcrack2-dev                   \
+libmongoc-dev                   \
 \
 \
 && chmod +x /etc/my_init.d/runapps.sh \
