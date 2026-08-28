@@ -1,3 +1,42 @@
+# cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+#   -DCMAKE_INSTALL_PREFIX=/usr/local/mysql \
+#   -DMYSQL_DATADIR=/data/mysql \
+#   -DTMPDIR=/tmp \
+#   -DINSTALL_RUNDIR=/tmp \
+#   -DWITH_EXTRA_CHARSETS=all \
+#   -DPLUGIN_COLUMNSTORE=NO \
+#   -DENABLED_LOCAL_INFILE=1 \
+#   -DWITH_URING=ON \
+#   -DWITH_LIBAIO=OFF \
+#   -DWITH_ROCKSDB_ZSTD=ON \
+#   -DWITH_INNODB_AHI=ON \
+#   -DWITH_MARIABACKUP=ON \
+#   -DWITH_SYSTEMD=no \
+#   -DWITH_SSL=system \
+#   -DWITH_LIBFMT=system \
+#   -DWITH_PCRE=system \
+#   -DWITH_ZLIB=system \
+#   -DWITH_UNIT_TESTS=0 \
+#   -DPLUGIN_SPHINX=NO \
+#   -DPLUGIN_FEEDBACK=NO \
+#   -DPLUGIN_EXAMPLE=NO \
+#   -DPLUGIN_DAEMON_EXAMPLE=NO \
+#   -DPLUGIN_AUDIT_NULL=NO \
+#   -DPLUGIN_AUTH_TEST_PLUGIN=NO \
+#   -DPLUGIN_AUTH_0X0100=NO \
+#   -DPLUGIN_QA_AUTH_CLIENT=NO \
+#   -DPLUGIN_QA_AUTH_INTERFACE=NO \
+#   -DPLUGIN_QA_AUTH_SERVER=NO \
+#   -DPLUGIN_DEBUG_KEY_MANAGEMENT=NO \
+#   -DPLUGIN_EXAMPLE_KEY_MANAGEMENT=NO \
+#   -DPLUGIN_DIALOG_EXAMPLES=NO \
+#   -DPLUGIN_FTEXAMPLE=NO \
+#   -DPLUGIN_FUNC_TEST=NO \
+#   -DPLUGIN_TEST_SQL_DISCOVERY=NO \
+#   -DPLUGIN_TEST_SQL_SERVICE=NO \
+#   -DPLUGIN_TEST_VERSIONING=NO \
+#   -DPLUGIN_TYPE_TEST=NO   >  /misc/mariadb12.3-cmake-LAH.txt  2>&1
+
 -- The C compiler identification is GNU 13.3.0
 -- The CXX compiler identification is GNU 13.3.0
 -- Detecting C compiler ABI info
@@ -11,7 +50,7 @@
 -- Detecting CXX compile features
 -- Detecting CXX compile features - done
 -- Running cmake version 3.28.3
--- Could NOT find Git (missing: GIT_EXECUTABLE) 
+-- Could NOT find Git (missing: GIT_EXECUTABLE)
 -- MariaDB 12.3.3
 -- Looking for sys/types.h
 -- Looking for sys/types.h - found
@@ -77,7 +116,7 @@
 -- Looking for backtrace_symbols_fd - found
 -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
 -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
--- Found Threads: TRUE  
+-- Found Threads: TRUE
 -- Looking for 4 include files stdlib.h, ..., float.h
 -- Looking for 4 include files stdlib.h, ..., float.h - found
 -- Looking for include file alloca.h
@@ -572,14 +611,14 @@
 -- Performing Test HAVE_FALLOC_PUNCH_HOLE_AND_KEEP_SIZE - Success
 -- Performing Test HAVE_VFORK
 -- Performing Test HAVE_VFORK - Success
--- Found ZLIB: /usr/lib/x86_64-linux-gnu/libz.so (found version "1.3")  
+-- Found ZLIB: /usr/lib/x86_64-linux-gnu/libz.so (found version "1.3")
 -- Looking for crc32
 -- Looking for crc32 - found
 -- Looking for compressBound
 -- Looking for compressBound - found
 -- Looking for deflateBound
 -- Looking for deflateBound - found
--- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.13")  
+-- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.13")
 -- OPENSSL_INCLUDE_DIR = /usr/include
 -- OPENSSL_SSL_LIBRARY = /usr/lib/x86_64-linux-gnu/libssl.so
 -- OPENSSL_CRYPTO_LIBRARY = /usr/lib/x86_64-linux-gnu/libcrypto.so
@@ -623,7 +662,7 @@
 -- Check size of wctype_t - done
 -- Check size of wint_t
 -- Check size of wint_t - done
--- Found Curses: /usr/lib/x86_64-linux-gnu/libcurses.so  
+-- Found Curses: /usr/lib/x86_64-linux-gnu/libcurses.so
 -- Looking for tputs in /usr/lib/x86_64-linux-gnu/libcurses.so
 -- Looking for tputs in /usr/lib/x86_64-linux-gnu/libcurses.so - found
 -- Looking for setupterm in /usr/lib/x86_64-linux-gnu/libcurses.so
@@ -643,7 +682,7 @@
 -- Performing Test HAVE_SYSTEM_LIBFMT - Success
 -- Looking for io_uring_mlock_size
 -- Looking for io_uring_mlock_size - found
--- Found PkgConfig: /usr/bin/pkg-config (found version "1.8.1") 
+-- Found PkgConfig: /usr/bin/pkg-config (found version "1.8.1")
 -- Performing Test have_C__Wall
 -- Performing Test have_C__Wall - Success
 -- Performing Test have_CXX__Wall
@@ -735,7 +774,7 @@
 -- Performing Test have_CXX__Wsuggest_override
 -- Performing Test have_CXX__Wsuggest_override - Success
 == Configuring MariaDB Connector/C
--- Found CURL: /usr/lib/x86_64-linux-gnu/libcurl.so (found version "8.5.0")  
+-- Found CURL: /usr/lib/x86_64-linux-gnu/libcurl.so (found version "8.5.0")
 -- Performing Test HAS_-Wunused_FLAG
 -- Performing Test HAS_-Wunused_FLAG - Success
 -- Performing Test HAS_-Wlogical-op_FLAG
@@ -770,7 +809,7 @@
 -- MariaDB Connector C: INSTALL_PLUGINDIR=lib/plugin
 -- MariaDB Connector C: INSTALL_MANDIR=man
 -- MariaDB Connector C: LIBMARIADB_STATIC_NAME mariadbclient
--- Found ZSTD: /usr/lib/x86_64-linux-gnu/libzstd.so  
+-- Found ZSTD: /usr/lib/x86_64-linux-gnu/libzstd.so
 -- Looking for include file linux/limits.h
 -- Looking for include file linux/limits.h - found
 -- Looking for include file signal.h
@@ -807,7 +846,7 @@
 -- Zlib support: ON
 -- ZStd support: TRUE
 -- ASAN support: OFF
--- ASAN scope support: 
+-- ASAN scope support:
 -- UBSAN support: OFF
 -- MSAN support: OFF
 -- Installation layout: DEFAULT
@@ -896,9 +935,9 @@
 -- Performing Test have_C__Wdeprecated_declarations - Success
 -- Performing Test have_CXX__Wdeprecated_declarations
 -- Performing Test have_CXX__Wdeprecated_declarations - Success
--- Found LibXml2: /usr/lib/x86_64-linux-gnu/libxml2.so (found version "2.9.14") 
+-- Found LibXml2: /usr/lib/x86_64-linux-gnu/libxml2.so (found version "2.9.14")
 -- Could NOT find Java (missing: Java_JAVA_EXECUTABLE Java_JAR_EXECUTABLE Java_JAVAC_EXECUTABLE Java_JAVAH_EXECUTABLE Java_JAVADOC_EXECUTABLE) (Required is at least version "1.6")
--- Could NOT find JNI (missing: JAVA_INCLUDE_PATH JAVA_INCLUDE_PATH2 AWT JVM) 
+-- Could NOT find JNI (missing: JAVA_INCLUDE_PATH JAVA_INCLUDE_PATH2 AWT JVM)
 -- Performing Test have_CXX__std_c__17
 -- Performing Test have_CXX__std_c__17 - Success
 -- === Building DuckDB from submodule (/usr/local/src/mariadb-12.3.3/storage/duckdb/third_parties/duckdb) ===
@@ -1028,7 +1067,7 @@
 -- Looking for msgpack_version in msgpack
 -- Looking for msgpack_version in msgpack - not found
 -- Configuring OQGraph
--- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.83.0/BoostConfig.cmake (found suitable version "1.83.0", minimum required is "1.40.0")  
+-- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.83.0/BoostConfig.cmake (found suitable version "1.83.0", minimum required is "1.40.0")
 -- Found libjudy: /usr/lib/x86_64-linux-gnu/libJudy.so
 -- Performing Test HAVE_PTHREAD_THREADID_NP
 -- Performing Test HAVE_PTHREAD_THREADID_NP - Failed
@@ -1109,20 +1148,20 @@
 -- Looking for getmntinfo - not found
 -- Looking for include file sys/mntent.h
 -- Looking for include file sys/mntent.h - not found
--- Found BZip2: /usr/lib/x86_64-linux-gnu/libbz2.so (found version "1.0.8") 
--- Found LZ4: /usr/lib/x86_64-linux-gnu/liblz4.so (found suitable version "1.9.4", minimum required is "1.6") 
+-- Found BZip2: /usr/lib/x86_64-linux-gnu/libbz2.so (found version "1.0.8")
+-- Found LZ4: /usr/lib/x86_64-linux-gnu/liblz4.so (found suitable version "1.9.4", minimum required is "1.6")
 -- Looking for lzma_auto_decoder in /usr/lib/x86_64-linux-gnu/liblzma.so
 -- Looking for lzma_auto_decoder in /usr/lib/x86_64-linux-gnu/liblzma.so - found
 -- Looking for lzma_easy_encoder in /usr/lib/x86_64-linux-gnu/liblzma.so
 -- Looking for lzma_easy_encoder in /usr/lib/x86_64-linux-gnu/liblzma.so - found
 -- Looking for lzma_lzma_preset in /usr/lib/x86_64-linux-gnu/liblzma.so
 -- Looking for lzma_lzma_preset in /usr/lib/x86_64-linux-gnu/liblzma.so - found
--- Found LibLZMA: /usr/lib/x86_64-linux-gnu/liblzma.so (found version "5.4.5") 
--- Found LZO: /usr/lib/x86_64-linux-gnu/liblzo2.so  
--- Found Snappy: /usr/lib/x86_64-linux-gnu/libsnappy.so  
+-- Found LibLZMA: /usr/lib/x86_64-linux-gnu/liblzma.so (found version "5.4.5")
+-- Found LZO: /usr/lib/x86_64-linux-gnu/liblzo2.so
+-- Found Snappy: /usr/lib/x86_64-linux-gnu/libsnappy.so
 -- Looking for event.h
 -- Looking for event.h - found
--- Found BISON: /usr/bin/bison (found suitable version "3.8.2", minimum required is "2.4") 
+-- Found BISON: /usr/bin/bison (found suitable version "3.8.2", minimum required is "2.4")
 -- Performing Test have_CXX__Wno_unused_but_set_variable
 -- Performing Test have_CXX__Wno_unused_but_set_variable - Success
 The following features have been enabled:
@@ -1237,27 +1276,27 @@ The following features have been enabled:
  * CONNECT_ODBC, Support for ODBC in the CONNECT storage engine
  * CONNECT_JDBC, Support for JDBC in the CONNECT storage engine
  * CONNECT_MONGODB, Support for MongoDB in the CONNECT storage engine
- * EXAMPLE, Storage Engine 
+ * EXAMPLE, Storage Engine
  * INNODB_EXTRA_DEBUG, Extra InnoDB debug checks
- * SPHINX, Storage Engine 
- * TEST_SQL_DISCOVERY, Storage Engine 
- * AUDIT_NULL, Server plugin 
- * DIALOG_EXAMPLES, Server plugin 
- * AUTH_TEST_PLUGIN, Server plugin 
- * QA_AUTH_INTERFACE, Server plugin 
- * QA_AUTH_SERVER, Server plugin 
- * QA_AUTH_CLIENT, Server plugin 
- * AUTH_0X0100, Server plugin 
+ * SPHINX, Storage Engine
+ * TEST_SQL_DISCOVERY, Storage Engine
+ * AUDIT_NULL, Server plugin
+ * DIALOG_EXAMPLES, Server plugin
+ * AUTH_TEST_PLUGIN, Server plugin
+ * QA_AUTH_INTERFACE, Server plugin
+ * QA_AUTH_SERVER, Server plugin
+ * QA_AUTH_CLIENT, Server plugin
+ * AUTH_0X0100, Server plugin
  * AWS_KEY_MANAGEMENT, AWS Encryption Key Management Plugin
- * DAEMON_EXAMPLE, Server plugin 
- * DEBUG_KEY_MANAGEMENT, Server plugin 
- * EXAMPLE_KEY_MANAGEMENT, Server plugin 
- * FEEDBACK, Server plugin 
- * FTEXAMPLE, Server plugin 
- * FUNC_TEST, Server plugin 
- * TEST_SQL_SERVICE, Server plugin 
- * TYPE_TEST, Server plugin 
- * TEST_VERSIONING, Server plugin 
+ * DAEMON_EXAMPLE, Server plugin
+ * DEBUG_KEY_MANAGEMENT, Server plugin
+ * EXAMPLE_KEY_MANAGEMENT, Server plugin
+ * FEEDBACK, Server plugin
+ * FTEXAMPLE, Server plugin
+ * FUNC_TEST, Server plugin
+ * TEST_SQL_SERVICE, Server plugin
+ * TYPE_TEST, Server plugin
+ * TEST_VERSIONING, Server plugin
  * EMBEDDED_SERVER, Embedded MariaDB Server Library
 
 -- The following OPTIONAL packages have not been found:
