@@ -62,7 +62,6 @@ libmsgpack-dev                  \
 libzmq3-dev                     \
 unixodbc-dev                    \
 libcrack2-dev                   \
-libmongoc-dev                   \
 \
 \
 && chmod +x /etc/my_init.d/runapps.sh \
@@ -88,6 +87,7 @@ libmongoc-dev                   \
 -DINSTALL_RUNDIR=/tmp \
 -DWITH_EXTRA_CHARSETS=all \
 -DPLUGIN_COLUMNSTORE=NO \
+-DCONNECT_WITH_MONGO=OFF \
 -DENABLED_LOCAL_INFILE=1 \
 -DWITH_URING=ON \
 -DWITH_LIBAIO=OFF \
