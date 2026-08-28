@@ -176,3 +176,4 @@ zlib1g-dev                      \
 EXPOSE 3306
 
 CMD ["/sbin/my_init"]
+
