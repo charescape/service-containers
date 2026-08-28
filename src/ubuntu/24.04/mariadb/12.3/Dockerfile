@@ -57,6 +57,9 @@ libzstd-dev                     \
 libfmt-dev                      \
 libpcre2-dev                    \
 zlib1g-dev                      \
+libstemmer-dev                  \
+libmsgpack-dev                  \
+libzmq3-dev                     \
 \
 \
 && chmod +x /etc/my_init.d/runapps.sh \
