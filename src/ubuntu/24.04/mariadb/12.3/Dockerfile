@@ -90,6 +90,7 @@ zlib1g-dev                      \
 -DWITH_SYSTEMD=no \
 -DWITH_SSL=system \
 -DWITH_LIBFMT=system \
+-DWITH_PCRE=system \
 -DWITH_ZLIB=system \
 -DWITH_UNIT_TESTS=0 \
 -DPLUGIN_SPHINX=NO \
