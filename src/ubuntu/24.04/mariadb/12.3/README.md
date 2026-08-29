@@ -23,7 +23,7 @@ sv start mariadb
 sv restart mariadb
 ```
 
-## 宿主机（整台容器）
+## 宿主机
 
 `--stop-timeout 360` 给 InnoDB 刷盘。未指定时默认 10 秒会被 SIGKILL。`docker stop` / `docker restart` 的 `--timeout 360` 与之相同。
 
@@ -58,6 +58,8 @@ docker stop --timeout 360 mariadb12v3
 docker start mariadb12v3
 docker restart --timeout 360 mariadb12v3
 ```
+
+## 注意事项：
 
 进入容器用 `docker exec -t -i mariadb12v3 bash -l`。不要 `docker run -it … bash`（会跳过 `/sbin/my_init`，runit 和 MariaDB 都不会起来）。不要 `docker attach` 再 Ctrl-C（可能把 PID 1 一起停掉）。
 
