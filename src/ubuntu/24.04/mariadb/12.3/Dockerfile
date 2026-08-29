@@ -7,7 +7,7 @@ ENV MARIADB_VERSION="12.3.3"
 ENV KILL_PROCESS_TIMEOUT=60
 ENV KILL_ALL_PROCESSES_TIMEOUT=60
 
-COPY src/ubuntu/24.04/mariadb/12.3/runapps.sh  /etc/my_init.d/
+COPY src/ubuntu/24.04/mariadb/12.3/chown-mysql.sh  /etc/my_init.d/
 COPY src/ubuntu/24.04/mariadb/12.3/my.cnf  /usr/local/src/
 COPY src/ubuntu/24.04/mariadb/12.3/mariadb.run  /etc/service/mariadb/run
 
@@ -65,7 +65,7 @@ unixodbc-dev                    \
 libcrack2-dev                   \
 \
 \
-&& chmod +x /etc/my_init.d/runapps.sh \
+&& chmod +x /etc/my_init.d/chown-mysql.sh \
 && chmod +x /etc/service/mariadb/run \
 \
 && cd /usr/local/src \
