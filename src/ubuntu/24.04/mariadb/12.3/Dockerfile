@@ -122,10 +122,7 @@ libcrack2-dev                   \
 && chown -R www-data:www-data /usr/local/mysql \
 && chown -R www-data:www-data /wwwdata \
 \
-&& echo '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/mysql/bin' > /etc/container_environment/PATH \
 && echo 'export PATH="$PATH:/usr/local/mysql/bin"' > /etc/profile.d/mariadb.sh \
-&& echo 'export PATH="$PATH:/usr/local/mysql/bin"' >> ~/.bashrc \
-&& echo '' >> ~/.bashrc \
 \
 && apt -y autoremove \
 && apt -y clean \

@@ -59,6 +59,6 @@ docker start mariadb12v3
 docker restart --timeout 360 mariadb12v3
 ```
 
-进入容器用 `docker exec`。不要 `docker run -it … bash`（会跳过 `/sbin/my_init`，runit 和 MariaDB 都不会起来）。不要 `docker attach` 再 Ctrl-C（可能把 PID 1 一起干掉）。
+进入容器用 `docker exec -t -i mariadb12v3 bash -l`。login shell 会加载 `/etc/profile.d/mariadb.sh`，这时可以直接敲 `mariadb`。runit、开机脚本和其他非 login 环境请用 `/usr/local/mysql/bin/...`。不要 `docker run -it … bash`（会跳过 `/sbin/my_init`，runit 和 MariaDB 都不会起来）。不要 `docker attach` 再 Ctrl-C（可能把 PID 1 一起干掉）。
 
 `docker rm mariadb12v3` 只删容器；数据在 volume 里还在。
