@@ -11,6 +11,8 @@ COPY src/ubuntu/24.04/mariadb/12.3/chown-mysql.sh  /etc/my_init.d/
 COPY src/ubuntu/24.04/mariadb/12.3/my.cnf  /usr/local/src/
 COPY src/ubuntu/24.04/mariadb/12.3/mariadb.run  /etc/service/mariadb/run
 
+SHELL ["/bin/bash", "-c"]
+
 RUN set -eux \
 && set -o pipefail \
 && export DEBIAN_FRONTEND=noninteractive \
