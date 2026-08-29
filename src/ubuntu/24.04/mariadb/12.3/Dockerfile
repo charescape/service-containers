@@ -26,7 +26,7 @@ RUN set -eux \
 \
 && mkdir -p /wwwdata/mysql/data \
 && mkdir -p /wwwdata/mysql/run \
-&& chown -R www-data:www-data /wwwdata/mysql \
+&& chown -R www-data:www-data /wwwdata \
 \
 && apt -yq --no-install-recommends install tzdata \
 build-essential                 \
