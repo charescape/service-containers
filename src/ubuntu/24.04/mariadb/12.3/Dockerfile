@@ -9,6 +9,7 @@ ENV KILL_ALL_PROCESSES_TIMEOUT=60
 
 COPY src/ubuntu/24.04/mariadb/12.3/chown-mysql.sh  /etc/my_init.d/
 COPY src/ubuntu/24.04/mariadb/12.3/my.cnf  /usr/local/src/
+COPY src/ubuntu/24.04/mariadb/12.3/wait-mariadb-ready.sh  /usr/local/src/
 COPY src/ubuntu/24.04/mariadb/12.3/mariadb.run  /etc/service/mariadb/run
 
 # see http://www.ruanyifeng.com/blog/2017/11/bash-set.html
@@ -67,6 +68,7 @@ libcrack2-dev                   \
 \
 && chmod +x /etc/my_init.d/chown-mysql.sh \
 && chmod +x /etc/service/mariadb/run \
+&& chmod +x /usr/local/src/wait-mariadb-ready.sh \
 \
 && cd /usr/local/src \
 \
@@ -124,21 +126,19 @@ libcrack2-dev                   \
 \
 && chown -R www-data:www-data /usr/local/mysql \
 && chown -R www-data:www-data /wwwdata/mysql \
-&& /usr/local/mysql/support-files/mysql.server start \
-&& chown -R www-data:www-data /usr/local/mysql \
-&& chown -R www-data:www-data /wwwdata/mysql \
-&& sleep 3s \
+&& rm -f /wwwdata/mysql/run/mariadb.pid \
+&& /sbin/setuser www-data /usr/local/mysql/bin/mariadbd --defaults-file=/etc/my.cnf & \
+&& ./wait-mariadb-ready.sh \
 && /usr/local/mysql/bin/mariadb --protocol=socket -u root -e "SET PASSWORD = PASSWORD('root12345');" \
-&& sleep 3s \
 && /usr/local/mysql/bin/mariadb --protocol=socket -u root -e "CREATE USER 'root'@'%' IDENTIFIED BY 'root12345';" \
 && /usr/local/mysql/bin/mariadb --protocol=socket -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;" \
 && /usr/local/mysql/bin/mariadb --protocol=socket -u root -e "CREATE DATABASE test0db;" \
 && /usr/local/mysql/bin/mariadb --protocol=socket -u root -e "CREATE DATABASE test1db;" \
 && /usr/local/mysql/bin/mariadb --protocol=socket -u root -e "CREATE DATABASE test2db;" \
 && /usr/local/mysql/bin/mariadb --protocol=socket -u root -e "FLUSH PRIVILEGES;" \
-&& sleep 3s \
-&& /usr/local/mysql/support-files/mysql.server stop \
-\
+&& /usr/local/mysql/bin/mariadb-admin --protocol=socket -u root shutdown \
+&& wait || true \
+
 && echo '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/mysql/bin' > /etc/container_environment/PATH \
 && echo 'export PATH="$PATH:/usr/local/mysql/bin"' > /etc/profile.d/mariadb.sh \
 && echo 'export PATH="$PATH:/usr/local/mysql/bin"' >> ~/.bashrc \
