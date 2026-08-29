@@ -126,8 +126,7 @@ libcrack2-dev                   \
 \
 && chown -R www-data:www-data /usr/local/mysql \
 && chown -R www-data:www-data /wwwdata/mysql \
-&& rm -f /wwwdata/mysql/run/mariadb.pid \
-&& /sbin/setuser www-data /usr/local/mysql/bin/mariadbd --defaults-file=/etc/my.cnf & \
+&& runsv /etc/service/mariadb & \
 && ./wait-mariadb-ready.sh \
 && /usr/local/mysql/bin/mariadb --protocol=socket -u root -e "SET PASSWORD = PASSWORD('root12345');" \
 && /usr/local/mysql/bin/mariadb --protocol=socket -u root -e "CREATE USER 'root'@'%' IDENTIFIED BY 'root12345';" \
@@ -136,6 +135,7 @@ libcrack2-dev                   \
 && /usr/local/mysql/bin/mariadb --protocol=socket -u root -e "CREATE DATABASE test1db;" \
 && /usr/local/mysql/bin/mariadb --protocol=socket -u root -e "CREATE DATABASE test2db;" \
 && /usr/local/mysql/bin/mariadb --protocol=socket -u root -e "FLUSH PRIVILEGES;" \
+&& sv -w 60 exit /etc/service/mariadb \
 \
 && echo '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/mysql/bin' > /etc/container_environment/PATH \
 && echo 'export PATH="$PATH:/usr/local/mysql/bin"' > /etc/profile.d/mariadb.sh \
