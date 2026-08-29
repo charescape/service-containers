@@ -10,6 +10,6 @@
         "build": "git pull && np patch --yolo --no-publish --message=\"release v%s\""
     },
     "dependencies": {
-        "np": "^11.0.0"
+        "np": "^12.0.1"
     }
 }
