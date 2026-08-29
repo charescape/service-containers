@@ -118,11 +118,11 @@ libcrack2-dev                   \
 && cp       ./my.cnf          /etc/my.cnf \
 && chown -R www-data:www-data /etc/my.cnf \
 && chown -R www-data:www-data /usr/local/mysql \
-&& chown -R www-data:www-data /wwwdata/mysql \
+&& chown -R www-data:www-data /wwwdata \
 && /usr/local/mysql/scripts/mariadb-install-db --defaults-file=/etc/my.cnf --user=www-data --basedir=/usr/local/mysql --datadir=/wwwdata/mysql/data --skip-name-resolve \
 \
 && chown -R www-data:www-data /usr/local/mysql \
-&& chown -R www-data:www-data /wwwdata/mysql \
+&& chown -R www-data:www-data /wwwdata \
 \
 && echo '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/mysql/bin' > /etc/container_environment/PATH \
 && echo 'export PATH="$PATH:/usr/local/mysql/bin"' > /etc/profile.d/mariadb.sh \
