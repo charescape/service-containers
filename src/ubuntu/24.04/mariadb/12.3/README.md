@@ -44,8 +44,8 @@ docker run -d \
   --log-driver json-file \
   --log-opt max-size=10m \
   --log-opt max-file=3 \
-  -v vo_wwwdata_mysql_data:/wwwdata/mysql/data \
-  -v vo_wwwdata_mysql_run:/wwwdata/mysql/run \
+  -v vol_wwwdata_mysql_data:/wwwdata/mysql/data \
+  -v vol_wwwdata_mysql_run:/wwwdata/mysql/run \
   -v /dockerdata/mariadb12v3/wwwdata_misc:/wwwdata/misc \
   <镜像>
 
