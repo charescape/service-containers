@@ -6,7 +6,7 @@ MARIADB="${MARIADB:-/usr/local/mysql/bin/mariadb}"
 TIMEOUT="${1:-90}"
 i=0
 
-until "$MARIADB" --protocol=socket -u root -e "SELECT 1" >/dev/null 2>&1; do
+until "$MARIADB" -h localhost --protocol=socket -u root -e "SELECT 1" >/dev/null 2>&1; do
   i=$((i + 1))
   if [ "$i" -ge "$TIMEOUT" ]; then
     echo "mariadbd did not become ready within ${TIMEOUT}s" >&2

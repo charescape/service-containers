@@ -1,14 +1,14 @@
 Ubuntu 24.04 + MariaDB 12.3
 
-容器启动后，runit 会拉起 `/etc/service/mariadb/run`。客户端 `my.cnf` 默认走 TCP，初始化必须用 `--protocol=socket`（unix_socket 认证，OS root 免密）：
+容器启动后，runit 会拉起 `/etc/service/mariadb/run`。客户端 `my.cnf` 默认 `host=127.0.0.1` 且 `protocol=tcp`。初始化必须走 Unix socket（unix_socket 认证，OS root 免密），因此要同时覆盖这两项：只加 `--protocol=socket` 仍会连 `127.0.0.1`，在 `skip_name_resolve` 下对不上 `root@localhost`。
 
 ```bash
-/usr/local/mysql/bin/mariadb --protocol=socket -u root -e "CREATE USER 'root'@'%' IDENTIFIED BY 'root12345';"
-/usr/local/mysql/bin/mariadb --protocol=socket -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;"
-/usr/local/mysql/bin/mariadb --protocol=socket -u root -e "CREATE DATABASE test0db;"
-/usr/local/mysql/bin/mariadb --protocol=socket -u root -e "CREATE DATABASE test1db;"
-/usr/local/mysql/bin/mariadb --protocol=socket -u root -e "CREATE DATABASE test2db;"
-/usr/local/mysql/bin/mariadb --protocol=socket -u root -e "FLUSH PRIVILEGES;"
+/usr/local/mysql/bin/mariadb -h localhost --protocol=socket -u root -e "CREATE USER 'root'@'%' IDENTIFIED BY 'root12345';"
+/usr/local/mysql/bin/mariadb -h localhost --protocol=socket -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;"
+/usr/local/mysql/bin/mariadb -h localhost --protocol=socket -u root -e "CREATE DATABASE test0db;"
+/usr/local/mysql/bin/mariadb -h localhost --protocol=socket -u root -e "CREATE DATABASE test1db;"
+/usr/local/mysql/bin/mariadb -h localhost --protocol=socket -u root -e "CREATE DATABASE test2db;"
+/usr/local/mysql/bin/mariadb -h localhost --protocol=socket -u root -e "FLUSH PRIVILEGES;"
 ```
 
 ## 容器内（只停/启 MariaDB，容器继续跑）
