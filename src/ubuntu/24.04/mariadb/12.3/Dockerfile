@@ -136,9 +136,7 @@ libcrack2-dev                   \
 && /usr/local/mysql/bin/mariadb --protocol=socket -u root -e "CREATE DATABASE test1db;" \
 && /usr/local/mysql/bin/mariadb --protocol=socket -u root -e "CREATE DATABASE test2db;" \
 && /usr/local/mysql/bin/mariadb --protocol=socket -u root -e "FLUSH PRIVILEGES;" \
-&& /usr/local/mysql/bin/mariadb-admin --protocol=socket -u root shutdown \
-&& wait || true \
-
+\
 && echo '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/mysql/bin' > /etc/container_environment/PATH \
 && echo 'export PATH="$PATH:/usr/local/mysql/bin"' > /etc/profile.d/mariadb.sh \
 && echo 'export PATH="$PATH:/usr/local/mysql/bin"' >> ~/.bashrc \
