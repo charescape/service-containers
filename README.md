@@ -1,46 +1,26 @@
-# Install Docker
-```
-sed -i 's/http:\/\/archive.ubuntu.com/https:\/\/mirrors.cloud.tencent.com/' /etc/apt/sources.list \
-&& sed -i 's/http:\/\/security.ubuntu.com/https:\/\/mirrors.cloud.tencent.com/' /etc/apt/sources.list \
-&& sed -i 's/https:\/\/archive.ubuntu.com/https:\/\/mirrors.cloud.tencent.com/' /etc/apt/sources.list \
-&& sed -i 's/https:\/\/security.ubuntu.com/https:\/\/mirrors.cloud.tencent.com/' /etc/apt/sources.list
-
-apt -y update && apt -y upgrade
-
-apt remove docker docker-engine docker.io containerd runc
-
-apt install \
-    apt-transport-https \
-    ca-certificates \
-    curl \
-    gnupg-agent \
-    software-properties-common
-
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
-
-apt-key fingerprint 0EBFCD88
-
-add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-
-apt -y update && apt -y upgrade
-
-apt install docker-ce docker-ce-cli containerd.io
-
-docker run hello-world
-```
-
-Run docker-compose
+Release
 -------------
+
+New images use this layout:
+
 ```
-$ cd ./charescape_web_100/
-$ docker-compose up -d
-Creating network "charescape_web_100_web" with driver "bridge"
-...
+src/<os>/<os_ver>/<service>/<service_ver>/Dockerfile
 ```
 
-Note
--------------
-| Option | Default | Current
-| --- | --- | ---
-| session.cookie_httponly | - | 1
-| session.cookie_samesite | - | Lax
+Commit and push a message that contains:
+
+```
+release ubuntu/24.04/mariadb/12.3
+```
+
+[`.github/workflows/release.yml`](.github/workflows/release.yml) builds `src/ubuntu/24.04/mariadb/12.3/Dockerfile` and pushes `ghcr.io/<owner>/web:ubuntu-24.04-mariadb-12.3`.
+
+Optional `.rvN` is tag-only (the directory stays without it):
+
+```
+release ubuntu/24.04/mariadb/12.3.rv1
+```
+
+→ same Dockerfile, tag `ubuntu-24.04-mariadb-12.3.rv1`.
+
+The path after `release` must be exactly four segments. Old flat directories (`src/ubuntu24-php84-mysql84`, `src/ubuntu16-mariadb55`) still go through [`.github/workflows/ci.yml`](.github/workflows/ci.yml).
