@@ -24,8 +24,9 @@ RUN set -eux \
 && echo '' >> ~/.bashrc         \
 && echo '' >> ~/.bashrc         \
 \
-&& mkdir -p /data/mysql         \
-&& chown -R www-data:www-data /data/mysql \
+&& mkdir -p /wwwdata/mysql/data \
+&& mkdir -p /wwwdata/mysql/run \
+&& chown -R www-data:www-data /wwwdata/mysql \
 \
 && apt -yq --no-install-recommends install tzdata \
 build-essential                 \
@@ -82,9 +83,10 @@ libcrack2-dev                   \
 && cd /usr/local/src/mariadb-${MARIADB_VERSION}/build_tmp_dir \
 && cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo \
 -DCMAKE_INSTALL_PREFIX=/usr/local/mysql \
--DMYSQL_DATADIR=/data/mysql \
+-DMYSQL_DATADIR=/wwwdata/mysql/data \
 -DTMPDIR=/tmp \
--DINSTALL_RUNDIR=/tmp \
+-DINSTALL_RUNDIR=/wwwdata/mysql/run \
+-DINSTALL_UNIX_ADDRDIR=/wwwdata/mysql/run/mysql.sock \
 -DWITH_EXTRA_CHARSETS=all \
 -DPLUGIN_COLUMNSTORE=NO \
 -DCONNECT_WITH_MONGO=OFF \
@@ -117,14 +119,14 @@ libcrack2-dev                   \
 && cp       ./my.cnf          /etc/my.cnf \
 && chown -R www-data:www-data /etc/my.cnf \
 && chown -R www-data:www-data /usr/local/mysql \
-&& chown -R www-data:www-data /data/mysql \
-&& /usr/local/mysql/scripts/mariadb-install-db --defaults-file=/etc/my.cnf --user=www-data --basedir=/usr/local/mysql --datadir=/data/mysql --skip-name-resolve \
+&& chown -R www-data:www-data /wwwdata/mysql \
+&& /usr/local/mysql/scripts/mariadb-install-db --defaults-file=/etc/my.cnf --user=www-data --basedir=/usr/local/mysql --datadir=/wwwdata/mysql/data --skip-name-resolve \
 \
 && chown -R www-data:www-data /usr/local/mysql \
-&& chown -R www-data:www-data /data/mysql \
+&& chown -R www-data:www-data /wwwdata/mysql \
 && /usr/local/mysql/support-files/mysql.server start \
 && chown -R www-data:www-data /usr/local/mysql \
-&& chown -R www-data:www-data /data/mysql \
+&& chown -R www-data:www-data /wwwdata/mysql \
 && sleep 3s \
 && /usr/local/mysql/bin/mariadb -u root -e "SET PASSWORD = PASSWORD('root12345');" \
 && sleep 3s \
@@ -159,7 +161,7 @@ libcrack2-dev                   \
 && rm -rf /usr/local/mysql/mysql-test/* \
 && rm -rf /usr/local/mysql/mariadb-test/* \
 && du -h --max-depth=2 /usr/local/mysql \
-&& du -h --max-depth=2 /data/mysql \
+&& du -h --max-depth=2 /wwwdata/mysql \
 && rm -rf /usr/local/src/*
 
 EXPOSE 3306
