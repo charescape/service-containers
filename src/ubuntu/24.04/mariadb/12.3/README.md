@@ -11,3 +11,14 @@ mariadb --protocol=socket -u root -e "CREATE DATABASE test1db;"
 mariadb --protocol=socket -u root -e "CREATE DATABASE test2db;"
 mariadb --protocol=socket -u root -e "FLUSH PRIVILEGES;"
 ```
+
+服务由 runit 管理，不要用 `mysql.server` 或 `mariadb-admin shutdown`（后者停掉后 runit 约 1 秒会再拉起）。
+
+```bash
+sv status mariadb
+sv stop mariadb
+sv start mariadb
+sv restart mariadb
+```
+
+整台容器一起停：宿主机执行 `docker stop -t 60 <容器>`（镜像 `KILL_PROCESS_TIMEOUT=60`，给 InnoDB 刷盘）。
