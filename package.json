@@ -1,0 +1,15 @@
+{
+    "$schema": "https://www.schemastore.org/package.json",
+    "name": "service-containers",
+    "version": "0.0.1",
+    "packageManager": "npm@10.9.7",
+    "description": "",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "build": "git pull && np patch --yolo --no-publish --message=\"release v%s\""
+    },
+    "dependencies": {
+        "np": "^11.0.0"
+    }
+}
