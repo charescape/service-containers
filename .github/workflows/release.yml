@@ -1,0 +1,82 @@
+name: release
+
+on:
+  push:
+
+jobs:
+  build:
+    name: Build from src path
+    if: "contains(github.event.head_commit.message, 'release ')"
+
+    runs-on: ubuntu-24.04
+
+    env:
+      GIT_MSG: ${{ github.event.head_commit.message }}
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Parse release path
+        id: parse
+        run: |
+          set -eu
+          TOKEN=$(printf '%s\n' "$GIT_MSG" | grep -oE 'release [^[:space:]]+' | head -n1 | sed 's/^release //' || true)
+          if [ -z "$TOKEN" ]; then
+            echo "No release token found; skip"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          DIR=$(printf '%s\n' "$TOKEN" | sed -E 's/\.rv[0-9]+$//')
+
+          if ! printf '%s\n' "$DIR" | grep -qE '^[a-zA-Z0-9._-]+/[a-zA-Z0-9._-]+/[a-zA-Z0-9._-]+/[a-zA-Z0-9._-]+$'; then
+            echo "Not a four-segment path ($DIR); skip"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          case "/$DIR/" in
+            */./*|*/../*)
+              echo "Invalid path segment in $DIR"
+              exit 1
+              ;;
+          esac
+
+          if [ ! -f "src/${DIR}/Dockerfile" ]; then
+            echo "Missing src/${DIR}/Dockerfile"
+            exit 1
+          fi
+
+          TAG=$(printf '%s\n' "$TOKEN" | tr '/' '-' | tr '[:upper:]' '[:lower:]')
+          IMAGE_ID=$(printf 'ghcr.io/%s/web:%s\n' "${{ github.repository_owner }}" "$TAG" | tr '[:upper:]' '[:lower:]')
+
+          echo "skip=false" >> "$GITHUB_OUTPUT"
+          echo "DIR=$DIR" >> "$GITHUB_ENV"
+          echo "IMAGE_ID=$IMAGE_ID" >> "$GITHUB_ENV"
+          echo "Building src/${DIR}/Dockerfile as ${IMAGE_ID}"
+
+      - name: Check OS Env
+        if: steps.parse.outputs.skip != 'true'
+        run: |
+          localectl status
+          cat /proc/cpuinfo
+          free -m
+
+      - name: Login to ghcr
+        if: steps.parse.outputs.skip != 'true'
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Build Image
+        if: steps.parse.outputs.skip != 'true'
+        run: docker build -f "src/${DIR}/Dockerfile" -t "$IMAGE_ID" .
+
+      - run: docker image ls
+        if: steps.parse.outputs.skip != 'true'
+
+      - name: Push Image
+        if: steps.parse.outputs.skip != 'true'
+        run: docker push "$IMAGE_ID"
