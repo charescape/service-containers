@@ -12,6 +12,7 @@ COPY src/ubuntu/24.04/mariadb/12.3/my.cnf  /usr/local/src/
 COPY src/ubuntu/24.04/mariadb/12.3/mariadb.run  /etc/service/mariadb/run
 
 RUN set -eux \
+&& set -o pipefail \
 && export DEBIAN_FRONTEND=noninteractive \
 \
 && free -m            \
@@ -69,9 +70,7 @@ libcrack2-dev                   \
 \
 && wget --no-verbose https://archive.mariadb.org/mariadb-${MARIADB_VERSION}/source/mariadb-${MARIADB_VERSION}.tar.gz \
 && wget --no-verbose https://archive.mariadb.org/mariadb-${MARIADB_VERSION}/source/sha256sums.txt \
-&& grep "mariadb-${MARIADB_VERSION}.tar.gz\$" sha256sums.txt | shasum -a 256 --check \
-&& MARIADB_HASH_CHECK=$? \
-&& if [ "$MARIADB_HASH_CHECK" -ne "0" ]; then echo "mariadb-${MARIADB_VERSION}.tar.gz hash mismatch." && exit 1; fi \
+&& grep "mariadb-${MARIADB_VERSION}.tar.gz\$" sha256sums.txt | awk '{print $1 "  " $2}' | sha256sum --check \
 \
 && tar -zxf mariadb-${MARIADB_VERSION}.tar.gz \
 \
