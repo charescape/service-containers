@@ -26,6 +26,8 @@ sv restart mariadb
 
 `--stop-timeout 360` 给 InnoDB 刷盘。未指定时默认 10 秒会被 SIGKILL。`docker stop` / `docker restart` 的 `--timeout 360` 与之相同。
 
+镜像构建时已在 `/wwwdata/mysql/data` 跑过 `mariadb-install-db`。named volume 首次创建会拷贝镜像内已初始化的内容，不要对这两个路径 bind mount 空目录。
+
 ```bash
 docker run -d \
   --name mariadb12v3 \
@@ -42,8 +44,8 @@ docker run -d \
   --log-driver json-file \
   --log-opt max-size=10m \
   --log-opt max-file=3 \
-  -v /dockerdata/mariadb12v3/wwwdata_mysql_data:/wwwdata/mysql/data \
-  -v /dockerdata/mariadb12v3/wwwdata_mysql_run:/wwwdata/mysql/run \
+  -v vo_wwwdata_mysql_data:/wwwdata/mysql/data \
+  -v vo_wwwdata_mysql_run:/wwwdata/mysql/run \
   -v /dockerdata/mariadb12v3/wwwdata_misc:/wwwdata/misc \
   <镜像>
 
