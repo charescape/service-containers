@@ -2,6 +2,8 @@ name: release
 
 on:
   push:
+    branches:
+      - "**"
 
 jobs:
   build:
@@ -24,14 +26,22 @@ jobs:
         id: parse
         run: |
           set -eu
-          TOKEN=$(printf '%s\n' "$GIT_MSG" | grep -oE 'release [^[:space:]]+' | head -n1 | sed 's/^release //' || true)
-          if [ -z "$TOKEN" ]; then
+          REST=$(printf '%s\n' "$GIT_MSG" | awk '{
+            for (i = 1; i <= NF; i++) {
+              if ($i == "release") {
+                print $(i + 1), $(i + 2)
+                exit
+              }
+            }
+          }')
+          DIR=$(printf '%s\n' "$REST" | awk '{print $1}')
+          VER=$(printf '%s\n' "$REST" | awk '{print $2}')
+
+          if [ -z "$DIR" ]; then
             echo "No release token found; skip"
             echo "skip=true" >> "$GITHUB_OUTPUT"
             exit 0
           fi
-
-          DIR=$(printf '%s\n' "$TOKEN" | sed -E 's/\.rv[0-9]+$//')
 
           if ! printf '%s\n' "$DIR" | grep -qE '^[a-zA-Z0-9._-]+/[a-zA-Z0-9._-]+/[a-zA-Z0-9._-]+/[a-zA-Z0-9._-]+$'; then
             echo "Not a four-segment path ($DIR); skip"
@@ -46,12 +56,17 @@ jobs:
               ;;
           esac
 
+          if ! printf '%s\n' "$VER" | grep -qE '^v[0-9]+\.[0-9]+\.[0-9]+([.+-][0-9A-Za-z.-]+)?$'; then
+            echo "Four-segment path requires v<semver> (got: ${VER:-empty})"
+            exit 1
+          fi
+
           if [ ! -f "src/${DIR}/Dockerfile" ]; then
             echo "Missing src/${DIR}/Dockerfile"
             exit 1
           fi
 
-          TAG=$(printf '%s\n' "$TOKEN" | tr '/' '-' | tr '[:upper:]' '[:lower:]')
+          TAG=$(printf '%s-%s\n' "$(printf '%s' "$DIR" | tr '/' '-')" "$VER" | tr '[:upper:]' '[:lower:]')
           IMAGE_ID=$(printf 'ghcr.io/%s/web:%s\n' "${{ github.repository_owner }}" "$TAG" | tr '[:upper:]' '[:lower:]')
 
           echo "skip=false" >> "$GITHUB_OUTPUT"
