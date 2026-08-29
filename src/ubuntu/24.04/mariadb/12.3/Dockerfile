@@ -128,14 +128,14 @@ libcrack2-dev                   \
 && chown -R www-data:www-data /usr/local/mysql \
 && chown -R www-data:www-data /wwwdata/mysql \
 && sleep 3s \
-&& /usr/local/mysql/bin/mariadb -u root -e "SET PASSWORD = PASSWORD('root12345');" \
+&& /usr/local/mysql/bin/mariadb --protocol=socket -u root -e "SET PASSWORD = PASSWORD('root12345');" \
 && sleep 3s \
-&& /usr/local/mysql/bin/mariadb -u root -e "CREATE USER 'root'@'%' IDENTIFIED BY 'root12345';" \
-&& /usr/local/mysql/bin/mariadb -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;" \
-&& /usr/local/mysql/bin/mariadb -u root -e "CREATE DATABASE test0db;" \
-&& /usr/local/mysql/bin/mariadb -u root -e "CREATE DATABASE test1db;" \
-&& /usr/local/mysql/bin/mariadb -u root -e "CREATE DATABASE test2db;" \
-&& /usr/local/mysql/bin/mariadb -u root -e "FLUSH PRIVILEGES;" \
+&& /usr/local/mysql/bin/mariadb --protocol=socket -u root -e "CREATE USER 'root'@'%' IDENTIFIED BY 'root12345';" \
+&& /usr/local/mysql/bin/mariadb --protocol=socket -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;" \
+&& /usr/local/mysql/bin/mariadb --protocol=socket -u root -e "CREATE DATABASE test0db;" \
+&& /usr/local/mysql/bin/mariadb --protocol=socket -u root -e "CREATE DATABASE test1db;" \
+&& /usr/local/mysql/bin/mariadb --protocol=socket -u root -e "CREATE DATABASE test2db;" \
+&& /usr/local/mysql/bin/mariadb --protocol=socket -u root -e "FLUSH PRIVILEGES;" \
 && sleep 3s \
 && /usr/local/mysql/support-files/mysql.server stop \
 \
