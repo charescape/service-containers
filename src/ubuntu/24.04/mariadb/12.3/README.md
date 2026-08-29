@@ -52,7 +52,7 @@ docker run -d \
 docker ps
 docker logs -f mariadb12v3
 
-docker exec -it mariadb12v3 bash -l
+docker exec -t -i mariadb12v3 bash -l
 
 docker stop --timeout 360 mariadb12v3
 docker start mariadb12v3
