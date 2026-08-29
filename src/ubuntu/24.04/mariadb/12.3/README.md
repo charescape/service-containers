@@ -34,7 +34,6 @@ docker run -d \
   --restart unless-stopped \
   --stop-timeout 360 \
   -p 0.0.0.0:3306:3306 \
-  -p 0.0.0.0:13306:13306 \
   -e TZ=Asia/Shanghai \
   -e KILL_PROCESS_TIMEOUT=300 \
   -e KILL_ALL_PROCESSES_TIMEOUT=300 \
