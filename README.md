@@ -19,8 +19,8 @@ That runs [`scripts/release.mjs`](scripts/release.mjs): it checks the Dockerfile
 release ubuntu/24.04/mariadb/12.3 v1.0.0
 ```
 
-The first release is **v1.0.0**; later ones are `np patch` (`v1.0.1`, `v1.0.2`, …).
+The first release is **v1.0.0**; later ones are `np patch` (`v1.0.1`, `v1.0.2`, …). Those git tags are the repo version only.
 
-[`.github/workflows/release.yml`](.github/workflows/release.yml) builds `src/ubuntu/24.04/mariadb/12.3/Dockerfile` and pushes `ghcr.io/<owner>/web:ubuntu-24.04-mariadb-12.3-v1.0.0`.
+[`.github/workflows/release.yml`](.github/workflows/release.yml) builds `src/ubuntu/24.04/mariadb/12.3/Dockerfile` and pushes `ghcr.io/<owner>/web:ubuntu-24.04-mariadb-12.3`. Running the same path again **overwrites** that tag.
 
 The path after `release` must be exactly four segments, followed by `v` plus a semver. Old flat directories (`src/ubuntu24-php84-mysql84`, `src/ubuntu16-mariadb55`) still go through [`.github/workflows/ci.yml`](.github/workflows/ci.yml).

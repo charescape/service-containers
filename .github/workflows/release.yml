@@ -66,7 +66,7 @@ jobs:
             exit 1
           fi
 
-          TAG=$(printf '%s-%s\n' "$(printf '%s' "$DIR" | tr '/' '-')" "$VER" | tr '[:upper:]' '[:lower:]')
+          TAG=$(printf '%s\n' "$DIR" | tr '/' '-' | tr '[:upper:]' '[:lower:]')
           IMAGE_ID=$(printf 'ghcr.io/%s/web:%s\n' "${{ github.repository_owner }}" "$TAG" | tr '[:upper:]' '[:lower:]')
 
           echo "skip=false" >> "$GITHUB_OUTPUT"
