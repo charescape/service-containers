@@ -25,23 +25,40 @@ sv restart mariadb
 
 ## 宿主机（整台容器）
 
-`-t 60` 对应镜像 `KILL_PROCESS_TIMEOUT=60`，给 InnoDB 刷盘。默认 10 秒会被 SIGKILL。
+`--stop-timeout 360` 给 InnoDB 刷盘。未指定时默认 10 秒会被 SIGKILL。`docker stop` / `docker restart` 的 `-t 360` 与之相同。
 
 ```bash
-docker build -f src/ubuntu/24.04/mariadb/12.3/Dockerfile -t mariadb:12.3.3 .
-
-docker run -d --name mariadb1233 -p 3306:3306 -v /path/on/host/mysql:/wwwdata/mysql mariadb:12.3.3
+docker run -d \
+  --name mariadb12v3 \
+  --hostname hostmariadb12v3 \
+  --restart unless-stopped \
+  --stop-timeout 360 \
+  -p 0.0.0.0:3306:3306 \
+  -p 0.0.0.0:13306:13306 \
+  -e TZ=Asia/Shanghai \
+  -e KILL_PROCESS_TIMEOUT=300 \
+  -e KILL_ALL_PROCESSES_TIMEOUT=300 \
+  --ulimit nofile=65535:65535 \
+  --ulimit nproc=65535:65535 \
+  --shm-size=1g \
+  --log-driver json-file \
+  --log-opt max-size=10m \
+  --log-opt max-file=3 \
+  -v /dockerdata/mariadb12v3/wwwdata_mysql_data:/wwwdata/mysql/data \
+  -v /dockerdata/mariadb12v3/wwwdata_mysql_run:/wwwdata/mysql/run \
+  -v /dockerdata/mariadb12v3/wwwdata_misc:/wwwdata/misc \
+  <镜像>
 
 docker ps
-docker logs -f mariadb1233
+docker logs -f mariadb12v3
 
-docker exec -it mariadb1233 bash -l
+docker exec -it mariadb12v3 bash -l
 
-docker stop -t 60 mariadb1233
-docker start mariadb1233
-docker restart -t 60 mariadb1233
+docker stop -t 360 mariadb12v3
+docker start mariadb12v3
+docker restart -t 360 mariadb12v3
 ```
 
 进入容器用 `docker exec`。不要 `docker run -it … bash`（会跳过 `/sbin/my_init`，runit 和 MariaDB 都不会起来）。不要 `docker attach` 再 Ctrl-C（可能把 PID 1 一起干掉）。
 
-`docker rm mariadb1233` 只删容器；数据在 volume 里还在。
+`docker rm mariadb12v3` 只删容器；数据在 volume 里还在。
