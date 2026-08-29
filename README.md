@@ -16,10 +16,10 @@ npm run release -- ubuntu/24.04/mariadb/12.3
 That runs [`scripts/release.mjs`](scripts/release.mjs): it checks the Dockerfile exists, then uses `np` (`--yolo --no-publish --no-release-draft`) to bump, commit, tag, and push. The commit message is:
 
 ```
-release ubuntu/24.04/mariadb/12.3 v1.0.0
+release ubuntu/24.04/mariadb/12.3 v0.1.0
 ```
 
-The first release is **v1.0.0**; later ones are `np patch` (`v1.0.1`, `v1.0.2`, …). Those git tags are the repo version only.
+Each run uses `np minor` (`v0.1.0`, `v0.2.0`, …). Those git tags are the repo version only.
 
 [`.github/workflows/release.yml`](.github/workflows/release.yml) builds `src/ubuntu/24.04/mariadb/12.3/Dockerfile` and pushes `ghcr.io/<owner>/web:ubuntu-24.04-mariadb-12.3`. Running the same path again **overwrites** that tag.
 

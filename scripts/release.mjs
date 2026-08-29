@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from 'node:fs'
+import { existsSync } from 'node:fs'
 import { spawnSync } from 'node:child_process'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -35,16 +35,12 @@ if (!existsSync(dockerfile)) {
   fail(`missing src/${dir}/Dockerfile`)
 }
 
-const pkg = JSON.parse(readFileSync(path.join(root, 'package.json'), 'utf8'))
-const major = Number(/^(\d+)/.exec(pkg.version ?? '0')?.[1] ?? 0)
-const bump = major < 1 ? '1.0.0' : 'patch'
-
 run('git', ['pull'])
 run('npm', [
   'exec',
   '--',
   'np',
-  bump,
+  'minor',
   '--yolo',
   '--no-publish',
   '--no-release-draft',
