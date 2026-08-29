@@ -26,7 +26,17 @@ sv restart mariadb
 
 `--stop-timeout 360` 给 InnoDB 刷盘。未指定时默认 10 秒会被 SIGKILL。`docker stop` / `docker restart` 的 `--timeout 360` 与之相同。
 
-镜像构建时已在 `/wwwdata/mysql/data` 跑过 `mariadb-install-db`。named volume 首次创建会拷贝镜像内已初始化的内容，不要对这两个路径 bind mount 空目录。
+注意事项：
+
+- 镜像构建时已在 `/wwwdata/mysql/data` 跑过 `mariadb-install-db`；
+- named volume 首次创建会拷贝镜像内已初始化的内容，不要对这两个路径 bind mount 空目录；
+- 另外，最好也不要事先执行 `docker volume create`；
+- `-v vol_wwwdata_mysql_data:/wwwdata/mysql/data` 这种写法是 named volume；
+- volume 不存在时，docker run 会自动创建；
+- 如果先 `docker volume create vol_wwwdata_mysql_data`，volume 是空的，再挂上去时**不会**再拷镜像内容，MariaDB 会面对空 datadir，启动会失败或需要重新初始化；
+- 所以正确做法就是直接跑这条 docker run，让 Docker 自己建这两个 volume。
+
+确认 volume 是否已由这次启动创建：`docker volume ls | grep vol_wwwdata_mysql`
 
 ```bash
 docker run -d \
