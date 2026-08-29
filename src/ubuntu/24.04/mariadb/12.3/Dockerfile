@@ -20,8 +20,6 @@ RUN set -eux \
 && apt -yq -o Dpkg::Options::="--force-confold" upgrade \
 && apt -y autoremove        \
 \
-&& echo '' >> ~/.bashrc         \
-&& echo '' >> ~/.bashrc         \
 \
 && mkdir -p /wwwdata/mysql/data \
 && mkdir -p /wwwdata/mysql/run \
