@@ -40,8 +40,8 @@ sv restart php-fpm
 
 ```bash
 docker run -d \
-  --name php84 \
-  --hostname hostphp84 \
+  --name php8v4 \
+  --hostname hostphp8v4 \
   --restart unless-stopped \
   --stop-timeout 360 \
   -p 0.0.0.0:9000:9000 \
@@ -55,21 +55,21 @@ docker run -d \
   --log-opt max-file=3 \
   -v vol_wwwdata_php_sessions:/wwwdata/php/sessions \
   -v vol_wwwdata_php_run:/wwwdata/php/run \
-  -v /dockerdata/php84/wwwdata_www:/wwwdata/www \
+  -v /dockerdata/php8v4/wwwdata_www:/wwwdata/www \
   <镜像>
 
 docker ps
-docker logs -f php84
+docker logs -f php8v4
 
-docker exec -t -i php84 bash -l
+docker exec -t -i php8v4 bash -l
 
-docker stop --timeout 360 php84
-docker start php84
-docker restart --timeout 360 php84
+docker stop --timeout 360 php8v4
+docker start php8v4
+docker restart --timeout 360 php8v4
 ```
 
 ## 注意事项：
 
-进入容器用 `docker exec -t -i php84 bash -l`。不要 `docker run -it … bash`（会跳过 `/sbin/my_init`，runit 和 php-fpm 都不会起来）。不要 `docker attach` 再 Ctrl-C（可能把 PID 1 一起停掉）。
+进入容器用 `docker exec -t -i php8v4 bash -l`。不要 `docker run -it … bash`（会跳过 `/sbin/my_init`，runit 和 php-fpm 都不会起来）。不要 `docker attach` 再 Ctrl-C（可能把 PID 1 一起停掉）。
 
-`docker rm php84` 只删容器；named volume 里的数据还在。
+`docker rm php8v4` 只删容器；named volume 里的数据还在。
