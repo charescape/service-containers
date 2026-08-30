@@ -41,12 +41,13 @@ nginx -t
 确认 volume 是否已由这次启动创建：`docker volume ls | grep vol_wwwdata_openresty`
 
 ```bash
-docker network create dockerwebnet
+docker network create my_shared_net
+mkdir -p /dockerdata/my_shared_dir
 
 docker run -d \
   --name openresty1v31 \
   --hostname hostopenresty1v31 \
-  --network dockerwebnet \
+  --network my_shared_net \
   --restart unless-stopped \
   --stop-timeout 360 \
   -p 0.0.0.0:80:80 \
@@ -63,6 +64,7 @@ docker run -d \
   -v vol_wwwdata_openresty_run:/wwwdata/openresty/run \
   -v /dockerdata/openresty1v31/nginxconf:/wwwdata/openresty/nginxconf \
   -v /dockerdata/php8v4/wwwdata_www:/wwwdata/www \
+  -v /dockerdata/my_shared_dir:/my_shared_dir \
   <openresty镜像>
 
 docker ps

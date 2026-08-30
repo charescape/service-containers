@@ -37,12 +37,13 @@ sv restart php-fpm
 确认 volume 是否已由这次启动创建：`docker volume ls | grep vol_wwwdata_php`
 
 ```bash
-docker network create dockerwebnet
+docker network create my_shared_net
+mkdir -p /dockerdata/my_shared_dir
 
 docker run -d \
   --name php8v4 \
   --hostname hostphp8v4 \
-  --network dockerwebnet \
+  --network my_shared_net \
   --restart unless-stopped \
   --stop-timeout 360 \
   -p 0.0.0.0:9000:9000 \
@@ -57,6 +58,7 @@ docker run -d \
   -v vol_wwwdata_php_sessions:/wwwdata/php/sessions \
   -v vol_wwwdata_php_run:/wwwdata/php/run \
   -v /dockerdata/php8v4/wwwdata_www:/wwwdata/www \
+  -v /dockerdata/my_shared_dir:/my_shared_dir \
   <镜像>
 
 docker ps
