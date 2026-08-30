@@ -1,12 +1,12 @@
 Ubuntu 24.04 + PHP 8.4
 
-容器启动后，runit 会拉起 `/etc/service/php-fpm/run`。php-fpm master 以 root 运行，worker 为 `www-data`，监听 `0.0.0.0:9000`。不要把 `/usr/local/php` 加进 `PATH`，一律用绝对路径：
+容器启动后，runit 会拉起 `/etc/service/php-fpm/run`。php-fpm master 以 root 运行，worker 为 `www-data`，监听 `0.0.0.0:9000`。镜像 `PATH` 已包含 `/usr/local/php/bin` 和 `/usr/local/php/sbin`（composer 的 shebang 是 `#!/usr/bin/env php`）：
 
 ```bash
-/usr/local/php/bin/php -v
-/usr/local/php/bin/php -m
-/usr/local/php/sbin/php-fpm --fpm-config /usr/local/php/etc/php-fpm.conf -t
-/usr/local/bin/composer --version
+php -v
+php -m
+php-fpm --fpm-config /usr/local/php/etc/php-fpm.conf -t
+composer --version
 ```
 
 旁路 OpenResty / nginx 把 FastCGI 指到该容器的 `9000` 端口。

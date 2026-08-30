@@ -9,6 +9,7 @@ ENV COMPOSER_VERSION="2.10.3"
 ENV COMPOSER_HASH="7a2d379d5b8ffdaa028580ef26494c36d2feef4b178d3dd1473a4dbc5e17c8d6"
 ENV KILL_PROCESS_TIMEOUT=60
 ENV KILL_ALL_PROCESSES_TIMEOUT=60
+ENV PATH="/usr/local/php/bin:/usr/local/php/sbin:${PATH}"
 
 COPY src/ubuntu/24.04/php/8.4/chown-php.sh  /etc/my_init.d/
 COPY src/ubuntu/24.04/php/8.4/php.ini  /usr/local/src/
@@ -181,7 +182,6 @@ libexpat1-dev                   \
 \
 && mv ./composer.phar /usr/local/bin/composer \
 && chmod +x /usr/local/bin/composer \
-&& sed -i '1s|#!/usr/bin/env php|#!/usr/local/php/bin/php|' /usr/local/bin/composer \
 \
 && mkdir -p /usr/local/php/fpm_pools/www/log \
 && mkdir -p /usr/local/php/var/run \
