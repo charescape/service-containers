@@ -281,12 +281,6 @@ libexpat1-dev                   \
 && /usr/local/php/bin/php -m \
 && /usr/local/bin/composer --version \
 && /usr/local/php/sbin/php-fpm --fpm-config /usr/local/php/etc/php-fpm.conf -t \
-&& ( \
-  /usr/local/php/sbin/php-fpm --nodaemonize --fpm-config /usr/local/php/etc/php-fpm.conf & \
-  sleep 3s \
-  kill -INT "$(cat /usr/local/php/var/run/php-fpm.pid)" \
-  wait || true \
-) \
 \
 && mkdir -p /etc/service/php-fpm \
 && cp /usr/local/src/php-fpm.run /etc/service/php-fpm/run \
