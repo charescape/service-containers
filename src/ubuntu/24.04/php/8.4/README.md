@@ -59,6 +59,7 @@ docker run -d \
   --log-opt max-file=3 \
   -v vol_wwwdata_php_sessions:/wwwdata/php/sessions \
   -v vol_wwwdata_php_run:/wwwdata/php/run \
+  -v /dockerdata/php8v4/wwwdata_misc:/wwwdata/misc \
   -v /dockerdata/my_shared_dir:/my_shared_dir \
   <镜像>
 

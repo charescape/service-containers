@@ -33,6 +33,7 @@ RUN set -eux \
 \
 \
 && mkdir -p /wwwdata/www \
+&& mkdir -p /wwwdata/misc \
 && mkdir -p /wwwdata/openresty/logs \
 && mkdir -p /wwwdata/openresty/run \
 && mkdir -p /wwwdata/openresty/nginxconf/ssl \

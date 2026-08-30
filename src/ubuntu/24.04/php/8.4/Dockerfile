@@ -34,6 +34,7 @@ RUN set -eux \
 && mkdir -p /wwwdata/php/log \
 && mkdir -p /wwwdata/php/sessions \
 && mkdir -p /wwwdata/www \
+&& mkdir -p /wwwdata/misc \
 && chown -R www-data:www-data /wwwdata \
 \
 && apt -yq --no-install-recommends install tzdata \

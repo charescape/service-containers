@@ -80,6 +80,7 @@ docker run -d \
   -v vol_wwwdata_openresty_logs:/wwwdata/openresty/logs \
   -v vol_wwwdata_openresty_run:/wwwdata/openresty/run \
   -v /dockerdata/openresty1v31/nginxconf:/wwwdata/openresty/nginxconf \
+  -v /dockerdata/openresty1v31/wwwdata_misc:/wwwdata/misc \
   -v /dockerdata/my_shared_dir:/my_shared_dir \
   <openresty镜像>
 
