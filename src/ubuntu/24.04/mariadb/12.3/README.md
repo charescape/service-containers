@@ -39,9 +39,12 @@ sv restart mariadb
 确认 volume 是否已由这次启动创建：`docker volume ls | grep vol_wwwdata_mysql`
 
 ```bash
+docker network create dockerwebnet
+
 docker run -d \
   --name mariadb12v3 \
   --hostname hostmariadb12v3 \
+  --network dockerwebnet \
   --restart unless-stopped \
   --stop-timeout 360 \
   -p 0.0.0.0:3306:3306 \
