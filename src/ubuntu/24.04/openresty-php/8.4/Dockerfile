@@ -300,9 +300,9 @@ libexpat1-dev                   \
 \
 && rm -rf  ~/.cache/* \
 \
-&& du -h --max-depth=2 /usr/local/openresty \
-&& du -h --max-depth=2 /usr/local/php \
-&& du -h --max-depth=2 /wwwdata \
+&& du -h --max-depth=2 /usr/local/openresty | sort -hr \
+&& du -h --max-depth=2 /usr/local/php | sort -hr \
+&& du -h --max-depth=2 /wwwdata | sort -hr \
 && rm -rf /usr/local/src/*
 
 EXPOSE 80 443
