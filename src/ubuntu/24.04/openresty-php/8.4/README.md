@@ -42,7 +42,7 @@ sv restart php-fpm
 - 配置和证书放 `/wwwdata/openresty/nginxconf/{http.d,rtmp.d,ssl}`；
 - `session.save_path` 为 `/wwwdata/php/sessions`；
 - 站点代码在 `/my_shared_dir/repos/<站点名>`（宿主机 `/dockerdata/my_shared_dir/repos/`，用 git 管理）；
-- 启动脚本会 `chown -R www-data` 整份 `/my_shared_dir`（含 `.git`，uid 一般为 33）；
+- 启动脚本会 `chown -R www-data /my_shared_dir`（含 `.git`，uid 一般为 33）；
 - named volume 首次创建会拷贝镜像内目录；不要对 logs / run / sessions 执行 bind mount 空目录；
 - 另外，最好也不要事先执行 `docker volume create`；
 - `-v vol_wwwdata_openresty_logs:/wwwdata/openresty/logs` 这种写法是 named volume；
