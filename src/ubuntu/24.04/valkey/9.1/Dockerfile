@@ -92,8 +92,8 @@ libssl-dev                      \
 \
 && rm -rf  ~/.cache/* \
 \
-&& du -h --max-depth=2 /usr/local/valkey \
-&& du -h --max-depth=2 /wwwdata/valkey \
+&& du -h --max-depth=2 /usr/local/valkey | sort -hr \
+&& du -h --max-depth=2 /wwwdata/valkey | sort -hr \
 && rm -rf /usr/local/src/*
 
 EXPOSE 6379

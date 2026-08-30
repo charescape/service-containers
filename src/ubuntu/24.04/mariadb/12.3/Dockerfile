@@ -142,8 +142,8 @@ libcrack2-dev                   \
 \
 && rm -rf /usr/local/mysql/mysql-test/* \
 && rm -rf /usr/local/mysql/mariadb-test/* \
-&& du -h --max-depth=2 /usr/local/mysql \
-&& du -h --max-depth=2 /wwwdata/mysql \
+&& du -h --max-depth=2 /usr/local/mysql | sort -hr \
+&& du -h --max-depth=2 /wwwdata/mysql | sort -hr \
 && rm -rf /usr/local/src/*
 
 EXPOSE 3306
