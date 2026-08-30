@@ -13,7 +13,11 @@ composer --version
 
 ## 容器内（只停/启服务，容器继续跑）
 
-服务由 runit 管理。不要 `nginx -s stop` / `nginx -s quit`，也不要直接 `kill` php-fpm（停掉后 runit 约 1 秒会再拉起）。改 nginx 配置或换证书后用 reload；进程挂了再用 restart。
+服务由 runit 管理。不要 `nginx -s stop` / `nginx -s quit`，也不要直接 `kill` php-fpm（停掉后 runit 约 1 秒会再拉起）。
+
+改 `nginx.conf`、`http.d` / `rtmp.d` 站点配置，或更换 `ssl/` 下的证书之后，用 `nginx -t` 检查通过，再 `nginx -s reload`。reload 只让 master 重读配置并平滑替换 worker，已有连接尽量走完，服务不中断。不要为此 `sv restart openresty`：restart 会先停掉再拉起整条 nginx 进程，连接会断、有短暂中断。
+
+`sv restart openresty` 只用于进程已经不正常的情况：例如 worker/master 僵死、reload 失败、`sv status openresty` 不是 `run`。php-fpm 同理：改池配置后 `sv restart php-fpm` 才会生效；日常不要 `kill`。
 
 ```bash
 sv status openresty
