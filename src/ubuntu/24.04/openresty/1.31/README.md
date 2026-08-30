@@ -7,8 +7,6 @@ nginx -v
 nginx -t
 ```
 
-站点文件在 `/wwwdata/www`，须与 PHP 容器挂同一份、同一容器路径。
-
 ## 容器内（只停/启 nginx，容器继续跑）
 
 服务由 runit 管理。不要 `nginx -s stop` / `nginx -s quit`（停掉后 runit 约 1 秒会再拉起）。改配置或换证书后用 reload；进程挂了再用 restart。
@@ -28,15 +26,34 @@ nginx -t
 
 注意事项：
 
-- 站点文件放 `/wwwdata/www`，须与 `php8v4` 挂同一宿主机目录；
 - 配置和证书放 `/wwwdata/openresty/nginxconf/{http.d,rtmp.d,ssl}`；
-- named volume 首次创建会拷贝镜像内目录；不要对 logs / run bind mount 空目录；
+- named volume 首次创建会拷贝镜像内目录；不要对 logs / run 执行 bind mount 空目录；
 - 另外，最好也不要事先执行 `docker volume create`；
 - `-v vol_wwwdata_openresty_logs:/wwwdata/openresty/logs` 这种写法是 named volume；
 - volume 不存在时，docker run 会自动创建；
 - 如果先 `docker volume create vol_wwwdata_openresty_logs`，volume 是空的，再挂上去时**不会**再拷镜像内容（空 logs 目录一般仍可用）；
 - `nginxconf` 用 bind mount：空目录会盖住镜像里的 placeholder，启动脚本会补一个 `00-placeholder.conf`，否则 `include *.conf` 会让 `nginx -t` 失败；
 - HTTPS `server` 写在 `http.d`，证书放 `ssl/`，例如 `ssl_certificate /wwwdata/openresty/nginxconf/ssl/example.com.crt;`。
+
+`http.d` 站点样例（`root` 必须与 PHP 里的路径一致）：
+
+```nginx
+server {
+    listen 80;
+    listen [::]:80;
+    server_name my_website_001.example.com;
+    root /my_shared_dir/repos/my_website_001;
+    index index.php index.html;
+    location / { try_files $uri $uri/ /index.php$is_args$args; }
+    location ~ \.php {
+        set $php_fastcgi php8v4:9000;
+        fastcgi_pass $php_fastcgi;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        fastcgi_param DOCUMENT_ROOT $realpath_root;
+    }
+}
+```
 
 确认 volume 是否已由这次启动创建：`docker volume ls | grep vol_wwwdata_openresty`
 
@@ -63,7 +80,6 @@ docker run -d \
   -v vol_wwwdata_openresty_logs:/wwwdata/openresty/logs \
   -v vol_wwwdata_openresty_run:/wwwdata/openresty/run \
   -v /dockerdata/openresty1v31/nginxconf:/wwwdata/openresty/nginxconf \
-  -v /dockerdata/php8v4/wwwdata_www:/wwwdata/www \
   -v /dockerdata/my_shared_dir:/my_shared_dir \
   <openresty镜像>
 
@@ -81,4 +97,4 @@ docker restart --timeout 360 openresty1v31
 
 进入容器用 `docker exec -t -i openresty1v31 bash -l`。不要 `docker run -it … bash`（会跳过 `/sbin/my_init`，runit 和 nginx 都不会起来）。不要 `docker attach` 再 Ctrl-C（可能把 PID 1 一起停掉）。
 
-`docker rm openresty1v31` 只删容器；named volume 里的日志还在。bind mount 的 `nginxconf` 和站点目录在宿主机上。
+`docker rm openresty1v31` 只删容器；named volume 里的日志还在。bind mount 的 `nginxconf` 和 `/my_shared_dir` 在宿主机上。
