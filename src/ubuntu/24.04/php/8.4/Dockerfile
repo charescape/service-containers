@@ -15,7 +15,7 @@ COPY src/ubuntu/24.04/php/8.4/chown-php.sh  /etc/my_init.d/
 COPY src/ubuntu/24.04/php/8.4/php.ini  /usr/local/src/
 COPY src/ubuntu/24.04/php/8.4/php-fpm.conf  /usr/local/src/
 COPY src/ubuntu/24.04/php/8.4/www.conf  /usr/local/src/
-COPY src/ubuntu/24.04/php/8.4/php-fpm.run  /etc/service/php-fpm/run
+COPY src/ubuntu/24.04/php/8.4/php-fpm.run  /usr/local/src/
 
 SHELL ["/bin/bash", "-c"]
 
@@ -75,7 +75,6 @@ libexpat1-dev                   \
 \
 \
 && chmod +x /etc/my_init.d/chown-php.sh \
-&& chmod +x /etc/service/php-fpm/run \
 \
 && cd /usr/local \
 && wget --no-verbose https://curl.se/ca/cacert.pem \
@@ -201,6 +200,10 @@ libexpat1-dev                   \
   kill -INT "$(cat /usr/local/php/var/run/php-fpm.pid)" \
   wait || true \
 ) \
+\
+&& mkdir -p /etc/service/php-fpm \
+&& cp /usr/local/src/php-fpm.run /etc/service/php-fpm/run \
+&& chmod +x /etc/service/php-fpm/run \
 \
 && apt -y autoremove \
 && apt -y clean \

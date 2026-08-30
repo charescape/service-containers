@@ -9,7 +9,7 @@ ENV KILL_ALL_PROCESSES_TIMEOUT=60
 
 COPY src/ubuntu/24.04/mariadb/12.3/chown-mysql.sh  /etc/my_init.d/
 COPY src/ubuntu/24.04/mariadb/12.3/my.cnf  /usr/local/src/
-COPY src/ubuntu/24.04/mariadb/12.3/mariadb.run  /etc/service/mariadb/run
+COPY src/ubuntu/24.04/mariadb/12.3/mariadb.run  /usr/local/src/
 
 SHELL ["/bin/bash", "-c"]
 
@@ -66,7 +66,6 @@ libcrack2-dev                   \
 \
 \
 && chmod +x /etc/my_init.d/chown-mysql.sh \
-&& chmod +x /etc/service/mariadb/run \
 \
 && cd /usr/local/src \
 \
@@ -122,6 +121,10 @@ libcrack2-dev                   \
 \
 && chown -R www-data:www-data /usr/local/mysql \
 && chown -R www-data:www-data /wwwdata \
+\
+&& mkdir -p /etc/service/mariadb \
+&& cp /usr/local/src/mariadb.run /etc/service/mariadb/run \
+&& chmod +x /etc/service/mariadb/run \
 \
 && apt -y autoremove \
 && apt -y clean \
