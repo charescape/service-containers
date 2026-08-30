@@ -29,7 +29,6 @@ RUN set -eux \
 \
 && mkdir -p /wwwdata/valkey/data \
 && mkdir -p /wwwdata/valkey/run \
-&& mkdir -p /wwwdata/valkey/log \
 && mkdir -p /wwwdata/misc \
 && chown -R www-data:www-data /wwwdata \
 \
