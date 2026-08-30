@@ -57,7 +57,8 @@ libssl-dev                      \
 && make -j$(nproc --all) BUILD_TLS=yes USE_SYSTEMD=no PREFIX=/usr/local/valkey \
      JEMALLOC_CONFIGURE_OPTS="${JEMALLOC_CONFIGURE_OPTS}" \
 && sleep 3s \
-&& make BUILD_TLS=yes USE_SYSTEMD=no PREFIX=/usr/local/valkey install \
+&& make BUILD_TLS=yes USE_SYSTEMD=no PREFIX=/usr/local/valkey \
+     JEMALLOC_CONFIGURE_OPTS="${JEMALLOC_CONFIGURE_OPTS}" install \
 \
 \
 && cd /usr/local/src \
@@ -69,12 +70,14 @@ libssl-dev                      \
 && /usr/local/valkey/bin/valkey-server --version \
 && /usr/local/valkey/bin/valkey-cli --version \
 && ( \
-  /usr/local/valkey/bin/valkey-server /etc/valkey.conf & \
+  /sbin/setuser www-data /usr/local/valkey/bin/valkey-server /etc/valkey.conf & \
   sleep 3s \
   /usr/local/valkey/bin/valkey-cli -s /wwwdata/valkey/run/valkey.sock ping \
   /usr/local/valkey/bin/valkey-cli -s /wwwdata/valkey/run/valkey.sock shutdown nosave \
   wait || true \
 ) \
+&& rm -rf /wwwdata/valkey/data/* /wwwdata/valkey/run/* /wwwdata/valkey/log/* \
+\
 \
 && chown -R www-data:www-data /usr/local/valkey \
 && chown -R www-data:www-data /wwwdata \
