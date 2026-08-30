@@ -7,7 +7,7 @@ nginx -v
 nginx -t
 ```
 
-`.php` 经 FastCGI 转到同 Docker 网络里的 `php8v4:9000`（请求时用 `127.0.0.11` 解析，不要写死 `127.0.0.1`）。站点文件在 `/wwwdata/www`，须与 PHP 容器挂同一份、同一容器路径。
+站点文件在 `/wwwdata/www`，须与 PHP 容器挂同一份、同一容器路径。
 
 ## 容器内（只停/启 nginx，容器继续跑）
 
@@ -41,31 +41,12 @@ nginx -t
 确认 volume 是否已由这次启动创建：`docker volume ls | grep vol_wwwdata_openresty`
 
 ```bash
-docker network create webnet
-
-docker run -d \
-  --name php8v4 \
-  --hostname hostphp8v4 \
-  --network webnet \
-  --restart unless-stopped \
-  --stop-timeout 360 \
-  -e TZ=Asia/Shanghai \
-  -e KILL_PROCESS_TIMEOUT=300 \
-  -e KILL_ALL_PROCESSES_TIMEOUT=300 \
-  --ulimit nofile=65535:65535 \
-  --ulimit nproc=65535:65535 \
-  --log-driver json-file \
-  --log-opt max-size=10m \
-  --log-opt max-file=3 \
-  -v vol_wwwdata_php_sessions:/wwwdata/php/sessions \
-  -v vol_wwwdata_php_run:/wwwdata/php/run \
-  -v /dockerdata/php8v4/wwwdata_www:/wwwdata/www \
-  <php镜像>
+docker network create dockerwebnet
 
 docker run -d \
   --name openresty1v31 \
   --hostname hostopenresty1v31 \
-  --network webnet \
+  --network dockerwebnet \
   --restart unless-stopped \
   --stop-timeout 360 \
   -p 0.0.0.0:80:80 \
