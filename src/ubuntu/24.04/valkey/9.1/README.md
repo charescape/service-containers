@@ -37,7 +37,6 @@ sv restart valkey
 
 注意事项：
 
-- 镜像构建时已在 `/wwwdata/valkey/data` 短启验证过；
 - named volume 首次创建会拷贝镜像内目录；不要对这两个路径 bind mount 空目录；
 - 另外，最好也不要事先执行 `docker volume create`；
 - `-v vol_wwwdata_valkey_data:/wwwdata/valkey/data` 这种写法是 named volume；
