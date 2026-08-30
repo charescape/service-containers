@@ -58,7 +58,7 @@ server {
 确认 volume 是否已由这次启动创建：`docker volume ls | grep vol_wwwdata_openresty`
 
 ```bash
-docker network create my_shared_net
+docker network inspect my_shared_net >/dev/null 2>&1 || docker network create my_shared_net
 mkdir -p /dockerdata/my_shared_dir
 
 docker run -d \
