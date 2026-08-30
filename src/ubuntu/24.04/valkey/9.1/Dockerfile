@@ -64,10 +64,9 @@ libssl-dev                      \
 && sed -ri 's!cd jemalloc && ./configure !&'"${extraJemallocConfigureFlags}"' !' deps/Makefile \
 && grep -F "cd jemalloc && ./configure ${extraJemallocConfigureFlags} " deps/Makefile \
 \
-&& export BUILD_TLS=yes USE_FAST_FLOAT=yes USE_SYSTEMD=no \
-&& make -j$(nproc --all) PREFIX=/usr/local/valkey \
+&& make -j$(nproc --all) BUILD_TLS=yes USE_SYSTEMD=no PREFIX=/usr/local/valkey \
 && sleep 3s \
-&& make PREFIX=/usr/local/valkey install \
+&& make BUILD_TLS=yes USE_SYSTEMD=no PREFIX=/usr/local/valkey install \
 \
 \
 && cd /usr/local/src \
