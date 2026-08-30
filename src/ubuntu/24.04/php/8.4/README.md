@@ -9,8 +9,6 @@ php-fpm --fpm-config /usr/local/php/etc/php-fpm.conf -t
 composer --version
 ```
 
-旁路 OpenResty / nginx 把 FastCGI 指到该容器的 `9000` 端口。
-
 ## 容器内（只停/启 php-fpm，容器继续跑）
 
 服务由 runit 管理。不要直接 `kill` php-fpm（停掉后 runit 约 1 秒会再拉起）。
@@ -39,9 +37,12 @@ sv restart php-fpm
 确认 volume 是否已由这次启动创建：`docker volume ls | grep vol_wwwdata_php`
 
 ```bash
+docker network create dockerwebnet
+
 docker run -d \
   --name php8v4 \
   --hostname hostphp8v4 \
+  --network dockerwebnet \
   --restart unless-stopped \
   --stop-timeout 360 \
   -p 0.0.0.0:9000:9000 \
