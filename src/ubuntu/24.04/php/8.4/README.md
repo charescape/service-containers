@@ -26,8 +26,10 @@ sv restart php-fpm
 
 注意事项：
 
-- `session.save_path` 为 `/wwwdata/php/sessions`；站点文件放 `/wwwdata/www`；
-- named volume 首次创建会拷贝镜像内目录；不要对这两个路径 bind mount 空目录，除非你就是要用宿主机上的站点代码覆盖 `/wwwdata/www`；
+- `session.save_path` 为 `/wwwdata/php/sessions`；
+- 站点代码在 `/my_shared_dir/repos/<站点名>`（宿主机 `/dockerdata/my_shared_dir/repos/`，用 git 管理）。
+- 启动脚本会 `chown -R www-data` 整份 `/my_shared_dir`（含 `.git`，uid 一般为 33）；
+- named volume 首次创建会拷贝镜像内目录；不要对 sessions / run 执行 bind mount 空目录；
 - 另外，最好也不要事先执行 `docker volume create`；
 - `-v vol_wwwdata_php_sessions:/wwwdata/php/sessions` 这种写法是 named volume；
 - volume 不存在时，docker run 会自动创建；
@@ -38,7 +40,7 @@ sv restart php-fpm
 
 ```bash
 docker network create my_shared_net
-mkdir -p /dockerdata/my_shared_dir
+mkdir -p /dockerdata/my_shared_dir/repos
 
 docker run -d \
   --name php8v4 \
@@ -57,7 +59,6 @@ docker run -d \
   --log-opt max-file=3 \
   -v vol_wwwdata_php_sessions:/wwwdata/php/sessions \
   -v vol_wwwdata_php_run:/wwwdata/php/run \
-  -v /dockerdata/php8v4/wwwdata_www:/wwwdata/www \
   -v /dockerdata/my_shared_dir:/my_shared_dir \
   <镜像>
 
