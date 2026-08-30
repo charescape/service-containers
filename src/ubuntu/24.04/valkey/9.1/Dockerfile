@@ -39,6 +39,8 @@ ca-certificates                 \
 wget                            \
 dpkg-dev                        \
 libssl-dev                      \
+libgtest-dev                    \
+libgmock-dev                    \
 \
 \
 && chmod +x /etc/my_init.d/chown-valkey.sh \
