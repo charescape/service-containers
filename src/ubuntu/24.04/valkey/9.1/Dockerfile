@@ -12,6 +12,7 @@ ENV PATH="/usr/local/valkey/bin:${PATH}"
 COPY src/ubuntu/24.04/valkey/9.1/chown-valkey.sh  /etc/my_init.d/
 COPY src/ubuntu/24.04/valkey/9.1/valkey.conf  /usr/local/src/
 COPY src/ubuntu/24.04/valkey/9.1/valkey.run  /usr/local/src/
+COPY src/ubuntu/24.04/valkey/9.1/jemalloc-configure-opts.sh  /usr/local/src/
 
 SHELL ["/bin/bash", "-c"]
 
@@ -52,19 +53,9 @@ libssl-dev                      \
 \
 \
 && cd /usr/local/src/valkey-${VALKEY_VERSION} \
-&& gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)" \
-&& extraJemallocConfigureFlags="--build=${gnuArch}" \
-&& dpkgArch="$(dpkg --print-architecture)" \
-&& case "${dpkgArch##*-}" in \
-     amd64|i386|x32) extraJemallocConfigureFlags="${extraJemallocConfigureFlags} --with-lg-page=12" ;; \
-     *) extraJemallocConfigureFlags="${extraJemallocConfigureFlags} --with-lg-page=16" ;; \
-   esac \
-&& extraJemallocConfigureFlags="${extraJemallocConfigureFlags} --with-lg-hugepage=21" \
-&& grep -F 'cd jemalloc && ./configure ' deps/Makefile \
-&& sed -ri 's!cd jemalloc && ./configure !&'"${extraJemallocConfigureFlags}"' !' deps/Makefile \
-&& grep -F "cd jemalloc && ./configure ${extraJemallocConfigureFlags} " deps/Makefile \
-\
+&& JEMALLOC_CONFIGURE_OPTS="$(sh /usr/local/src/jemalloc-configure-opts.sh)" \
 && make -j$(nproc --all) BUILD_TLS=yes USE_SYSTEMD=no PREFIX=/usr/local/valkey \
+     JEMALLOC_CONFIGURE_OPTS="${JEMALLOC_CONFIGURE_OPTS}" \
 && sleep 3s \
 && make BUILD_TLS=yes USE_SYSTEMD=no PREFIX=/usr/local/valkey install \
 \
