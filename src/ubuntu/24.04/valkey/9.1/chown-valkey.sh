@@ -7,6 +7,10 @@ mkdir -p /wwwdata/valkey/data
 mkdir -p /wwwdata/valkey/run
 mkdir -p /wwwdata/misc
 
+# Existing run volumes are not re-seeded from the image.
+if [ ! -f /wwwdata/valkey/run/valkey.conf ]; then
+  cp /usr/local/valkey/valkey.conf /wwwdata/valkey/run/valkey.conf
+fi
+
 chown -R www-data:www-data /usr/local/valkey/
 chown -R www-data:www-data /wwwdata/
-chown www-data:www-data /etc/valkey.conf

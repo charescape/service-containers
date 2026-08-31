@@ -16,7 +16,7 @@ valkey-cli -s /wwwdata/valkey/run/valkey.sock -a 'yourpass' CONFIG REWRITE
 valkey-cli -s /wwwdata/valkey/run/valkey.sock -a 'yourpass' ping
 ```
 
-`CONFIG REWRITE` 写的是容器内 `/etc/valkey.conf`，不在 named volume 上。`docker rm` 再创建容器后密码会丢，要重新执行上面三步。
+`CONFIG REWRITE` 写入 `/wwwdata/valkey/run/valkey.conf`，随 `vol_wwwdata_valkey_run` 持久。`docker rm` 再创建容器后不必重设密码（除非也删了 run volume）。
 
 之后客户端用 `valkey-cli -h <host> -p 6379 -a 'yourpass'`，或 PHP 等连 `valkey9v1:6379`。
 
@@ -88,4 +88,4 @@ docker restart --timeout 360 valkey9v1
 
 `docker logs` 只有 my_init / runit。Valkey 日志在 `/wwwdata/valkey/run/valkey.log`（随 `vol_wwwdata_valkey_run` 持久）。
 
-`docker rm valkey9v1` 只删容器；data / run volume 里的数据还在。`/etc/valkey.conf`（含 `requirepass`）不在 volume 里，会一起丢掉。
+`docker rm valkey9v1` 只删容器；data / run volume 里的数据还在。`requirepass` 在 `/wwwdata/valkey/run/valkey.conf` 里，跟 run volume 一起留下。
