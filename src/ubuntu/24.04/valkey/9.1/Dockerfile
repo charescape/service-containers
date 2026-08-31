@@ -63,7 +63,7 @@ libgmock-dev                    \
 \
 \
 && cd /usr/local/src \
-&& cp ./valkey.conf /usr/local/valkey/valkey.conf \
+&& cp ./valkey.conf /usr/local/valkey/valkey.conf.default \
 && cp ./valkey.conf /wwwdata/valkey/run/valkey.conf \
 && chown -R www-data:www-data /usr/local/valkey \
 && chown -R www-data:www-data /wwwdata \
