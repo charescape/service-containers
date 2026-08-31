@@ -41,6 +41,7 @@ sv restart mariadb
 ```bash
 docker network inspect my_shared_net >/dev/null 2>&1 || docker network create my_shared_net
 mkdir -p /dockerdata/my_shared_dir
+chown -R www-data:www-data /dockerdata
 
 docker run -d \
   --name mariadb12v3 \
