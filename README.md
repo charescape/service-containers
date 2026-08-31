@@ -1,28 +1,28 @@
-Release
+发布
 -------------
 
-New images use this layout:
+新镜像使用如下目录结构：
 
 ```
 src/<os>/<os_ver>/<service>/<service_ver>/Dockerfile
 src/<os>/<os_ver>/<service>/<service_ver>/VERSION
 ```
 
-`VERSION` is two-part (`1.0`, `1.1`, `2.0`) and is independent per image. From the repo root:
+`VERSION` 为两段式版本号（`1.0`、`1.1`、`2.0`），每个镜像独立维护。在仓库根目录执行：
 
 ```
 npm run major -- ubuntu/24.04/mariadb/12.3
 npm run patch -- ubuntu/24.04/mariadb/12.3
 ```
 
-That runs [`scripts/release.mjs`](scripts/release.mjs): it checks the Dockerfile exists, bumps the image `VERSION` (`patch` is `1.0` → `1.1`; `major` is `1.1` → `2.0`), then uses `np` (`--yolo --no-publish --no-release-draft`) with the same bump type to update `package.json`, commit, tag, and push. The commit message uses the **image** version:
+上述命令会运行 [`scripts/release.mjs`](scripts/release.mjs)：先确认 Dockerfile 存在，再提升镜像 `VERSION`（`patch` 为 `1.0` → `1.1`；`major` 为 `1.1` → `2.0`），然后用相同的 bump 类型调用 `np`（`--yolo --no-publish --no-release-draft`）更新 `package.json`、提交、打 tag 并推送。提交信息使用的是**镜像**版本：
 
 ```
 release ubuntu/24.04/mariadb/12.3 v1.1
 ```
 
-Repo git tags follow `np major` / `np patch` (`v2.0.0`, `v1.11.1`, …) and are independent of the image `VERSION`.
+仓库 git tag 跟随 `np major` / `np patch`（`v2.0.0`、`v1.11.1` 等），与镜像 `VERSION` 相互独立。
 
-[`.github/workflows/release.yml`](.github/workflows/release.yml) builds `src/ubuntu/24.04/mariadb/12.3/Dockerfile` and pushes `ghcr.io/<owner>/docker-images:ubuntu-24.04-mariadb-12.3-v1.1` and `<DOCHUB_USERNAME>/docker-images:ubuntu-24.04-mariadb-12.3-v1.1`. Each release is a new tag.
+[`.github/workflows/release.yml`](.github/workflows/release.yml) 会构建 `src/ubuntu/24.04/mariadb/12.3/Dockerfile`，并推送 `ghcr.io/<owner>/docker-images:ubuntu-24.04-mariadb-12.3-v1.1` 以及 `<DOCHUB_USERNAME>/docker-images:ubuntu-24.04-mariadb-12.3-v1.1`。每次发布对应一个新 tag。
 
-The path after `release` in the commit message must be exactly four segments, followed by `v` plus `X.Y`. Old flat directories (`src/ubuntu24-php84-mysql84`, `src/ubuntu16-mariadb55`) still go through [`.github/workflows/ci.yml`](.github/workflows/ci.yml).
+提交信息中 `release` 之后的路径必须恰好是四段，后面跟 `v` 加 `X.Y`。旧的扁平目录（`src/ubuntu24-php84-mysql84`、`src/ubuntu16-mariadb55`）仍走 [`.github/workflows/ci.yml`](.github/workflows/ci.yml)。
