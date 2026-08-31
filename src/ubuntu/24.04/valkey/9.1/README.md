@@ -12,7 +12,7 @@ valkey-cli -s /wwwdata/valkey/run/valkey.sock ping
 
 ```bash
 valkey-cli -s /wwwdata/valkey/run/valkey.sock CONFIG SET requirepass 'yourpass'
-valkey-cli -s /wwwdata/valkey/run/valkey.sock CONFIG REWRITE
+valkey-cli -s /wwwdata/valkey/run/valkey.sock -a 'yourpass' CONFIG REWRITE
 valkey-cli -s /wwwdata/valkey/run/valkey.sock -a 'yourpass' ping
 ```
 
