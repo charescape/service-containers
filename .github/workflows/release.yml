@@ -67,12 +67,15 @@ jobs:
           fi
 
           TAG=$(printf '%s\n' "$DIR" | tr '/' '-' | tr '[:upper:]' '[:lower:]')
-          IMAGE_ID=$(printf 'ghcr.io/%s/web:%s\n' "${{ github.repository_owner }}" "$TAG" | tr '[:upper:]' '[:lower:]')
+          IMAGE_ID=$(printf 'ghcr.io/%s/docker-images:%s\n' "${{ github.repository_owner }}" "$TAG" | tr '[:upper:]' '[:lower:]')
+          HUB_USER=$(printf '%s\n' "${{ secrets.DOCHUB_USERNAME }}" | tr '[:upper:]' '[:lower:]')
+          DOCKERHUB_IMAGE_ID=$(printf '%s/docker-images:%s\n' "$HUB_USER" "$TAG")
 
           echo "skip=false" >> "$GITHUB_OUTPUT"
           echo "DIR=$DIR" >> "$GITHUB_ENV"
           echo "IMAGE_ID=$IMAGE_ID" >> "$GITHUB_ENV"
-          echo "Building src/${DIR}/Dockerfile as ${IMAGE_ID}"
+          echo "DOCKERHUB_IMAGE_ID=$DOCKERHUB_IMAGE_ID" >> "$GITHUB_ENV"
+          echo "Building src/${DIR}/Dockerfile as ${IMAGE_ID} and ${DOCKERHUB_IMAGE_ID}"
 
       - name: Check OS Env
         if: steps.parse.outputs.skip != 'true'
@@ -85,13 +88,19 @@ jobs:
         if: steps.parse.outputs.skip != 'true'
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
+      - name: Login to Docker Hub
+        if: steps.parse.outputs.skip != 'true'
+        run: echo "${{ secrets.DOCHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCHUB_USERNAME }}" --password-stdin
+
       - name: Build Image
         if: steps.parse.outputs.skip != 'true'
-        run: docker build -f "src/${DIR}/Dockerfile" -t "$IMAGE_ID" .
+        run: docker build -f "src/${DIR}/Dockerfile" -t "$IMAGE_ID" -t "$DOCKERHUB_IMAGE_ID" .
 
       - run: docker image ls
         if: steps.parse.outputs.skip != 'true'
 
       - name: Push Image
         if: steps.parse.outputs.skip != 'true'
-        run: docker push "$IMAGE_ID"
+        run: |
+          docker push "$IMAGE_ID"
+          docker push "$DOCKERHUB_IMAGE_ID"
