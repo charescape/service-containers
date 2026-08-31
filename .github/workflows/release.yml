@@ -34,24 +34,24 @@ jobs:
               }
             }
           }')
-          DIR=$(printf '%s\n' "$REST" | awk '{print $1}')
+          SRC_PATH=$(printf '%s\n' "$REST" | awk '{print $1}')
           VER=$(printf '%s\n' "$REST" | awk '{print $2}')
 
-          if [ -z "$DIR" ]; then
+          if [ -z "$SRC_PATH" ]; then
             echo "No release token found; skip"
             echo "skip=true" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
-          if ! printf '%s\n' "$DIR" | grep -qE '^[a-zA-Z0-9._-]+/[a-zA-Z0-9._-]+/[a-zA-Z0-9._-]+/[a-zA-Z0-9._-]+$'; then
-            echo "Not a four-segment path ($DIR); skip"
+          if ! printf '%s\n' "$SRC_PATH" | grep -qE '^[a-zA-Z0-9._-]+/[a-zA-Z0-9._-]+/[a-zA-Z0-9._-]+/[a-zA-Z0-9._-]+$'; then
+            echo "Not a four-segment path ($SRC_PATH); skip"
             echo "skip=true" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
-          case "/$DIR/" in
+          case "/$SRC_PATH/" in
             */./*|*/../*)
-              echo "Invalid path segment in $DIR"
+              echo "Invalid path segment in $SRC_PATH"
               exit 1
               ;;
           esac
@@ -61,21 +61,21 @@ jobs:
             exit 1
           fi
 
-          if [ ! -f "src/${DIR}/Dockerfile" ]; then
-            echo "Missing src/${DIR}/Dockerfile"
+          if [ ! -f "src/${SRC_PATH}/Dockerfile" ]; then
+            echo "Missing src/${SRC_PATH}/Dockerfile"
             exit 1
           fi
 
-          TAG=$(printf '%s\n' "$DIR" | tr '/' '-' | tr '[:upper:]' '[:lower:]')
-          IMAGE_ID=$(printf 'ghcr.io/%s/docker-images:%s\n' "${{ github.repository_owner }}" "$TAG" | tr '[:upper:]' '[:lower:]')
+          IMAGE_TAG=$(printf '%s\n' "$SRC_PATH" | tr '/' '-' | tr '[:upper:]' '[:lower:]')
+          GHCR_IMAGE_ID=$(printf 'ghcr.io/%s/docker-images:%s\n' "${{ github.repository_owner }}" "$IMAGE_TAG" | tr '[:upper:]' '[:lower:]')
           DOCKERHUB_USER=$(printf '%s\n' "${{ secrets.DOCHUB_USERNAME }}" | tr '[:upper:]' '[:lower:]')
-          DOCKERHUB_IMAGE_ID=$(printf '%s/docker-images:%s\n' "$DOCKERHUB_USER" "$TAG")
+          DOCKERHUB_IMAGE_ID=$(printf '%s/docker-images:%s\n' "$DOCKERHUB_USER" "$IMAGE_TAG")
 
           echo "skip=false" >> "$GITHUB_OUTPUT"
-          echo "DIR=$DIR" >> "$GITHUB_ENV"
-          echo "IMAGE_ID=$IMAGE_ID" >> "$GITHUB_ENV"
+          echo "SRC_PATH=$SRC_PATH" >> "$GITHUB_ENV"
+          echo "GHCR_IMAGE_ID=$GHCR_IMAGE_ID" >> "$GITHUB_ENV"
           echo "DOCKERHUB_IMAGE_ID=$DOCKERHUB_IMAGE_ID" >> "$GITHUB_ENV"
-          echo "Building src/${DIR}/Dockerfile as ${IMAGE_ID} and ${DOCKERHUB_IMAGE_ID}"
+          echo "Building src/${SRC_PATH}/Dockerfile as ${GHCR_IMAGE_ID} and ${DOCKERHUB_IMAGE_ID}"
 
       - name: Check OS Env
         if: steps.parse.outputs.skip != 'true'
@@ -84,7 +84,7 @@ jobs:
           cat /proc/cpuinfo
           free -m
 
-      - name: Login to ghcr
+      - name: Login to GHCR
         if: steps.parse.outputs.skip != 'true'
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
@@ -94,13 +94,13 @@ jobs:
 
       - name: Build Image
         if: steps.parse.outputs.skip != 'true'
-        run: docker build -f "src/${DIR}/Dockerfile" -t "$IMAGE_ID" -t "$DOCKERHUB_IMAGE_ID" .
+        run: docker build -f "src/${SRC_PATH}/Dockerfile" -t "$GHCR_IMAGE_ID" -t "$DOCKERHUB_IMAGE_ID" .
 
       - run: docker image ls
         if: steps.parse.outputs.skip != 'true'
 
-      - name: Push Image
+      - name: Push Images
         if: steps.parse.outputs.skip != 'true'
         run: |
-          docker push "$IMAGE_ID"
+          docker push "$GHCR_IMAGE_ID"
           docker push "$DOCKERHUB_IMAGE_ID"
