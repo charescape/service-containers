@@ -71,7 +71,7 @@ run(
     'exec',
     '--',
     'np',
-    'minor',
+    bump,
     '--yolo',
     '--no-publish',
     '--no-release-draft',

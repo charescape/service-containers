@@ -15,13 +15,13 @@ npm run major -- ubuntu/24.04/mariadb/12.3
 npm run patch -- ubuntu/24.04/mariadb/12.3
 ```
 
-That runs [`scripts/release.mjs`](scripts/release.mjs): it checks the Dockerfile exists, bumps the image `VERSION` (`patch` is `1.0` → `1.1`; `major` is `1.1` → `2.0`), then uses `np` (`--yolo --no-publish --no-release-draft`) to bump `package.json`, commit, tag, and push. The commit message uses the **image** version:
+That runs [`scripts/release.mjs`](scripts/release.mjs): it checks the Dockerfile exists, bumps the image `VERSION` (`patch` is `1.0` → `1.1`; `major` is `1.1` → `2.0`), then uses `np` (`--yolo --no-publish --no-release-draft`) with the same bump type to update `package.json`, commit, tag, and push. The commit message uses the **image** version:
 
 ```
 release ubuntu/24.04/mariadb/12.3 v1.1
 ```
 
-`np` still always runs `minor` on `package.json`. Those git tags (`v1.11.0`, …) are the repo version only.
+Repo git tags follow `np major` / `np patch` (`v2.0.0`, `v1.11.1`, …) and are independent of the image `VERSION`.
 
 [`.github/workflows/release.yml`](.github/workflows/release.yml) builds `src/ubuntu/24.04/mariadb/12.3/Dockerfile` and pushes `ghcr.io/<owner>/docker-images:ubuntu-24.04-mariadb-12.3-v1.1` and `<DOCHUB_USERNAME>/docker-images:ubuntu-24.04-mariadb-12.3-v1.1`. Each release is a new tag.
 
