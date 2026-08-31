@@ -68,8 +68,8 @@ jobs:
 
           TAG=$(printf '%s\n' "$DIR" | tr '/' '-' | tr '[:upper:]' '[:lower:]')
           IMAGE_ID=$(printf 'ghcr.io/%s/docker-images:%s\n' "${{ github.repository_owner }}" "$TAG" | tr '[:upper:]' '[:lower:]')
-          HUB_USER=$(printf '%s\n' "${{ secrets.DOCHUB_USERNAME }}" | tr '[:upper:]' '[:lower:]')
-          DOCKERHUB_IMAGE_ID=$(printf '%s/docker-images:%s\n' "$HUB_USER" "$TAG")
+          DOCKERHUB_USER=$(printf '%s\n' "${{ secrets.DOCHUB_USERNAME }}" | tr '[:upper:]' '[:lower:]')
+          DOCKERHUB_IMAGE_ID=$(printf '%s/docker-images:%s\n' "$DOCKERHUB_USER" "$TAG")
 
           echo "skip=false" >> "$GITHUB_OUTPUT"
           echo "DIR=$DIR" >> "$GITHUB_ENV"
