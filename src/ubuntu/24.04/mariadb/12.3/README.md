@@ -26,6 +26,8 @@ sv restart mariadb
 
 `--stop-timeout 360` 给 InnoDB 刷盘。未指定时默认 10 秒会被 SIGKILL。`docker stop` / `docker restart` 的 `--timeout 360` 与之相同。
 
+`--security-opt seccomp=unconfined` 放行 `io_uring_*`。Docker 默认 seccomp 会拦住这些 syscall（EPERM），MariaDB 会落到 simulated AIO，`innodb_linux_aio=io_uring` 也就起不来。
+
 注意事项：
 
 - 镜像构建时已在 `/wwwdata/mysql/data` 跑过 `mariadb-install-db`；
@@ -55,6 +57,7 @@ docker run -d \
   -e KILL_ALL_PROCESSES_TIMEOUT=300 \
   --ulimit nofile=65535:65535 \
   --ulimit nproc=65535:65535 \
+  --security-opt seccomp=unconfined \
   --shm-size=1g \
   --log-driver json-file \
   --log-opt max-size=10m \
