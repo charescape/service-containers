@@ -16,7 +16,7 @@ valkey-cli -s /wwwdata/valkey/run/valkey.sock -a 'yourpass' CONFIG REWRITE
 valkey-cli -s /wwwdata/valkey/run/valkey.sock -a 'yourpass' ping
 ```
 
-`CONFIG REWRITE` 写入 `/wwwdata/valkey/run/valkey.conf`，随 `vol_wwwdata_valkey_run` 持久。`docker rm` 再创建容器后不必重设密码（除非也删了 run volume）。
+`CONFIG REWRITE` 写入 `/wwwdata/valkey/run/valkey.conf`，随 `vol_wwwdata_valkey9v1_run` 持久。`docker rm` 再创建容器后不必重设密码（除非也删了 run volume）。
 
 之后客户端用 `valkey-cli -h <host> -p 6379 -a 'yourpass'`，或 PHP 等连 `valkey9v1:6379`。
 
@@ -39,12 +39,12 @@ sv restart valkey
 
 - named volume 首次创建会拷贝镜像内目录；不要对这两个路径 bind mount 空目录；
 - 另外，最好也不要事先执行 `docker volume create`；
-- `-v vol_wwwdata_valkey_data:/wwwdata/valkey/data` 这种写法是 named volume；
+- `-v vol_wwwdata_valkey9v1_data:/wwwdata/valkey/data` 这种写法是 named volume；
 - volume 不存在时，docker run 会自动创建；
-- 如果先 `docker volume create vol_wwwdata_valkey_data`，volume 是空的，再挂上去时**不会**再拷镜像内容（空 datadir 一般仍可用，Valkey 会新建 RDB/AOF）；
+- 如果先 `docker volume create vol_wwwdata_valkey9v1_data`，volume 是空的，再挂上去时**不会**再拷镜像内容（空 datadir 一般仍可用，Valkey 会新建 RDB/AOF）；
 - 所以正确做法就是直接跑这条 docker run，让 Docker 自己建这两个 volume。
 
-确认 volume 是否已由这次启动创建：`docker volume ls | grep vol_wwwdata_valkey`
+确认 volume 是否已由这次启动创建：`docker volume ls | grep vol_wwwdata_valkey9v1`
 
 ```bash
 docker network inspect my_shared_net >/dev/null 2>&1 || docker network create my_shared_net
@@ -66,8 +66,8 @@ docker run -d \
   --log-driver json-file \
   --log-opt max-size=10m \
   --log-opt max-file=3 \
-  -v vol_wwwdata_valkey_data:/wwwdata/valkey/data \
-  -v vol_wwwdata_valkey_run:/wwwdata/valkey/run \
+  -v vol_wwwdata_valkey9v1_data:/wwwdata/valkey/data \
+  -v vol_wwwdata_valkey9v1_run:/wwwdata/valkey/run \
   -v /dockerdata/valkey9v1/wwwdata_misc:/wwwdata/misc \
   -v /dockerdata/my_shared_dir:/my_shared_dir \
   <镜像>
@@ -87,6 +87,6 @@ docker restart --timeout 360 valkey9v1
 
 进入容器用 `docker exec -t -i valkey9v1 bash -l`。不要 `docker run -it … bash`（会跳过 `/sbin/my_init`，runit 和 Valkey 都不会起来）。不要 `docker attach` 再 Ctrl-C（可能把 PID 1 一起停掉）。
 
-`docker logs` 只有 my_init / runit。Valkey 日志在 `/wwwdata/valkey/run/valkey.log`（随 `vol_wwwdata_valkey_run` 持久）。
+`docker logs` 只有 my_init / runit。Valkey 日志在 `/wwwdata/valkey/run/valkey.log`（随 `vol_wwwdata_valkey9v1_run` 持久）。
 
 `docker rm valkey9v1` 只删容器；data / run volume 里的数据还在。`requirepass` 在 `/wwwdata/valkey/run/valkey.conf` 里，跟 run volume 一起留下。

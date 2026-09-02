@@ -45,9 +45,9 @@ sv restart php-fpm
 - 启动脚本会 `chown -R www-data /my_shared_dir`（含 `.git`，uid 一般为 33）；
 - named volume 首次创建会拷贝镜像内目录；不要对 logs / run / sessions 执行 bind mount 空目录；
 - 另外，最好也不要事先执行 `docker volume create`；
-- `-v vol_wwwdata_openresty_logs:/wwwdata/openresty/logs` 这种写法是 named volume；
+- `-v vol_wwwdata_openrestyphp8v4_openresty_logs:/wwwdata/openresty/logs` 这种写法是 named volume；
 - volume 不存在时，docker run 会自动创建；
-- 如果先 `docker volume create vol_wwwdata_openresty_logs`，volume 是空的，再挂上去时**不会**再拷镜像内容（空 logs 目录一般仍可用）；
+- 如果先 `docker volume create vol_wwwdata_openrestyphp8v4_openresty_logs`，volume 是空的，再挂上去时**不会**再拷镜像内容（空 logs 目录一般仍可用）；
 - 所以 logs / run / sessions 这类路径，正确做法就是直接跑这条 docker run，让 Docker 自己建 volume；
 - `nginxconf` 用 bind mount：空目录会盖住镜像里的 placeholder，启动脚本会补一个 `00-placeholder.conf`，否则 `include *.conf` 会让 `nginx -t` 失败；
 - HTTPS `server` 写在 `http.d`，证书放 `ssl/`，例如 `ssl_certificate /wwwdata/openresty/nginxconf/ssl/example.com.crt;`。
@@ -72,7 +72,7 @@ server {
 }
 ```
 
-确认 volume 是否已由这次启动创建：`docker volume ls | grep -E 'vol_wwwdata_openresty|vol_wwwdata_php'`
+确认 volume 是否已由这次启动创建：`docker volume ls | grep vol_wwwdata_openrestyphp8v4`
 
 ```bash
 docker network inspect my_shared_net >/dev/null 2>&1 || docker network create my_shared_net
@@ -96,10 +96,10 @@ docker run -d \
   --log-driver json-file \
   --log-opt max-size=10m \
   --log-opt max-file=3 \
-  -v vol_wwwdata_openresty_logs:/wwwdata/openresty/logs \
-  -v vol_wwwdata_openresty_run:/wwwdata/openresty/run \
-  -v vol_wwwdata_php_sessions:/wwwdata/php/sessions \
-  -v vol_wwwdata_php_run:/wwwdata/php/run \
+  -v vol_wwwdata_openrestyphp8v4_openresty_logs:/wwwdata/openresty/logs \
+  -v vol_wwwdata_openrestyphp8v4_openresty_run:/wwwdata/openresty/run \
+  -v vol_wwwdata_openrestyphp8v4_php_sessions:/wwwdata/php/sessions \
+  -v vol_wwwdata_openrestyphp8v4_php_run:/wwwdata/php/run \
   -v /dockerdata/openrestyphp8v4/nginxconf:/wwwdata/openresty/nginxconf \
   -v /dockerdata/openrestyphp8v4/wwwdata_misc:/wwwdata/misc \
   -v /dockerdata/my_shared_dir:/my_shared_dir \
