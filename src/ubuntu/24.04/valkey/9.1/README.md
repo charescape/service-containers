@@ -90,3 +90,4 @@ docker restart --timeout 360 valkey9v1
 `docker logs` 只有 my_init / runit。Valkey 日志在 `/wwwdata/valkey/run/valkey.log`（随 `vol_wwwdata_valkey9v1_run` 持久）。
 
 `docker rm valkey9v1` 只删容器；data / run volume 里的数据还在。`requirepass` 在 `/wwwdata/valkey/run/valkey.conf` 里，跟 run volume 一起留下。
+
