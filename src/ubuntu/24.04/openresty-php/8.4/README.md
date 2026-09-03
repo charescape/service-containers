@@ -78,7 +78,8 @@ server {
 docker network inspect my_shared_net >/dev/null 2>&1 || docker network create my_shared_net
 mkdir -p /dockerdata/my_shared_dir/repos
 mkdir -p /dockerdata/openrestyphp8v4/nginxconf
-chown -R www-data:www-data /dockerdata
+chown -R www-data:www-data /dockerdata/my_shared_dir
+chown -R www-data:www-data /dockerdata/openrestyphp8v4
 
 docker run -d \
   --name openrestyphp8v4 \
