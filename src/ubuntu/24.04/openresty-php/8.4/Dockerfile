@@ -13,6 +13,10 @@ ENV PHP_VERSION="8.4.25"
 ENV PHP_HASH="5cde1da976b728fa09e6b549a4c8afcd0c180337028dacf34f73b11be50253db"
 ENV COMPOSER_VERSION="2.10.3"
 ENV COMPOSER_HASH="7a2d379d5b8ffdaa028580ef26494c36d2feef4b178d3dd1473a4dbc5e17c8d6"
+ENV NODE_VERSION="24"
+ENV NODE_VERSION_OLD="22"
+ENV NVM_DIR="/root/.nvm"
+ENV BASH_ENV="${HOME}/.bash_env"
 ENV KILL_PROCESS_TIMEOUT=60
 ENV KILL_ALL_PROCESSES_TIMEOUT=60
 ENV PATH="/usr/local/openresty/nginx/sbin:/usr/local/php/bin:/usr/local/php/sbin:${PATH}"
@@ -28,10 +32,9 @@ COPY src/ubuntu/24.04/openresty-php/8.4/php-fpm.run  /usr/local/src/
 COPY src/ubuntu/24.04/openresty-php/8.4/nginxconf/http.d/00-placeholder.conf  /wwwdata/openresty/nginxconf/http.d/
 COPY src/ubuntu/24.04/openresty-php/8.4/nginxconf/rtmp.d/00-placeholder.conf  /wwwdata/openresty/nginxconf/rtmp.d/
 
-SHELL ["/bin/bash", "-c"]
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 RUN set -eux \
-&& set -o pipefail \
 && export DEBIAN_FRONTEND=noninteractive \
 \
 && free -m            \
@@ -63,6 +66,7 @@ wget                            \
 curl                            \
 git                             \
 unzip                           \
+xz-utils                        \
 perl                            \
 re2c                            \
 bison                           \
@@ -287,6 +291,20 @@ libexpat1-dev                   \
 && cp /usr/local/src/php-fpm.run /etc/service/php-fpm/run \
 && chmod +x /etc/service/php-fpm/run \
 \
+&& touch "${BASH_ENV}" \
+&& echo '. "${BASH_ENV}"' >> ~/.bashrc \
+&& NVM_VERSION="$(curl -fsSLI -o /dev/null -w '%{url_effective}' https://github.com/nvm-sh/nvm/releases/latest)" \
+&& NVM_VERSION="${NVM_VERSION##*/}" \
+&& curl -o- "https://raw.githubusercontent.com/nvm-sh/nvm/${NVM_VERSION}/install.sh" | PROFILE="${BASH_ENV}" bash \
+&& . "${NVM_DIR}/nvm.sh" \
+&& nvm install "${NODE_VERSION_OLD}" \
+&& nvm install "${NODE_VERSION}" \
+&& command -v nvm \
+&& nvm --version \
+&& node -v \
+&& npm -v \
+&& rm -rf "${NVM_DIR}/.cache" \
+\
 && apt -y autoremove \
 && apt -y clean \
 && rm -rf /var/lib/apt/lists/* \
@@ -303,6 +321,7 @@ libexpat1-dev                   \
 \
 && du -h --max-depth=2 /usr/local/openresty | sort -hr \
 && du -h --max-depth=2 /usr/local/php | sort -hr \
+&& du -h --max-depth=2 /root/.nvm | sort -hr \
 && du -h --max-depth=2 /wwwdata | sort -hr \
 && rm -rf /usr/local/src/*
 
