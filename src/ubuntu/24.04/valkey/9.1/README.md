@@ -31,7 +31,27 @@ valkey-cli -h <host> -p 6379 --user vklocal -a vklocal123 -n 11 ping
 
 ### 修改密码
 
-上表密码是镜像默认值，部署后应立刻改掉。只有 `vkadmin` 能执行 `ACL`。`resetpass` 清掉旧密码再 `>` 设新密码（不要省略 `resetpass`，否则是追加而不是替换）。shell 里 `>` 必须加引号，否则会被当成重定向。
+上表密码是镜像默认值，部署后应立刻改掉。
+
+#### 方法一：改 `users.acl` 再重启（推荐）
+
+启动时会加载 `aclfile`。只改密码字段，其余规则（`~*`、`&*`、`+@all`、`db=`）不要动。
+
+- 初始文件是明文 `>vkprod123`：把 `>` 后面换成新密码。
+- 若已经跑过 `ACL SAVE`，密码会变成 `#` + 64 位 SHA-256。把整段 `#...` **换成** `>新密码`（不要追加，否则新旧密码都有效）。
+
+```bash
+# 例如把 vkprod 的 >vkprod123 改成 >new-vkprod-pass，保存后：
+sv restart valkey
+```
+
+不要 `valkey-cli shutdown`（runit 约 1 秒会再拉起）。语法错了会起不来，修好文件再 `sv start valkey`。
+
+服务还在跑时，改完文件不要立刻 `ACL SAVE`：SAVE 会把内存里的旧 ACL 写回文件，把修改盖掉。要热加载（不重启）可用 `ACL LOAD`（仍需 vkadmin）。
+
+#### 方法二：运行时 `ACL SETUSER`
+
+只有 `vkadmin` 能执行 `ACL`。`resetpass` 清掉旧密码再 `>` 设新密码（不要省略 `resetpass`，否则是追加而不是替换）。shell 里 `>` 必须加引号，否则会被当成重定向。
 
 ```bash
 valkey-cli -s /wwwdata/valkey/run/valkey.sock --user vkadmin -a vkadmin123 ACL SETUSER vkprod resetpass '>new-vkprod-pass'
@@ -41,7 +61,7 @@ valkey-cli -s /wwwdata/valkey/run/valkey.sock --user vkadmin -a vkadmin123 ACL S
 valkey-cli -s /wwwdata/valkey/run/valkey.sock --user vkadmin -a 'new-vkadmin-pass' ACL SAVE
 ```
 
-`ACL SAVE` 把哈希后的密码写入 `/wwwdata/valkey/run/users.acl`，随 `vol_wwwdata_valkey9v1_run` 持久。已认证的连接不受影响；之后新连接用新密码。
+`ACL SAVE` 把哈希后的密码写入 `/wwwdata/valkey/run/users.acl`。之后再按方法一改文件时，把 `#哈希` 换成 `>新密码`。已认证的连接不受影响；之后新连接用新密码。
 
 ---
 
