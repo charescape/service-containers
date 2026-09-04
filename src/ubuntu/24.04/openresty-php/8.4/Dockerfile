@@ -63,6 +63,7 @@ wget                            \
 curl                            \
 git                             \
 unzip                           \
+p7zip-full                      \
 perl                            \
 re2c                            \
 bison                           \
