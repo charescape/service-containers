@@ -29,7 +29,6 @@ RUN set -eux \
 && chown -R www-data:www-data /wwwdata \
 \
 && apt -yq --no-install-recommends install tzdata \
-sudo                            \
 build-essential                 \
 cmake                           \
 pkg-config                      \
