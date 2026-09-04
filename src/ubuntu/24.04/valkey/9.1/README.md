@@ -22,6 +22,18 @@ valkey-cli -s /wwwdata/valkey/run/valkey.sock --user vkadmin -a vkadmin123 ping
 
 环境用户为 `+@all -@admin`（无 CONFIG / ACL / SHUTDOWN）。连接默认落在 DB 0。`vklocal` / `vktesting` 没有 DB 0，AUTH 后必须 `SELECT` 到自己的库，否则读写会 `NOPERM`。
 
+上表密码是镜像默认值，部署后应立刻改掉。只有 `vkadmin` 能执行 `ACL`。`resetpass` 清掉旧密码再 `>` 设新密码（不要省略 `resetpass`，否则是追加而不是替换）。shell 里 `>` 必须加引号，否则会被当成重定向。
+
+```bash
+valkey-cli -s /wwwdata/valkey/run/valkey.sock --user vkadmin -a vkadmin123 ACL SETUSER vkprod resetpass '>new-vkprod-pass'
+valkey-cli -s /wwwdata/valkey/run/valkey.sock --user vkadmin -a vkadmin123 ACL SETUSER vklocal resetpass '>new-vklocal-pass'
+valkey-cli -s /wwwdata/valkey/run/valkey.sock --user vkadmin -a vkadmin123 ACL SETUSER vktesting resetpass '>new-vktesting-pass'
+valkey-cli -s /wwwdata/valkey/run/valkey.sock --user vkadmin -a vkadmin123 ACL SETUSER vkadmin resetpass '>new-vkadmin-pass'
+valkey-cli -s /wwwdata/valkey/run/valkey.sock --user vkadmin -a 'new-vkadmin-pass' ACL SAVE
+```
+
+`ACL SAVE` 把哈希后的密码写入 `/wwwdata/valkey/run/users.acl`，随 `vol_wwwdata_valkey9v1_run` 持久。已认证的连接不受影响；之后新连接用新密码。
+
 ```bash
 valkey-cli -h <host> -p 6379 --user vkprod -a vkprod123 ping
 valkey-cli -h <host> -p 6379 --user vklocal -a vklocal123 -n 11 ping
