@@ -310,5 +310,3 @@ libexpat1-dev                   \
 EXPOSE 80 443
 
 CMD ["/sbin/my_init"]
-
-
