@@ -1,24 +1,31 @@
 Ubuntu 24.04 + Valkey 9.1
 
-容器启动后，runit 会拉起 `/etc/service/valkey/run`。进程以 `www-data` 运行，监听 `0.0.0.0:6379`。无 `requirepass` 时 `protected-mode` 只接受本机 TCP 和 Unix socket。镜像 `PATH` 已包含 `/usr/local/valkey/bin`：
+容器启动后，runit 会拉起 `/etc/service/valkey/run`。
+进程以 `www-data` 运行，监听 `0.0.0.0:6379`。
+ACL 在 `/wwwdata/valkey/run/users.acl`：`default` 已关闭，必须 `AUTH`。
+32 个逻辑库（0–31）。镜像 `PATH` 已包含 `/usr/local/valkey/bin`：
 
 ```bash
 valkey-server --version
 valkey-cli --version
-valkey-cli -s /wwwdata/valkey/run/valkey.sock ping
+valkey-cli -s /wwwdata/valkey/run/valkey.sock --user vkadmin -a vkadmin123 ping
 ```
 
-初始化必须走 Unix socket。设密码后远程 TCP 才能连（设完密码后 protected-mode 不再拦非本机连接）：
+用户与库：
+
+| 用户 | 密码 | 可访问的库 |
+|------|------|------------|
+| vkadmin | vkadmin123 | 0–31（全部命令） |
+| vkprod | vkprod123 | 0–10 |
+| vklocal | vklocal123 | 11–20 |
+| vktesting | vktesting123 | 21–30 |
+
+环境用户为 `+@all -@admin`（无 CONFIG / ACL / SHUTDOWN）。连接默认落在 DB 0。`vklocal` / `vktesting` 没有 DB 0，AUTH 后必须 `SELECT` 到自己的库，否则读写会 `NOPERM`。
 
 ```bash
-valkey-cli -s /wwwdata/valkey/run/valkey.sock CONFIG SET requirepass 'yourpass'
-valkey-cli -s /wwwdata/valkey/run/valkey.sock -a 'yourpass' CONFIG REWRITE
-valkey-cli -s /wwwdata/valkey/run/valkey.sock -a 'yourpass' ping
+valkey-cli -h <host> -p 6379 --user vkprod -a vkprod123 ping
+valkey-cli -h <host> -p 6379 --user vklocal -a vklocal123 -n 11 ping
 ```
-
-`CONFIG REWRITE` 写入 `/wwwdata/valkey/run/valkey.conf`，随 `vol_wwwdata_valkey9v1_run` 持久。`docker rm` 再创建容器后不必重设密码（除非也删了 run volume）。
-
-之后客户端用 `valkey-cli -h <host> -p 6379 -a 'yourpass'`，或 PHP 等连 `valkey9v1:6379`。
 
 ## 容器内（只停/启 Valkey，容器继续跑）
 
@@ -87,7 +94,4 @@ docker restart --timeout 360 valkey9v1
 
 进入容器用 `docker exec -t -i valkey9v1 bash -l`。不要 `docker run -it … bash`（会跳过 `/sbin/my_init`，runit 和 Valkey 都不会起来）。不要 `docker attach` 再 Ctrl-C（可能把 PID 1 一起停掉）。
 
-`docker logs` 只有 my_init / runit。Valkey 日志在 `/wwwdata/valkey/run/valkey.log`（随 `vol_wwwdata_valkey9v1_run` 持久）。
-
-`docker rm valkey9v1` 只删容器；data / run volume 里的数据还在。`requirepass` 在 `/wwwdata/valkey/run/valkey.conf` 里，跟 run volume 一起留下。
-
+`docker logs` 只有 my_init / runit。Valkey 日志在 `/wwwdata/valkey/run/valkey.log`。
