@@ -31,13 +31,15 @@ sv restart mariadb
 
 ## 备份
 
-自动备份默认关闭，启用 `* * * * * /usr/local/sbin/mariadb-backup.sh --scheduled` 心跳后，每天 03:00（`TZ=Asia/Shanghai`）用 `mariadb-dump` 做全库逻辑备份（含 `mysql` 账号/权限、routines/events/triggers），zstd 压缩后写到 `/wwwdata/misc/backup/all-databases-YYYYMMDD-HHMMSS.sql.zst`，按 mtime 保留 30 天。失败只写日志，不告警。日志在 `/wwwdata/misc/backup/backup.log`。
+自动备份默认关闭，启用 `* * * * * /usr/local/sbin/mariadb-backup.sh --scheduled` 心跳后，每天按 `MARIADB_BACKUP_HOUR` / `MARIADB_BACKUP_MINUTE`（`TZ=Asia/Shanghai`，默认 3 点 0 分）用 `mariadb-dump` 做全库逻辑备份（含 `mysql` 账号/权限、routines/events/triggers），zstd 压缩后写到 `/wwwdata/misc/backup/all-databases-YYYYMMDD-HHMMSS.sql.zst`，按 mtime 保留 30 天。失败只写日志，不告警。日志在 `/wwwdata/misc/backup/backup.log`。
 
 **必须 bind-mount `/wwwdata/misc`**（下面 `docker run` 已有）：配置文件和备份都在这，否则会写进容器可写层。
 
 配置在 `/wwwdata/misc/mariadb12v3.conf`（KEY=VALUE）。启动时若该文件不存在，会从 `/etc/mariadb12v3.conf.default` 拷一份。
 
 - `MARIADB_BACKUP_ENABLE` 默认 `0`；`1` / `true` / `yes` / `on` 为开启
+- `MARIADB_BACKUP_HOUR` 默认 `3`（0–23，写 `3` 不要写 `03`）
+- `MARIADB_BACKUP_MINUTE` 默认 `0`（0–59，写 `0` 不要写 `00`）
 - `MARIADB_BACKUP_KEEP_DAYS` 默认 `30`
 - `MARIADB_BACKUP_DIR` 默认 `/wwwdata/misc/backup`
 

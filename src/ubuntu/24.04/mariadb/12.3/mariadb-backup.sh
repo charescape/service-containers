@@ -3,19 +3,36 @@ set -euo pipefail
 
 # Logical dump via Unix socket (my.cnf [mariadb-dump] defaults to TCP).
 # Settings from /wwwdata/misc/mariadb12v3.conf (MARIADB_BACKUP_*).
-# --scheduled: heartbeat from cron; only 03:00 (TZ) may dump; ENABLE off skips.
+# --scheduled: heartbeat from cron; HOUR/MINUTE (TZ) may dump; ENABLE off skips.
 # Manual run (no --scheduled) does not check time or ENABLE.
 
 scheduled=0
 if [ "${1:-}" = "--scheduled" ]; then
   scheduled=1
-  if [ "$(date +%H:%M)" != "03:00" ]; then
-    exit 0
-  fi
 fi
 
 # shellcheck disable=SC1091
 . /usr/local/sbin/mariadb-backup-conf.sh
+
+if [ "$scheduled" -eq 1 ]; then
+  case "${MARIADB_BACKUP_HOUR}" in
+    0 | [1-9] | 1[0-9] | 2[0-3]) ;;
+    *)
+      echo "mariadb-backup: invalid MARIADB_BACKUP_HOUR=${MARIADB_BACKUP_HOUR}" >&2
+      exit 1
+      ;;
+  esac
+  case "${MARIADB_BACKUP_MINUTE}" in
+    0 | [1-9] | [1-5][0-9]) ;;
+    *)
+      echo "mariadb-backup: invalid MARIADB_BACKUP_MINUTE=${MARIADB_BACKUP_MINUTE}" >&2
+      exit 1
+      ;;
+  esac
+  if [ "$(date +%H:%M)" != "$(printf '%02d:%02d' "$MARIADB_BACKUP_HOUR" "$MARIADB_BACKUP_MINUTE")" ]; then
+    exit 0
+  fi
+fi
 
 MARIADB="${MARIADB:-/usr/local/mysql/bin/mariadb}"
 MARIADB_DUMP="${MARIADB_DUMP:-/usr/local/mysql/bin/mariadb-dump}"
