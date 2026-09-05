@@ -31,24 +31,24 @@ sv restart mariadb
 
 ## 自动备份
 
-默认每天 03:00（`TZ=Asia/Shanghai`）用 `mariadb-dump` 做全库逻辑备份（含 `mysql` 账号/权限、routines/events/triggers），zstd 压缩后写到 `/wwwdata/misc/backup/all-databases-YYYYMMDD-HHMMSS.sql.zst`，按 mtime 保留 30 天。失败只写日志，不告警。
+默认关闭。开启后每天 03:00（`TZ=Asia/Shanghai`）用 `mariadb-dump` 做全库逻辑备份（含 `mysql` 账号/权限、routines/events/triggers），zstd 压缩后写到 `/wwwdata/misc/backup/all-databases-YYYYMMDD-HHMMSS.sql.zst`，按 mtime 保留 30 天。失败只写日志，不告警。
 
-**必须 bind-mount `/wwwdata/misc`**（下面 `docker run` 已有），否则备份会写进容器可写层。日志在 `/wwwdata/misc/backup/backup.log`，同时进 syslog / `docker logs`。
+开启时 **必须 bind-mount `/wwwdata/misc`**（下面 `docker run` 已有），否则备份会写进容器可写层。日志在 `/wwwdata/misc/backup/backup.log`，同时进 syslog / `docker logs`。
 
 环境变量：
 
-- `MARIADB_BACKUP_ENABLE` 默认 `1`；设为 `0` / `false` / `no` / `off` 后重启容器即停
+- `MARIADB_BACKUP_ENABLE` 默认 `0`；设为 `1` / `true` / `yes` / `on` 后重启容器即开
 - `MARIADB_BACKUP_CRON` 默认 `0 3 * * *`
 - `MARIADB_BACKUP_KEEP_DAYS` 默认 `30`
 - `MARIADB_BACKUP_DIR` 默认 `/wwwdata/misc/backup`
 
-手动跑一次：
+手动跑一次（不依赖 cron / `ENABLE`）：
 
 ```bash
 docker exec mariadb12v3 /usr/local/sbin/mariadb-backup.sh
 ```
 
-关闭自动备份：`docker run` 加 `-e MARIADB_BACKUP_ENABLE=0`，已有容器改环境变量后要重启。
+开启自动备份：`docker run` 加 `-e MARIADB_BACKUP_ENABLE=1`，已有容器改环境变量后要重启。
 
 恢复会覆盖同名库，先停业务再做：
 

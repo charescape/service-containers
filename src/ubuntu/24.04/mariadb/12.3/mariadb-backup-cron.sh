@@ -11,7 +11,7 @@ if [ -f /etc/container_environment.sh ]; then
 fi
 
 CRON_FILE="/etc/cron.d/mariadb-backup"
-ENABLE="${MARIADB_BACKUP_ENABLE:-1}"
+ENABLE="${MARIADB_BACKUP_ENABLE:-0}"
 SCHEDULE="${MARIADB_BACKUP_CRON:-0 3 * * *}"
 
 enabled=0
