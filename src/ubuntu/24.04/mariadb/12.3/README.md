@@ -48,7 +48,10 @@ sv restart mariadb
 docker exec mariadb12v3 /usr/local/sbin/mariadb-backup.sh
 ```
 
-开启自动备份：`docker run` 加 `-e MARIADB_BACKUP_ENABLE=1`，已有容器改环境变量后要重启。
+开启自动备份：
+
+- 首次执行 `docker run ...`：加上 `-e MARIADB_BACKUP_ENABLE=1`
+- 已执行 `docker run ... -e MARIADB_BACKUP_ENABLE=0 ...` 的容器：Docker 改不了已创建容器的环境变量，只 `docker restart` 不够。先 `docker stop --timeout 360 mariadb12v3` 再 `docker rm mariadb12v3`，然后按原来的 volume/`-v` 重新 `run`，并把 `-e MARIADB_BACKUP_ENABLE=0` 改成 `-e MARIADB_BACKUP_ENABLE=1`（datadir 还在）
 
 恢复会覆盖同名库，先停业务再做：
 
