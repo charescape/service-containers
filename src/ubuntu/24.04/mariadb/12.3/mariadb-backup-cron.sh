@@ -2,7 +2,7 @@
 
 set -eu
 
-# Install or remove /etc/cron.d/mariadb-backup from /wwwdata/misc/container.conf.
+# Install or remove /etc/cron.d/mariadb-backup from /wwwdata/misc/mariadb12v3.conf.
 # my_init runs this after chown-mysql.sh (lexicographic order).
 
 # shellcheck disable=SC1091

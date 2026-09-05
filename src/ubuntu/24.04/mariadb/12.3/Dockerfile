@@ -11,7 +11,7 @@ COPY src/ubuntu/24.04/mariadb/12.3/chown-mysql.sh  /etc/my_init.d/
 COPY src/ubuntu/24.04/mariadb/12.3/mariadb-backup-cron.sh  /etc/my_init.d/
 COPY src/ubuntu/24.04/mariadb/12.3/mariadb-backup.sh  /usr/local/sbin/mariadb-backup.sh
 COPY src/ubuntu/24.04/mariadb/12.3/mariadb-backup-conf.sh  /usr/local/sbin/mariadb-backup-conf.sh
-COPY src/ubuntu/24.04/mariadb/12.3/container.conf  /usr/local/src/
+COPY src/ubuntu/24.04/mariadb/12.3/mariadb12v3.conf  /usr/local/src/
 COPY src/ubuntu/24.04/mariadb/12.3/my.cnf  /usr/local/src/
 COPY src/ubuntu/24.04/mariadb/12.3/mariadb.run  /usr/local/src/
 
@@ -124,8 +124,8 @@ libcrack2-dev                   \
 \
 \
 && cp       ./my.cnf          /etc/my.cnf \
-&& cp       ./container.conf  /etc/container.conf.default \
-&& cp       ./container.conf  /wwwdata/misc/container.conf \
+&& cp       ./mariadb12v3.conf  /etc/mariadb12v3.conf.default \
+&& cp       ./mariadb12v3.conf  /wwwdata/misc/mariadb12v3.conf \
 && chown -R www-data:www-data /etc/my.cnf \
 && chown -R www-data:www-data /usr/local/mysql \
 && chown -R www-data:www-data /wwwdata \

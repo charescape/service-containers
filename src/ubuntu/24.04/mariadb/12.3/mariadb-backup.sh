@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Logical dump via Unix socket (my.cnf [mariadb-dump] defaults to TCP).
-# Settings from /wwwdata/misc/container.conf (MARIADB_BACKUP_*).
+# Settings from /wwwdata/misc/mariadb12v3.conf (MARIADB_BACKUP_*).
 # Manual run does not check MARIADB_BACKUP_ENABLE.
 
 # shellcheck disable=SC1091

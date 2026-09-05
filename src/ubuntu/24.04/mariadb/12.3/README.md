@@ -35,7 +35,7 @@ sv restart mariadb
 
 **必须 bind-mount `/wwwdata/misc`**（下面 `docker run` 已有）：配置文件和备份都在这，否则会写进容器可写层。日志在 `/wwwdata/misc/backup/backup.log`，同时进 syslog / `docker logs`。
 
-配置在 `/wwwdata/misc/container.conf`（KEY=VALUE）。启动时若该文件不存在，会从 `/etc/container.conf.default` 拷一份。
+配置在 `/wwwdata/misc/mariadb12v3.conf`（KEY=VALUE）。启动时若该文件不存在，会从 `/etc/mariadb12v3.conf.default` 拷一份。
 
 - `MARIADB_BACKUP_ENABLE` 默认 `0`；`1` / `true` / `yes` / `on` 为开启
 - `MARIADB_BACKUP_CRON` 默认 `"0 3 * * *"`（值里有空格，必须加引号）
@@ -50,7 +50,7 @@ sv restart mariadb
 docker exec mariadb12v3 /usr/local/sbin/mariadb-backup.sh
 ```
 
-开启自动备份：编辑 `/wwwdata/misc/container.conf` 把 `MARIADB_BACKUP_ENABLE=1`，然后 `docker restart --timeout 360 mariadb12v3`。
+开启自动备份：编辑 `/wwwdata/misc/mariadb12v3.conf` 把 `MARIADB_BACKUP_ENABLE=1`，然后 `docker restart --timeout 360 mariadb12v3`。
 
 恢复会覆盖同名库，先停业务再做：
 

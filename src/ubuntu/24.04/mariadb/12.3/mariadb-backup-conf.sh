@@ -1,9 +1,9 @@
 #!/bin/sh
 
-# Load MARIADB_BACKUP_* from /wwwdata/misc/container.conf (KEY=VALUE).
+# Load MARIADB_BACKUP_* from /wwwdata/misc/mariadb12v3.conf (KEY=VALUE).
 # Source this file. Does not source the conf file.
 
-CONTAINER_CONF="${CONTAINER_CONF:-/wwwdata/misc/container.conf}"
+CONTAINER_CONF="${CONTAINER_CONF:-/wwwdata/misc/mariadb12v3.conf}"
 
 MARIADB_BACKUP_ENABLE=0
 MARIADB_BACKUP_CRON="0 3 * * *"
