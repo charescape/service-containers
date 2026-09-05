@@ -5,9 +5,9 @@ Ubuntu 24.04 + MariaDB 12.3
 ```bash
 /usr/local/mysql/bin/mariadb -h localhost --protocol=socket -u root -e "CREATE USER 'root'@'%' IDENTIFIED BY 'root12345';"
 /usr/local/mysql/bin/mariadb -h localhost --protocol=socket -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;"
-/usr/local/mysql/bin/mariadb -h localhost --protocol=socket -u root -e "CREATE DATABASE test0db;"
-/usr/local/mysql/bin/mariadb -h localhost --protocol=socket -u root -e "CREATE DATABASE test1db;"
-/usr/local/mysql/bin/mariadb -h localhost --protocol=socket -u root -e "CREATE DATABASE test2db;"
+/usr/local/mysql/bin/mariadb -h localhost --protocol=socket -u root -e "CREATE DATABASE mydevdb;"
+/usr/local/mysql/bin/mariadb -h localhost --protocol=socket -u root -e "CREATE DATABASE myproddb;"
+/usr/local/mysql/bin/mariadb -h localhost --protocol=socket -u root -e "CREATE DATABASE mytestingdb;"
 /usr/local/mysql/bin/mariadb -h localhost --protocol=socket -u root -e "FLUSH PRIVILEGES;"
 ```
 
