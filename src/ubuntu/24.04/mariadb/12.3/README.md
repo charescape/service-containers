@@ -9,6 +9,13 @@ Ubuntu 24.04 + MariaDB 12.3
 /usr/local/mysql/bin/mariadb -h localhost --protocol=socket -u root -e "CREATE DATABASE mydevdb;"
 /usr/local/mysql/bin/mariadb -h localhost --protocol=socket -u root -e "CREATE DATABASE myproddb;"
 /usr/local/mysql/bin/mariadb -h localhost --protocol=socket -u root -e "CREATE DATABASE mytestingdb;"
+/usr/local/mysql/bin/mariadb -h localhost --protocol=socket -u root -e "CREATE USER 'devuser'@'%' IDENTIFIED BY 'dev12345';"
+/usr/local/mysql/bin/mariadb -h localhost --protocol=socket -u root -e "GRANT ALL PRIVILEGES ON mydevdb.* TO 'devuser'@'%';"
+/usr/local/mysql/bin/mariadb -h localhost --protocol=socket -u root -e "CREATE USER 'produser'@'%' IDENTIFIED BY 'prod12345';"
+/usr/local/mysql/bin/mariadb -h localhost --protocol=socket -u root -e "GRANT ALL PRIVILEGES ON myproddb.* TO 'produser'@'%';"
+/usr/local/mysql/bin/mariadb -h localhost --protocol=socket -u root -e "CREATE USER 'testinguser'@'%' IDENTIFIED BY 'testing12345';"
+/usr/local/mysql/bin/mariadb -h localhost --protocol=socket -u root -e "GRANT ALL PRIVILEGES ON mytestingdb.* TO 'testinguser'@'%';"
+/usr/local/mysql/bin/mariadb -h localhost --protocol=socket -u root -e "FLUSH PRIVILEGES;"
 ```
 
 ## 容器内（只停/启 MariaDB，容器继续跑）
