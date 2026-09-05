@@ -6,7 +6,6 @@
 CONTAINER_CONF="${CONTAINER_CONF:-/wwwdata/misc/mariadb12v3.conf}"
 
 MARIADB_BACKUP_ENABLE=0
-MARIADB_BACKUP_CRON="0 3 * * *"
 MARIADB_BACKUP_KEEP_DAYS=30
 MARIADB_BACKUP_DIR=/wwwdata/misc/backup
 
@@ -24,7 +23,7 @@ if [ -f "$CONTAINER_CONF" ]; then
     key=$(printf '%s' "${trimmed%%=*}" | sed 's/[[:space:]]*$//')
     val="${trimmed#*=}"
     case "$key" in
-      MARIADB_BACKUP_ENABLE | MARIADB_BACKUP_CRON | MARIADB_BACKUP_KEEP_DAYS | MARIADB_BACKUP_DIR) ;;
+      MARIADB_BACKUP_ENABLE | MARIADB_BACKUP_KEEP_DAYS | MARIADB_BACKUP_DIR) ;;
       *) continue ;;
     esac
     case "$val" in
@@ -39,7 +38,6 @@ if [ -f "$CONTAINER_CONF" ]; then
     esac
     case "$key" in
       MARIADB_BACKUP_ENABLE) MARIADB_BACKUP_ENABLE="$val" ;;
-      MARIADB_BACKUP_CRON) MARIADB_BACKUP_CRON="$val" ;;
       MARIADB_BACKUP_KEEP_DAYS) MARIADB_BACKUP_KEEP_DAYS="$val" ;;
       MARIADB_BACKUP_DIR) MARIADB_BACKUP_DIR="$val" ;;
     esac

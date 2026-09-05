@@ -8,7 +8,6 @@ ENV KILL_PROCESS_TIMEOUT=60
 ENV KILL_ALL_PROCESSES_TIMEOUT=60
 
 COPY src/ubuntu/24.04/mariadb/12.3/chown-mysql.sh  /etc/my_init.d/
-COPY src/ubuntu/24.04/mariadb/12.3/mariadb-backup-cron.sh  /etc/my_init.d/
 COPY src/ubuntu/24.04/mariadb/12.3/mariadb-backup.sh  /usr/local/sbin/mariadb-backup.sh
 COPY src/ubuntu/24.04/mariadb/12.3/mariadb-backup-conf.sh  /usr/local/sbin/mariadb-backup-conf.sh
 COPY src/ubuntu/24.04/mariadb/12.3/mariadb12v3.conf  /usr/local/src/
@@ -71,7 +70,6 @@ libcrack2-dev                   \
 \
 \
 && chmod +x /etc/my_init.d/chown-mysql.sh \
-&& chmod +x /etc/my_init.d/mariadb-backup-cron.sh \
 && chmod +x /usr/local/sbin/mariadb-backup.sh \
 && chmod +x /usr/local/sbin/mariadb-backup-conf.sh \
 \

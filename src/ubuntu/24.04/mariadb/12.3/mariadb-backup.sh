@@ -3,7 +3,16 @@ set -euo pipefail
 
 # Logical dump via Unix socket (my.cnf [mariadb-dump] defaults to TCP).
 # Settings from /wwwdata/misc/mariadb12v3.conf (MARIADB_BACKUP_*).
-# Manual run does not check MARIADB_BACKUP_ENABLE.
+# --scheduled: heartbeat from cron; only 03:00 (TZ) may dump; ENABLE off skips.
+# Manual run (no --scheduled) does not check time or ENABLE.
+
+scheduled=0
+if [ "${1:-}" = "--scheduled" ]; then
+  scheduled=1
+  if [ "$(date +%H:%M)" != "03:00" ]; then
+    exit 0
+  fi
+fi
 
 # shellcheck disable=SC1091
 . /usr/local/sbin/mariadb-backup-conf.sh
@@ -15,14 +24,6 @@ MARIADB_BACKUP_DIR="${MARIADB_BACKUP_DIR:-/wwwdata/misc/backup}"
 MARIADB_BACKUP_KEEP_DAYS="${MARIADB_BACKUP_KEEP_DAYS:-30}"
 READY_TIMEOUT="${MARIADB_BACKUP_READY_TIMEOUT:-90}"
 
-LOCK_FILE="/var/lock/mariadb-backup.lock"
-mkdir -p /var/lock
-exec 9>"$LOCK_FILE"
-if ! flock -n 9; then
-  echo "mariadb-backup: another backup is already running" >&2
-  exit 1
-fi
-
 mkdir -p "$MARIADB_BACKUP_DIR"
 LOG="${MARIADB_BACKUP_DIR}/backup.log"
 touch "$LOG"
@@ -31,6 +32,25 @@ chown www-data:www-data "$MARIADB_BACKUP_DIR" "$LOG" || true
 log() {
   echo "$(date '+%Y-%m-%d %H:%M:%S') $*" | tee -a "$LOG"
 }
+
+if [ "$scheduled" -eq 1 ]; then
+  enabled=0
+  case "${MARIADB_BACKUP_ENABLE:-0}" in
+    1|true|TRUE|yes|YES|on|ON) enabled=1 ;;
+  esac
+  if [ "$enabled" -eq 0 ]; then
+    echo "$(date '+%Y-%m-%d %H:%M:%S') backup skipped MARIADB_BACKUP_ENABLE=${MARIADB_BACKUP_ENABLE}" >>"$LOG"
+    exit 0
+  fi
+fi
+
+LOCK_FILE="/var/lock/mariadb-backup.lock"
+mkdir -p /var/lock
+exec 9>"$LOCK_FILE"
+if ! flock -n 9; then
+  echo "mariadb-backup: another backup is already running" >&2
+  exit 1
+fi
 
 case "$MARIADB_BACKUP_KEEP_DAYS" in
   ''|*[!0-9]*)
