@@ -29,6 +29,34 @@ sv start mariadb
 sv restart mariadb
 ```
 
+## 自动备份
+
+默认每天 03:00（`TZ=Asia/Shanghai`）用 `mariadb-dump` 做全库逻辑备份（含 `mysql` 账号/权限、routines/events/triggers），zstd 压缩后写到 `/wwwdata/misc/backup/all-databases-YYYYMMDD-HHMMSS.sql.zst`，按 mtime 保留 30 天。失败只写日志，不告警。
+
+**必须 bind-mount `/wwwdata/misc`**（下面 `docker run` 已有），否则备份会写进容器可写层。日志在 `/wwwdata/misc/backup/backup.log`，同时进 syslog / `docker logs`。
+
+环境变量：
+
+- `MARIADB_BACKUP_ENABLE` 默认 `1`；设为 `0` / `false` / `no` / `off` 后重启容器即停
+- `MARIADB_BACKUP_CRON` 默认 `0 3 * * *`
+- `MARIADB_BACKUP_KEEP_DAYS` 默认 `30`
+- `MARIADB_BACKUP_DIR` 默认 `/wwwdata/misc/backup`
+
+手动跑一次：
+
+```bash
+docker exec mariadb12v3 /usr/local/sbin/mariadb-backup.sh
+```
+
+关闭自动备份：`docker run` 加 `-e MARIADB_BACKUP_ENABLE=0`，已有容器改环境变量后要重启。
+
+恢复会覆盖同名库，先停业务再做：
+
+```bash
+docker exec -t -i mariadb12v3 bash -l
+zstd -d -c /wwwdata/misc/backup/all-databases-YYYYMMDD-HHMMSS.sql.zst | /usr/local/mysql/bin/mariadb -h localhost --protocol=socket -u root
+```
+
 ## 宿主机
 
 `--stop-timeout 360` 给 InnoDB 刷盘。未指定时默认 10 秒会被 SIGKILL。`docker stop` / `docker restart` 的 `--timeout 360` 与之相同。

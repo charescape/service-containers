@@ -6,8 +6,14 @@ ENV TZ="Asia/Shanghai"
 ENV MARIADB_VERSION="12.3.3"
 ENV KILL_PROCESS_TIMEOUT=60
 ENV KILL_ALL_PROCESSES_TIMEOUT=60
+ENV MARIADB_BACKUP_ENABLE=1
+ENV MARIADB_BACKUP_CRON="0 3 * * *"
+ENV MARIADB_BACKUP_KEEP_DAYS=30
+ENV MARIADB_BACKUP_DIR=/wwwdata/misc/backup
 
 COPY src/ubuntu/24.04/mariadb/12.3/chown-mysql.sh  /etc/my_init.d/
+COPY src/ubuntu/24.04/mariadb/12.3/mariadb-backup-cron.sh  /etc/my_init.d/
+COPY src/ubuntu/24.04/mariadb/12.3/mariadb-backup.sh  /usr/local/sbin/mariadb-backup.sh
 COPY src/ubuntu/24.04/mariadb/12.3/my.cnf  /usr/local/src/
 COPY src/ubuntu/24.04/mariadb/12.3/mariadb.run  /usr/local/src/
 
@@ -66,6 +72,8 @@ libcrack2-dev                   \
 \
 \
 && chmod +x /etc/my_init.d/chown-mysql.sh \
+&& chmod +x /etc/my_init.d/mariadb-backup-cron.sh \
+&& chmod +x /usr/local/sbin/mariadb-backup.sh \
 \
 && cd /usr/local/src \
 \
@@ -125,6 +133,8 @@ libcrack2-dev                   \
 && mkdir -p /etc/service/mariadb \
 && cp /usr/local/src/mariadb.run /etc/service/mariadb/run \
 && chmod +x /etc/service/mariadb/run \
+\
+&& apt -yq --no-install-recommends install zstd \
 \
 && apt -y autoremove \
 && apt -y clean \
