@@ -2,13 +2,11 @@
 set -euo pipefail
 
 # Logical dump via Unix socket (my.cnf [mariadb-dump] defaults to TCP).
-# Cron does not inherit docker -e; my_init dumps those into container_environment.sh.
+# Settings from /wwwdata/misc/container.conf (MARIADB_BACKUP_*).
+# Manual run does not check MARIADB_BACKUP_ENABLE.
 
-if [ -f /etc/container_environment.sh ]; then
-  # shellcheck disable=SC1091
-  . /etc/container_environment.sh
-fi
-set -euo pipefail
+# shellcheck disable=SC1091
+. /usr/local/sbin/mariadb-backup-conf.sh
 
 MARIADB="${MARIADB:-/usr/local/mysql/bin/mariadb}"
 MARIADB_DUMP="${MARIADB_DUMP:-/usr/local/mysql/bin/mariadb-dump}"

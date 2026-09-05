@@ -2,13 +2,11 @@
 
 set -eu
 
-# Install or remove /etc/cron.d/mariadb-backup from docker -e / container env.
+# Install or remove /etc/cron.d/mariadb-backup from /wwwdata/misc/container.conf.
 # my_init runs this after chown-mysql.sh (lexicographic order).
 
-if [ -f /etc/container_environment.sh ]; then
-  # shellcheck disable=SC1091
-  . /etc/container_environment.sh
-fi
+# shellcheck disable=SC1091
+. /usr/local/sbin/mariadb-backup-conf.sh
 
 CRON_FILE="/etc/cron.d/mariadb-backup"
 ENABLE="${MARIADB_BACKUP_ENABLE:-0}"

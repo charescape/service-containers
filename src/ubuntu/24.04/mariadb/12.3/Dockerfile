@@ -6,14 +6,12 @@ ENV TZ="Asia/Shanghai"
 ENV MARIADB_VERSION="12.3.3"
 ENV KILL_PROCESS_TIMEOUT=60
 ENV KILL_ALL_PROCESSES_TIMEOUT=60
-ENV MARIADB_BACKUP_ENABLE=0
-ENV MARIADB_BACKUP_CRON="0 3 * * *"
-ENV MARIADB_BACKUP_KEEP_DAYS=30
-ENV MARIADB_BACKUP_DIR=/wwwdata/misc/backup
 
 COPY src/ubuntu/24.04/mariadb/12.3/chown-mysql.sh  /etc/my_init.d/
 COPY src/ubuntu/24.04/mariadb/12.3/mariadb-backup-cron.sh  /etc/my_init.d/
 COPY src/ubuntu/24.04/mariadb/12.3/mariadb-backup.sh  /usr/local/sbin/mariadb-backup.sh
+COPY src/ubuntu/24.04/mariadb/12.3/mariadb-backup-conf.sh  /usr/local/sbin/mariadb-backup-conf.sh
+COPY src/ubuntu/24.04/mariadb/12.3/container.conf  /usr/local/src/
 COPY src/ubuntu/24.04/mariadb/12.3/my.cnf  /usr/local/src/
 COPY src/ubuntu/24.04/mariadb/12.3/mariadb.run  /usr/local/src/
 
@@ -32,6 +30,7 @@ RUN set -eux \
 \
 && mkdir -p /wwwdata/mysql/data \
 && mkdir -p /wwwdata/mysql/run \
+&& mkdir -p /wwwdata/misc \
 && chown -R www-data:www-data /wwwdata \
 \
 && apt -yq --no-install-recommends install tzdata \
@@ -74,6 +73,7 @@ libcrack2-dev                   \
 && chmod +x /etc/my_init.d/chown-mysql.sh \
 && chmod +x /etc/my_init.d/mariadb-backup-cron.sh \
 && chmod +x /usr/local/sbin/mariadb-backup.sh \
+&& chmod +x /usr/local/sbin/mariadb-backup-conf.sh \
 \
 && apt -yq --no-install-recommends install zstd shellcheck shfmt jq curl util-linux \
 \
@@ -124,6 +124,8 @@ libcrack2-dev                   \
 \
 \
 && cp       ./my.cnf          /etc/my.cnf \
+&& cp       ./container.conf  /etc/container.conf.default \
+&& cp       ./container.conf  /wwwdata/misc/container.conf \
 && chown -R www-data:www-data /etc/my.cnf \
 && chown -R www-data:www-data /usr/local/mysql \
 && chown -R www-data:www-data /wwwdata \
