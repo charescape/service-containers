@@ -37,7 +37,7 @@ sv restart mariadb
 
 环境变量：
 
-- `MARIADB_BACKUP_ENABLE` 默认 `0`；设为 `1` / `true` / `yes` / `on` 后重启容器即开
+- `MARIADB_BACKUP_ENABLE` 默认 `0`；`1` / `true` / `yes` / `on` 为开启
 - `MARIADB_BACKUP_CRON` 默认 `0 3 * * *`
 - `MARIADB_BACKUP_KEEP_DAYS` 默认 `30`
 - `MARIADB_BACKUP_DIR` 默认 `/wwwdata/misc/backup`
