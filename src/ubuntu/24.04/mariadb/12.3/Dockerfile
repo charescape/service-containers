@@ -75,6 +75,8 @@ libcrack2-dev                   \
 && chmod +x /etc/my_init.d/mariadb-backup-cron.sh \
 && chmod +x /usr/local/sbin/mariadb-backup.sh \
 \
+&& apt -yq --no-install-recommends install zstd shellcheck shfmt jq curl util-linux \
+\
 && cd /usr/local/src \
 \
 && wget --no-verbose https://archive.mariadb.org/mariadb-${MARIADB_VERSION}/source/mariadb-${MARIADB_VERSION}.tar.gz \
@@ -133,8 +135,6 @@ libcrack2-dev                   \
 && mkdir -p /etc/service/mariadb \
 && cp /usr/local/src/mariadb.run /etc/service/mariadb/run \
 && chmod +x /etc/service/mariadb/run \
-\
-&& apt -yq --no-install-recommends install zstd \
 \
 && apt -y autoremove \
 && apt -y clean \

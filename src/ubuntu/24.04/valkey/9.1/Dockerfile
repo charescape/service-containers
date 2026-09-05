@@ -46,6 +46,8 @@ libgmock-dev                    \
 \
 && chmod +x /etc/my_init.d/chown-valkey.sh \
 \
+&& apt -yq --no-install-recommends install zstd shellcheck shfmt jq curl util-linux \
+\
 && cd /usr/local/src \
 \
 && wget --no-verbose -O valkey-${VALKEY_VERSION}.tar.gz https://github.com/valkey-io/valkey/archive/refs/tags/${VALKEY_VERSION}.tar.gz \

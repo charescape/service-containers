@@ -98,6 +98,8 @@ libexpat1-dev                   \
 && chmod +x /etc/my_init.d/chown-openresty.sh \
 && chmod +x /etc/my_init.d/chown-php.sh \
 \
+&& apt -yq --no-install-recommends install zstd shellcheck shfmt jq curl util-linux \
+\
 && cd /usr/local/src \
 \
 && wget --no-verbose https://openresty.org/download/openresty-${OPENRESTY_VERSION}.tar.gz \
